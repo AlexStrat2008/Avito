@@ -20,6 +20,5 @@
             <Label fx:id="helloWorld" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="94.0" prefHeight="90.0" prefWidth="153.0" text="Hello World!!" />
          </children>
       </Pane>
-      <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
    </children>
 </GridPane>
