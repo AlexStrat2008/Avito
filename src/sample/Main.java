@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import sample.dbclasses.JDBCClient;
+import sample.parse.Parse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 //        parseCategories();
+
         loadCities();
         try {
             jdbcClient = new JDBCClient();
