@@ -15,13 +15,12 @@ import sample.api.AvitoApi;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainController {
 
+    protected static Stage stageMain;
     protected static String httpQuery;
     @FXML
     private Button changeFilter;
@@ -44,8 +43,8 @@ public class MainController {
                 download();
             }
         });
-    }
 
+    }
     private void download() {
         AvitoApi avitoApi = new AvitoApi();
         try {
