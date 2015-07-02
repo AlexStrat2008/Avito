@@ -40,19 +40,20 @@ public class FilterController {
     private void initialize() {
         JDBCClient jdbcClient = Main.jdbcClient;
         cityMap = Main.citys;
-//        заполнение именами городов.
         citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
     }
 
     public void actionSearch(ActionEvent actionEvent) {
-//        получаем по ключу необходимое слово(оно выводится в консоль в качестве примера
-        if (citiescategory.getValue() != null) {
-            String curCity = cityMap.get(citiescategory.getValue().toString());
-            MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?" + (photocheck.isSelected() ? "i=1" : "") + "&pmax=" + finishPrice.getText() + "&pmin=" + startPrice.getText();
-            System.out.println(MainController.httpQuery);
-            openMainWindow();
+        try {
+            if (citiescategory.getValue() != null) {
+                String curCity = cityMap.get(citiescategory.getValue().toString());
+                MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?" + (photocheck.isSelected() ? "i=1" : "") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+                System.out.println(MainController.httpQuery);
+                openMainWindow();
+            }
+        }catch (Exception e){
+            System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
         }
-//        глобальный url для загрузок объявлений(страница)
     }
 
     private void openMainWindow() {

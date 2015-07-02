@@ -80,9 +80,10 @@ public class Main extends Application {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
                     String linkInnerH = links.html();
-                    citys.put(linkInnerH,linkHref.substring(15));
+                    citys.put(linkInnerH, linkHref.substring(15));
                 }
             }
+            citys.put("По всей России", "rossiya");
         } catch (IOException e) {
             e.printStackTrace();
         }
