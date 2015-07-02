@@ -8,16 +8,14 @@ import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import sample.dbclasses.JDBCClient;
-import sample.parse.Parse;
 
 import java.io.IOException;
-import java.util.HashMap;
+
+import sample.dbclasses.JDBCClient;
 
 public class Main extends Application {
 
     public static JDBCClient jdbcClient;
-    public static HashMap<String,String> citys;
 
     private static String URL = "https://www.avito.ru/map";
     private static String CitiesURL = "https://www.avito.ru/";
@@ -34,8 +32,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        parseCategories();
-
+        //parseCategories();
         loadCities();
         try {
             jdbcClient = new JDBCClient();
@@ -62,14 +59,16 @@ public class Main extends Application {
                     String linkInnerH = links.html();
                     System.out.println("\t\t\t" + linkInnerH); // Name other categorie
                 }
+                System.out.println("sdfsdf");
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private static void loadCities() {
-        citys = new HashMap<String,String>();
         try {
             Document doc = Jsoup.connect(CitiesURL).get();
             Elements cities = doc.select("div.col-2");
@@ -81,10 +80,13 @@ public class Main extends Application {
                 for (org.jsoup.nodes.Element _city : city_) {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
+                    System.out.println("\t\t" + linkHref); // address
                     String linkInnerH = links.html();
-                    citys.put(linkInnerH,linkHref.substring(15));
+                    System.out.println("\t\t\t" + linkInnerH); // Name other cities
                 }
+
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
