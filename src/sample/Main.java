@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 import sample.dbclasses.JDBCClient;
+import sample.parse.Parse;
 
 public class Main extends Application {
 
@@ -34,6 +35,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         //parseCategories();
         loadCities();
+        //Parse.parseCategories();
         try {
             jdbcClient = new JDBCClient();
         } catch (ClassNotFoundException e) {
