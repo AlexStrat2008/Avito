@@ -1,6 +1,6 @@
 package sample.parse;
 
-<<<<<<< HEAD
+
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
@@ -9,15 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-=======
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import sample.dbclasses.JDBCClient;
 
-import java.io.IOException;
-import java.sql.SQLException;
->>>>>>> origin/NIKMC
 
 /**
  * Created by NIKMC-I on 02.07.2015.
