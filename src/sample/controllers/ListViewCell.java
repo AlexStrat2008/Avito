@@ -12,11 +12,15 @@ public class ListViewCell extends ListCell<AvitoAd> {
     @Override
     protected void updateItem(AvitoAd item, boolean empty) {
         super.updateItem(item, empty);
-        if (item != null){
+        if (item != null) {
             CardController cardController = new CardController();
             Image img = new Image(item.getPhoto() == null ? "/sample/image/nophoto.jpg" : item.getPhoto().toString());
             cardController.setInfo(item.getName(), item.getDescription(), item.getPrice(), img);
-            setGraphic(cardController.getItem());
+            try {
+                setGraphic(cardController.getItem());
+            } catch (Exception e) {
+                System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
+            }
         }
     }
 }
