@@ -46,12 +46,13 @@ public class FilterController {
 
     public void actionSearch(ActionEvent actionEvent) {
 //        получаем по ключу необходимое слово(оно выводится в консоль в качестве примера
-        String curCity = cityMap.get(citiescategory.getValue().toString());
-        System.out.print(curCity);
+        if (citiescategory.getValue() != null) {
+            String curCity = cityMap.get(citiescategory.getValue().toString());
+            MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?" + (photocheck.isSelected() ? "i=1" : "") + "&pmax=" + finishPrice.getText() + "&pmin=" + startPrice.getText();
+            System.out.println(MainController.httpQuery);
+            openMainWindow();
+        }
 //        глобальный url для загрузок объявлений(страница)
-        MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?i=" + (photocheck.isSelected() ? 1 : "") + "&pmax=" + finishPrice.getText() + "&pmin=" + startPrice.getText();
-        System.out.println(MainController.httpQuery);
-        openMainWindow();
     }
 
     private void openMainWindow() {
