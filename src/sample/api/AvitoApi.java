@@ -4,14 +4,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import sample.com.benjiweber.yield.*;
 
+import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-//import javax.ws.rs.core.*;
 
 //import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -28,6 +28,24 @@ public class AvitoApi {
         return  title;
     }
 
+    public Yielderable<AvitoAd> getAdsFromRawQueryYield(String query) throws IOException, URISyntaxException {
+        return yield -> {
+            Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
+            Elements items = doc.select("div.catalog-list div.item");
+            for (Element item : items) {
+                URI uri = getURIFromElement(item);
+                AvitoAd ad = new AvitoAd(
+                        getNameFromElement(item),
+                        getPriceFromElement(item),
+                        getPhotoFromElement(item),
+                        getAdDescription(uri),
+                        uri);
+
+                yield.returning(ad);
+            }
+
+        };
+    }
     /*
      * �������������
         AvitoApi avitoApi = new AvitoApi();
@@ -74,7 +92,7 @@ public class AvitoApi {
             System.out.println(e.getMessage() != null ? e.getMessage() : "error");
         }
      */
-    /*public List<AvitoAd> getAds(String city, int page, long maxPrice, long minPrice, boolean onlyWithPhoto, String... categories) throws IOException, URISyntaxException {
+    public List<AvitoAd> getAds(String city, int page, long maxPrice, long minPrice, boolean onlyWithPhoto, String... categories) throws IOException, URISyntaxException {
         UriBuilder uriBuilder = UriBuilder
                 .fromUri("")
                 .segment(city)
@@ -86,7 +104,7 @@ public class AvitoApi {
         URI uri = uriBuilder.build();
 
         return getAdsFromRawQuery(uri.toString());
-    }*/
+    }
 
     private String getNameFromElement(Element element) {
         return element.select("div.description > h3.title > a").first().ownText();

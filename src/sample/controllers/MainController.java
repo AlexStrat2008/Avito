@@ -15,7 +15,10 @@ import sample.api.AvitoApi;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController {
 
@@ -34,19 +37,30 @@ public class MainController {
     @FXML
     private void initialize() {
         setListView();
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                download();
+            }
+        });
     }
-    public void setListView(){
 
+    private void download() {
         AvitoApi avitoApi = new AvitoApi();
         try {
-            List<AvitoAd> data = avitoApi.getAdsFromRawQuery(httpQuery);
-            observableList.setAll(data);
+            for (AvitoAd ad : avitoApi.getAdsFromRawQueryYield(httpQuery)) {
+                observableList.add(ad);
 
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setListView(){
         listView.setItems(observableList);
         listView.setCellFactory(param -> new ListViewCell());
     }

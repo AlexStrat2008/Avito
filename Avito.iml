@@ -7,7 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jsoup-1.8.2" level="project" />
     <orderEntry type="library" name="postgresql-9.4-1201.jdbc41" level="project" />
+    <orderEntry type="library" name="org.jsoup:jsoup:1.8.2" level="project" />
+    <orderEntry type="library" name="javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
+    <orderEntry type="library" name="yielder-0.3.0" level="project" />
   </component>
 </module>
