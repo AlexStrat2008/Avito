@@ -10,7 +10,11 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 //import org.apache.commons.lang3.StringEscapeUtils;
@@ -21,6 +25,20 @@ import java.util.List;
 public class AvitoApi {
 
     private final static URI hostURL = URI.create("http://avito.ru/");
+    private final static HashMap<String, Integer> months = new HashMap<String, Integer>() {{
+        put("января", 1);
+        put("февраля", 2);
+        put("марта", 3);
+        put("апреля", 4);
+        put("мая", 5);
+        put("июня", 6);
+        put("июля", 7);
+        put("августа", 8);
+        put("сентября", 9);
+        put("октября", 10);
+        put("ноября", 11);
+        put("декабря", 12);
+    }};
 
     public String test() throws IOException{
         Document doc = Jsoup.connect(hostURL.resolve("ulyanovsk/avtomobili?p=2").toURL().toString()).get();
@@ -39,14 +57,15 @@ public class AvitoApi {
                         getPriceFromElement(item),
                         getPhotoFromElement(item),
                         getAdDescription(uri),
-                        uri);
+                        uri,
+                        getDateTimeFromElement(item));
 
                 yield.returning(ad);
             }
 
         };
     }
-    /*
+    /**
      * �������������
         AvitoApi avitoApi = new AvitoApi();
         try {
@@ -74,12 +93,13 @@ public class AvitoApi {
                     getPriceFromElement(item),
                     getPhotoFromElement(item),
                     getAdDescription(uri),
-                    uri));
+                    uri,
+                    getDateTimeFromElement(item)));
         }
 
         return  ads;
     }
-    /*
+    /**
     AvitoApi avitoApi = new AvitoApi();
         try {
             List<AvitoAd> ads = avitoApi.getAds("ulyanovsk", 2, 1000000, 100000, false, "avtomobili");
@@ -158,5 +178,38 @@ public class AvitoApi {
     private URI getURIFromElement(Element element) {
         String uri = element.select("div.description > h3.title > a").first().attr("href");
         return URI.create(uri);
+    }
+
+    private LocalDateTime getDateTimeFromElement(Element element) {
+        String sDateTime = element.select("div.description > div.data > div.date").first().ownText().trim();
+        String[] words = sDateTime.split(" ");
+        LocalDateTime dateTime;
+        if (words.length == 2) {
+            LocalDate date;
+            if (words[0].equals("Сегодня")) {
+                date = LocalDate.now();
+            } else if (words[0].equals("Вчера")) {
+                date = LocalDate.now().minusDays(1);
+            } else {
+                date = LocalDate.now().minusDays(500);
+            }
+
+            LocalTime time = LocalTime.parse(words[1]);
+            dateTime = LocalDateTime.of(date, time);
+
+        } else if (words.length == 3) {
+            //just fuck off
+            int year = LocalDate.now().getYear();
+            Integer month = months.get(words[1]);
+            int day = Integer.parseInt(words[0]);
+            LocalDate date = LocalDate.of(year, month.intValue(), day);
+            LocalTime time = LocalTime.parse(words[2]);
+
+            dateTime = LocalDateTime.of(date, time);
+        } else {
+            dateTime = LocalDateTime.now().minusDays(600);
+        }
+
+        return dateTime;
     }
 }

@@ -43,7 +43,7 @@ public class FilterController {
         String curCity = cityMap.get(citiescategory.getValue().toString());
         System.out.print(curCity);
 //        глобальный url для загрузок объявлений(страница)
-        MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili/vaz_lada?pmax=3000000&pmin=90000";
+        MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili/vaz_lada?pmax=3000000&pmin=300000";
         openMainWindow();
     }
 
