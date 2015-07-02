@@ -11,30 +11,36 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import sample.Main;
 import sample.custom.NumberTextField;
+import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 public class FilterController {
 
+    @FXML
     public NumberTextField finishPrice;
+    @FXML
     public NumberTextField startPrice;
+    @FXML
     public ChoiceBox citiescategory;
+    @FXML
     public Button toSearch;
+    @FXML
+    public CheckBox photocheck;
     //    map городов
     private HashMap<String, String> cityMap;
 
     @FXML
     private void initialize() {
-//    заполнение городов
-        cityMap = new HashMap<String, String>();
-        cityMap.put("Москва", "moskva");
-        cityMap.put("Ульяновск", "ulyanovsk");
-        cityMap.put("Самара", "samara");
-//        заполнение ключами
+        JDBCClient jdbcClient = Main.jdbcClient;
+        cityMap = Main.citys;
+//        заполнение именами городов.
         citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
     }
 
@@ -43,7 +49,8 @@ public class FilterController {
         String curCity = cityMap.get(citiescategory.getValue().toString());
         System.out.print(curCity);
 //        глобальный url для загрузок объявлений(страница)
-        MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili/vaz_lada?pmax=3000000&pmin=90000";
+        MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?i=" + (photocheck.isSelected() ? 1 : "") + "&pmax=" + finishPrice.getText() + "&pmin=" + startPrice.getText();
+        System.out.println(MainController.httpQuery);
         openMainWindow();
     }
 
