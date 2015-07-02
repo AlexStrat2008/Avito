@@ -12,7 +12,7 @@
       <children>
         <ImageView fx:id="foto" fitHeight="97.0" fitWidth="129.98000174129712" layoutX="18.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
           <image>
-            <Image url="@../image/nophoto.png" />
+            <Image url="@../image/nophoto.jpg" />
           </image>
         </ImageView>
         <Label fx:id="name" layoutX="184.0" layoutY="7.0" prefHeight="25.961037499997474" prefWidth="82.99997792968497" text="Название">

@@ -8,7 +8,7 @@ public class JDBCClient implements DBFunction {
     static final String URL = "jdbc:postgresql://localhost:5432/";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
-    static final String PASSWORD = "147432";
+    static final String PASSWORD = "alex20";
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
@@ -20,29 +20,31 @@ public class JDBCClient implements DBFunction {
             " priceFirst DOUBLE PRECISION, priceSecond DOUBLE PRECISION, city TEXT, category TEXT, " +
             "subcategory TEXT, picture BOOLEAN);";
 
-    static Connection connection = null;
-    static Statement statement = null;
+    private Connection connection = null;
+    private Statement statement = null;
 
+//    Доделать!!! Коряво работает
     public JDBCClient() throws ClassNotFoundException {
         try {
-            connection = getDBConnection(DB_URL, LOGIN, PASSWORD);
+            Class.forName(JDBC_DRIVER);
+            System.out.println("Драйвер подключен");
+            connection = DriverManager.getConnection(DB_URL, LOGIN, PASSWORD);
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-                createTables();
+            createTables();
         }
     }
 
     public Connection getDBConnection(String URL, String login, String password) {
         try {
             Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
+            System.out.println("Драйвер подключен");
             connection = DriverManager.getConnection(URL, login, password);
             return connection;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return connection;
     }
@@ -339,7 +341,8 @@ public class JDBCClient implements DBFunction {
     public ArrayList<City> citySelectAll() throws SQLException {
         ArrayList<City> arrayList = new ArrayList<City>();
         String query = "SELECT * FROM city;";
-        ResultSet resultSet = doExecQuery(connection, query);
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
         while ( resultSet.next() ) {
             City city = new City();
             city.setId(resultSet.getInt("id"));
