@@ -13,9 +13,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import sample.Main;
 import sample.custom.NumberTextField;
+import sample.dbclasses.City;
+import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class FilterController {
@@ -33,12 +37,16 @@ public class FilterController {
 
     @FXML
     private void initialize() {
-//    заполнение городов
+        JDBCClient jdbcClient = Main.jdbcClient;
         cityMap = new HashMap<String, String>();
-        cityMap.put("Москва", "moskva");
-        cityMap.put("Ульяновск", "ulyanovsk");
-        cityMap.put("Самара", "samara");
-//        заполнение ключами
+        try {
+            for(City city : jdbcClient.citySelectAll()){
+                cityMap.put(city.getName(),city.getURL());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        заполнение именами городов.
         citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
     }
 

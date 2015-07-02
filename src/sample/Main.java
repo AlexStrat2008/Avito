@@ -5,8 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.dbclasses.JDBCClient;
 
 public class Main extends Application {
+
+    public static JDBCClient jdbcClient;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -18,7 +21,12 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        System.out.println("Привет мир!");
+
+        try {
+            jdbcClient = new JDBCClient();
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getException());
+        }
         launch(args);
     }
 }
