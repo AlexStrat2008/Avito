@@ -95,7 +95,7 @@ ArrayList<Category> _categories = new ArrayList<>();
         if (category.getParent().equals("1"))
         categories_.put(category.getName(),category.getURL());
         else {
-            subcategories_.put(category.getName(),category.getURL());
+            subcategories_.put(category.getName(),category.getParent());
         }
     }
 
