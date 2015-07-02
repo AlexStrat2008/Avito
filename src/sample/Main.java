@@ -33,7 +33,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        //parseCategories();
+//        parseCategories();
         loadCities();
         try {
             jdbcClient = new JDBCClient();
@@ -61,11 +61,9 @@ public class Main extends Application {
                     System.out.println("\t\t\t" + linkInnerH); // Name other categorie
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static void loadCities() {

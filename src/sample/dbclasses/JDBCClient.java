@@ -30,7 +30,7 @@ public class JDBCClient implements DBFunction {
             System.out.println("Драйвер подключен");
             connection = DriverManager.getConnection(DB_URL, LOGIN, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
+            createTables();
         }
     }
 
