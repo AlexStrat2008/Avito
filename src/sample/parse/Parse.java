@@ -32,7 +32,7 @@ public class Parse {
             for (org.jsoup.nodes.Element categor : categories) {
                 org.jsoup.nodes.Element title = categor.select("dt").first();
                 Elements _categories = categor.select("dd");
-                String parentUrl = mainUrl + title.select("a").first().attr("href");
+                String parentUrl = title.select("a").first().attr("href");
                 try {
                     client.getDBConnection(DB_URL,LOGIN,PASSWORD);
                     client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href"),"1");
