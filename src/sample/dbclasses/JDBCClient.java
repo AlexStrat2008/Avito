@@ -23,12 +23,13 @@ public class JDBCClient implements DBFunction {
     private Connection connection = null;
     private Statement statement = null;
 
-//    Доделать!!!
+//    Доделать!!! Коряво работает
     public JDBCClient() throws ClassNotFoundException {
         try {
             Class.forName(JDBC_DRIVER);
             System.out.println("Драйвер подключен");
             connection = DriverManager.getConnection(DB_URL, LOGIN, PASSWORD);
+
         } catch (SQLException e) {
             createTables();
         }
