@@ -8,7 +8,7 @@ public class JDBCClient implements DBFunction {
     static final String URL = "jdbc:postgresql://localhost:5432/";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
-    static final String PASSWORD = "alex20";
+    static final String PASSWORD = "10041994";
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
@@ -261,7 +261,8 @@ public class JDBCClient implements DBFunction {
     public ArrayList<Category> categorySelectAll() throws SQLException {
         ArrayList<Category> arrayList = new ArrayList<>();
         String query = "SELECT * FROM category;";
-        ResultSet resultSet = doExecQuery(connection, query);
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next()) {
             Category category = new Category();
             category.setId(resultSet.getInt("id"));

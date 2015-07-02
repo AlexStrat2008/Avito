@@ -4,6 +4,8 @@ package sample.controllers;
  * Created by strat on 30.06.15.
  */
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +18,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import sample.Main;
 import sample.custom.NumberTextField;
+import sample.dbclasses.Category;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FilterController {
@@ -33,14 +37,46 @@ public class FilterController {
     public Button toSearch;
     @FXML
     public CheckBox photocheck;
+
+    public ChoiceBox subcategory;
+
+    public ChoiceBox category;
     //    map городов
     private HashMap<String, String> cityMap;
+    private HashMap<String, String> categorMap;
+    private HashMap<String, String> subcategorMap;
+    private HashMap<String, String> subcategorMap_ = new HashMap<String, String>();
+
+
 
     @FXML
     private void initialize() {
         JDBCClient jdbcClient = Main.jdbcClient;
         cityMap = Main.citys;
         citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+        categorMap = Main.categories_;
+        category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+        subcategorMap = Main.subcategories_;
+
+        /*////////////////*/
+        category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                //System.out.println(               categorMap.get(observable.getValue().toString()).toString());
+                categorMap.get(observable.getValue().toString()).toString();
+
+                for (String title : subcategorMap.keySet()) {
+                    if (title.equals(observable.getValue().toString())) {
+                        subcategorMap_.put(title,"");
+                    }
+                }
+                System.out.println(               categorMap.get(observable.getValue().toString()).toString());
+
+                subcategory.setItems(FXCollections.observableArrayList(subcategorMap_.keySet()));
+
+            }
+        });
+
     }
 
     public void actionSearch(ActionEvent actionEvent) {
