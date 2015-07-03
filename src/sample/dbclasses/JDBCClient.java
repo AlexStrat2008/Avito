@@ -8,7 +8,7 @@ public class JDBCClient implements DBFunction {
     static final String URL = "jdbc:postgresql://localhost:5432/";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
-    static final String PASSWORD = "alex20";
+    static final String PASSWORD = "147432";
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
