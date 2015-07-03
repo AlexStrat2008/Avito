@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import sample.dbclasses.JDBCClient;
 import sample.parse.Parse;
@@ -17,7 +18,7 @@ import sample.parse.Parse;
 public class Main extends Application {
 
     public static JDBCClient jdbcClient;
-
+    private static HashMap<String, String> citys;
     private static String URL = "https://www.avito.ru/map";
     private static String CitiesURL = "https://www.avito.ru/";
 
@@ -33,7 +34,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        //parseCategories();
+        Parse parse = new Parse();
+
+        parse.parseCategories();
         loadCities();
         //Parse.parseCategories();
         try {
