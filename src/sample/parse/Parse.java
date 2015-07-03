@@ -30,7 +30,8 @@ public class Parse {
                 Elements _categories = categor.select("dd");
                 String parentUrl = title.select("a").first().attr("href");
                 try {
-                    System.out.println(title.select("a").first().attr("href").substring(9));
+//                    System.out.println(title.select("a").first().html());
+
                     client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href").substring(9),"1");
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -39,9 +40,10 @@ public class Parse {
                     org.jsoup.nodes.Element links = element.select("a").first();
                     String linkHref = links.attr("href");
                     String linkInnerH = links.html();
-                    System.out.println(linkHref.substring(9));
                     try {
-                        client.categoryAdd(linkInnerH,linkHref.substring(9),parentUrl.substring(9));
+                        if(!linkInnerH.isEmpty()){
+                            client.categoryAdd(linkInnerH,linkHref.substring(9),parentUrl.substring(9));
+                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
