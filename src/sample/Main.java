@@ -66,6 +66,7 @@ public class Main extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     private static void loadCities() {
@@ -81,9 +82,11 @@ public class Main extends Application {
                 for (org.jsoup.nodes.Element _city : city_) {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
+                    System.out.println("\t\t" + linkHref); // address
                     String linkInnerH = links.html();
                     citys.put(linkInnerH, linkHref.substring(15));
                 }
+
             }
             citys.put("По всей России", "rossiya");
         } catch (IOException e) {
