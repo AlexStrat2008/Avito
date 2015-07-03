@@ -20,23 +20,9 @@
         </Text>
         <Text fx:id="categories" font="$x1" layoutX="17.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Категория:" />
         <ChoiceBox id="subcategory" fx:id="category" layoutX="140.0" layoutY="114.0" prefHeight="27.0" prefWidth="189.0">
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="Недвижимоddсть" />
-              <String fx:value="Транспорт" />
-              <String fx:value="Работа" />
-            </FXCollections>
-          </items>
         </ChoiceBox>
         <Text fx:id="scategory" layoutX="17.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Подкатегория:" />
         <ChoiceBox fx:id="subcategory" layoutX="140.0" layoutY="159.0" prefHeight="27.0" prefWidth="189.0">
-          <items>
-            <FXCollections fx:factory="observableArrayList">
-              <String fx:value="Item 1" />
-              <String fx:value="Item 2" />
-              <String fx:value="Item 3" />
-            </FXCollections>
-          </items>
         </ChoiceBox>
         <CheckBox fx:id="photocheck" layoutX="23.0" layoutY="284.0" mnemonicParsing="false" text="только с фото" />
         <Text layoutX="23.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цена:" />

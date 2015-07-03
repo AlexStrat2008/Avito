@@ -1,14 +1,13 @@
 package sample.parse;
 
 
-import sample.Main;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 
 
@@ -21,50 +20,39 @@ public class Parse {
     private static String mainUrl = "http://www.avito.ru";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
-    static final String PASSWORD = "10041994";
+    static final String PASSWORD = "alex20";
 
     public static void parseCategories (JDBCClient client) {
 
         try {
-            //JDBCClient jdbcClient = new JDBCClient();
-            Document doc  = Jsoup.connect(URL).get();
+            Document doc = Jsoup.connect(URL).get();
             Elements categories = doc.select("dl");
             for (org.jsoup.nodes.Element categor : categories) {
                 org.jsoup.nodes.Element title = categor.select("dt").first();
                 Elements _categories = categor.select("dd");
                 String parentUrl = title.select("a").first().attr("href");
                 try {
-                    client.getDBConnection(DB_URL,LOGIN,PASSWORD);
-                    client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href"),"1");
+                    System.out.println(title.select("a").first().attr("href").substring(9));
+                    client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href").substring(9),"1");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                System.out.println(mainUrl + title.select("a").first().attr("href")); // address main categories
-                System.out.println("main" + "\t" + title.select("a").first().html()); // Name main categories
-
                 for (org.jsoup.nodes.Element element : _categories) {
                     org.jsoup.nodes.Element links = element.select("a").first();
                     String linkHref = links.attr("href");
-                    System.out.println("\t\t"+mainUrl+linkHref); // address
                     String linkInnerH = links.html();
-                    System.out.println("\t\t\t"+linkInnerH); // Name other categorie
+                    System.out.println(linkHref.substring(9));
                     try {
-                        client.getDBConnection(DB_URL,LOGIN,PASSWORD);
-                        client.categoryAdd(linkInnerH,linkHref,parentUrl);
+                        client.categoryAdd(linkInnerH,linkHref.substring(9),parentUrl.substring(9));
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
-                System.out.println("----------");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        }/*catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-
-
+        }
     }
 
     public static void parseCities() {

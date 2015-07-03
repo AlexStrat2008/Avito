@@ -8,7 +8,7 @@ public class JDBCClient implements DBFunction {
     static final String URL = "jdbc:postgresql://localhost:5432/";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
-    static final String PASSWORD = "10041994";
+    static final String PASSWORD = "alex20";
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
@@ -23,7 +23,7 @@ public class JDBCClient implements DBFunction {
     private Connection connection = null;
     private Statement statement = null;
 
-//    Доделать!!! Коряво работает
+    //    Доделать!!! Коряво работает
     public JDBCClient() throws ClassNotFoundException {
         try {
             Class.forName(JDBC_DRIVER);
@@ -107,7 +107,8 @@ public class JDBCClient implements DBFunction {
                 + subcategory + "', " + picture + ");";
         try {
             statement = connection.createStatement();
-            doUpdateQuery(connection, query);;
+            doUpdateQuery(connection, query);
+            ;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -138,7 +139,7 @@ public class JDBCClient implements DBFunction {
     }
 
     public void filterUpdate(int id, String name, Double priceFirst, Double priceSecond, String city, String category,
-                            String subcategory, boolean picture) throws SQLException {
+                             String subcategory, boolean picture) throws SQLException {
         String query = "UPDATE filter SET name = " + name + ", priceFirst = " + priceFirst + ", priceSecond = "
                 + priceSecond + ", city = " + city + ", category = " + category + ", subcategory = " + subcategory
                 + ", picture = " + picture + " WHERE ID = " + id + ";";
@@ -156,12 +157,13 @@ public class JDBCClient implements DBFunction {
             }
         }
     }
-    public Filter filterSelect(int id) throws SQLException{
+
+    public Filter filterSelect(int id) throws SQLException {
         String query = "SELECT id, name, priceFirst, priceSecond, city, category, subcategory, picture " +
                 "FROM filter WHERE ID = " + id + ";";
         ResultSet resultSet = doExecQuery(connection, query);
         Filter filter = new Filter();
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             filter.setId(resultSet.getInt("id"));
             filter.setName(resultSet.getString("name"));
             filter.setPriceFirst(resultSet.getDouble("priceFirst"));
@@ -178,7 +180,7 @@ public class JDBCClient implements DBFunction {
         ArrayList<Filter> arrayList = new ArrayList<Filter>();
         String query = "SELECT * FROM filter;";
         ResultSet resultSet = doExecQuery(connection, query);
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             Filter filter = new Filter();
             filter.setId(resultSet.getInt("id"));
             filter.setName(resultSet.getString("name"));
@@ -198,16 +200,18 @@ public class JDBCClient implements DBFunction {
         try {
             statement = connection.createStatement();
             doUpdateQuery(connection, query);
+            statement.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
         }
+//        } finally {
+//            if (statement != null) {
+//                statement.close();
+//            }
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        }
     }
 
     public void categoryDelete(int id) throws SQLException {
@@ -245,17 +249,63 @@ public class JDBCClient implements DBFunction {
         }
     }
 
-    public Category categorySelect(int id) throws  SQLException {
+    public Category categorySelect(int id) throws SQLException {
         String query = "SELECT id, name, url, parent FROM category WHERE ID = " + id + ";";
         ResultSet resultSet = doExecQuery(connection, query);
         Category category = new Category();
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             category.setId(resultSet.getInt("id"));
             category.setName(resultSet.getString("name"));
             category.setURL(resultSet.getString("url"));
             category.setParent(resultSet.getString("parent"));
         }
         return category;
+    }
+
+    public boolean isTable(String nameTable) {
+        String query = "select * from " + nameTable;
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+            resultSet.next();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public ArrayList<Category> categorySelectChild(String parent) throws SQLException {
+        ArrayList<Category> arrayList = new ArrayList<>();
+        String query = "SELECT id, name, url, parent FROM category WHERE parent = '" + parent + "'";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while (resultSet.next()) {
+            Category category = new Category();
+            category.setId(resultSet.getInt("id"));
+            category.setName(resultSet.getString("name"));
+            category.setURL(resultSet.getString("url"));
+            category.setParent(resultSet.getString("parent"));
+            arrayList.add(category);
+        }
+        return arrayList;
+    }
+
+    public ArrayList<Category> categorySelectParent() throws SQLException {
+        ArrayList<Category> arrayList = new ArrayList<>();
+        String query = "SELECT id, name, url, parent FROM category WHERE parent = '1'";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        while (resultSet.next()) {
+            Category category = new Category();
+            category.setId(resultSet.getInt("id"));
+            category.setName(resultSet.getString("name"));
+            category.setURL(resultSet.getString("url"));
+            category.setParent(resultSet.getString("parent"));
+            arrayList.add(category);
+        }
+        return arrayList;
     }
 
     public ArrayList<Category> categorySelectAll() throws SQLException {
@@ -330,7 +380,7 @@ public class JDBCClient implements DBFunction {
         String query = "SELECT id, name, url, parent FROM city WHERE ID = " + id + ";";
         ResultSet resultSet = doExecQuery(connection, query);
         City city = new City();
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             city.setId(resultSet.getInt("id"));
             city.setName(resultSet.getString("name"));
             city.setURL(resultSet.getString("url"));
@@ -344,7 +394,7 @@ public class JDBCClient implements DBFunction {
         String query = "SELECT * FROM city;";
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             City city = new City();
             city.setId(resultSet.getInt("id"));
             city.setName(resultSet.getString("name"));
@@ -410,7 +460,7 @@ public class JDBCClient implements DBFunction {
         String query = "SELECT id, name, url, parent FROM comment WHERE ID = " + id + ";";
         ResultSet resultSet = doExecQuery(connection, query);
         Comment comment = new Comment();
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             comment.setId(resultSet.getInt("id"));
             comment.setURL(resultSet.getString("url"));
             comment.setDescription(resultSet.getString("description"));
@@ -422,7 +472,7 @@ public class JDBCClient implements DBFunction {
         ArrayList<Comment> arrayList = new ArrayList<Comment>();
         String query = "SELECT * FROM comment;";
         ResultSet resultSet = doExecQuery(connection, query);
-        while ( resultSet.next() ) {
+        while (resultSet.next()) {
             Comment comment = new Comment();
             comment.setId(resultSet.getInt("id"));
             comment.setURL(resultSet.getString("url"));

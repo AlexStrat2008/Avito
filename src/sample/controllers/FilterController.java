@@ -25,6 +25,7 @@ import sample.dbclasses.Category;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,61 +48,65 @@ public class FilterController {
     //    map городов
     private HashMap<String, String> cityMap;
     private HashMap<String, String> categorMap;
-    private HashMap<String, String> subcategorMap;
-    private HashMap<String, String> subcategorMap_ = new HashMap<String, String>();
-
-
+    private HashMap<String, String> subcategorMap = new HashMap<String, String>();
 
     @FXML
     private void initialize() {
         JDBCClient jdbcClient = Main.jdbcClient;
         cityMap = Main.citys;
         citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+
         categorMap = Main.categories_;
         category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
-        subcategorMap = Main.subcategories_;
 
-        /*////////////////*/
         category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 //System.out.println(               categorMap.get(observable.getValue().toString()).toString());
-                categorMap.get(observable.getValue().toString()).toString();
-
-                for (String title : subcategorMap.keySet()) {
-                    if (title.equals(observable.getValue().toString())) {
-                        subcategorMap_.put(title,"");
+                String parentKey = categorMap.get(observable.getValue().toString()).toString();
+                ArrayList<String> subcatArray = new ArrayList<String>();
+                try {
+                    subcategorMap = new HashMap<String, String>();
+                    for (Category item : jdbcClient.categorySelectChild(parentKey)) {
+                        subcategorMap.put(item.getName(), item.getURL());
                     }
+                    subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                System.out.println(               categorMap.get(observable.getValue().toString()).toString());
-
-                subcategory.setItems(FXCollections.observableArrayList(subcategorMap_.keySet()));
-
             }
         });
-
     }
 
     public void actionSearch(ActionEvent actionEvent) {
         Stage stageClose = (Stage) toSearch.getScene().getWindow();
         try {
             if (citiescategory.getValue() != null) {
+                String categ ="";
                 String curCity = cityMap.get(citiescategory.getValue().toString());
-                MainController.httpQuery = "https://www.avito.ru/" + curCity + "/avtomobili?" + (photocheck.isSelected() ? "i=1" : "") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+                if(subcategory.getValue() != null){
+                    categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+                }
+                else if(category.getValue() != null){
+                    categ = "/" + categorMap.get(category.getValue().toString());;
+                }
+                else{
+                    categ = "/";
+                }
+                MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
                 System.out.println(MainController.httpQuery);
                 openMainWindow(stageClose);
+            } else {
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(stageClose);
+                VBox dialogVbox = new VBox(20);
+                dialogVbox.getChildren().add(new Text("Выберете город"));
+                Scene dialogScene = new Scene(dialogVbox, 150, 50);
+                dialog.setScene(dialogScene);
+                dialog.show();
             }
-            else{
-                    final Stage dialog = new Stage();
-                    dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner(stageClose);
-                    VBox dialogVbox = new VBox(20);
-                    dialogVbox.getChildren().add(new Text("Выберете город"));
-                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
-                    dialog.setScene(dialogScene);
-                    dialog.show();
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
         }
     }
