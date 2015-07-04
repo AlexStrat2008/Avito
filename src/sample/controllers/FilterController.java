@@ -20,9 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.Main;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
+import sample.dbclasses.City;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
@@ -54,30 +54,46 @@ public class FilterController {
 
     @FXML
     private void initialize() {
-        JDBCClient jdbcClient = Main.jdbcClient;
-        cityMap = Main.citys;
-        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+        JDBCClient jdbcClient;
+        categorMap = new HashMap<String, String>();
+        try {
+            jdbcClient = new JDBCClient();
 
-        categorMap = Main.categories_;
-        category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+            loadCategories(jdbcClient);
+            loadCities(jdbcClient);
 
-        category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                //System.out.println(               categorMap.get(observable.getValue().toString()).toString());
-                String parentKey = categorMap.get(observable.getValue().toString()).toString();
-                ArrayList<String> subcatArray = new ArrayList<String>();
-                try {
-                    subcategorMap = new HashMap<String, String>();
-                    for (Category item : jdbcClient.categorySelectChild(parentKey)) {
-                        subcategorMap.put(item.getName(), item.getURL());
+            category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+            category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                    String parentKey = categorMap.get(observable.getValue().toString()).toString();
+                    ArrayList<String> subcatArray = new ArrayList<String>();
+                    try {
+                        JDBCClient jdbcClient = new JDBCClient();
+                        subcategorMap = new HashMap<String, String>();
+                        for (Category item : jdbcClient.categorySelectChild(parentKey)) {
+                            subcategorMap.put(item.getName(), item.getUrl());
+                        }
+                        subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+                        jdbcClient.closeStatement();
+                        jdbcClient.closeConnection();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
-                    subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
     }
 
     public void actionSearch(ActionEvent actionEvent) {
@@ -119,6 +135,27 @@ public class FilterController {
         }
     }
 
+    private void loadCategories(JDBCClient jdbcClient) {
+        try {
+            for (Category item : jdbcClient.categorySelectChild("1")) {
+                categorMap.put(item.getName(), item.getUrl());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCities(JDBCClient jdbcClient) {
+        cityMap = new HashMap<String, String>();
+        try {
+            for (City item : jdbcClient.getCityAll()) {
+                cityMap.put(item.getName(), item.getURL());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void openMainWindow(Stage stageClose) {
         Parent parent = null;
         try {
@@ -133,4 +170,5 @@ public class FilterController {
         }
         stageClose.close();
     }
+
 }
