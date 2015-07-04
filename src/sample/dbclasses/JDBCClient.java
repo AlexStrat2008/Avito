@@ -177,41 +177,68 @@ public class JDBCClient {
         statement.execute(query);
     }
 
-    //    }
-//
-//    public Category categorySelect(int id) throws SQLException {
-//        String query = "SELECT id, name, url, parent FROM category WHERE ID = " + id + ";";
-//        ResultSet resultSet = doExecQuery(connection, query);
-//        Category category = new Category();
-//        while (resultSet.next()) {
-//            category.setId(resultSet.getInt("id"));
-//            category.setName(resultSet.getString("name"));
-//            category.setUrl(resultSet.getString("url"));
-//            category.setParent(resultSet.getString("parent"));
-//        }
-//        return category;
-//    }
-//
-//    public boolean isTable(String nameTable) {
-//        String query = "select * from " + nameTable;
-//        Statement statement = null;
-//        try {
-//            statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery(query);
-//            int size =0;
-//            if (resultSet != null)
-//            {
-//                resultSet.beforeFirst();
-//                resultSet.last();
-//                size = resultSet.getRow();
-//            }
-//            System.out.println(size);
-//            return true;
-//        } catch (SQLException e) {
-//            return false;
-//        }
-//    }
-//
+    public Integer getCategoryIDByURL(String url) throws SQLException {
+        ResultSet resultSet = statement.executeQuery("SELECT id FROM 'category' WHERE url = '" + url + "'");
+        return resultSet.getInt("id");
+    }
+
+    public void categoryDeleteByURL(String url) throws SQLException {
+        statement.execute("DELETE FROM 'category' WHERE url = '" + url + "'");
+    }
+
+    public void categoryDeleteByID(int id) throws SQLException {
+        statement.execute("DELETE FROM 'category' WHERE id = '" + id + "'");
+    }
+
+
+    public void filterUpdateByID(int id, String name, String url, String parent) throws SQLException {
+        statement.execute("UPDATE category SET name = '" + name + "', url = '" + url + "', parent = '" + parent + "' where id = '" + id + "';");
+    }
+
+
+    public void filterUpdateByURL(String url,String name, String parent) throws SQLException {
+        statement.execute("UPDATE category SET name = '" + name + "', parent = '" + parent + "' where url = '" + url + "';");
+    }
+
+    public ArrayList<Category> getCategoryByURL(String url) throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE url = '" + url + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
+
+    public ArrayList<Category> getCategoryByID(int id) throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE id = '" + id + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
+
+    
     public ArrayList<Category> categorySelectChild(String parent) throws SQLException {
         ArrayList<Category> arrayList = new ArrayList<>();
 //        String query = "SELECT id, name, url, parent FROM category WHERE parent = '" + parent + "'";
