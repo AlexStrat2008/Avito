@@ -10,7 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import sample.dbclasses.Category;
 import sample.dbclasses.JDBCClient;
-import sample.parse.Parse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,13 +36,52 @@ public class Main extends Application {
     public static void main(String[] args) {
         try {
             jdbcClient = new JDBCClient();
+//
+//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jddhf");
+//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "tyy");
+//            jdbcClient.filterUpdateByURL("tyy", "update", "bb", "ccc", 10, 100, true);
+//            int id = jdbcClient.getFilterIDByURL("tyy");
+//            System.out.println(id);
+//            ArrayList<Filter> filters1 = jdbcClient.getFilterByID(id);
+//            System.out.println();
+//            for(Filter item : filters1){
+//                System.out.println(item.getId());
+//                System.out.println(item.getCity());
+//                System.out.println(item.getCategory());
+//                System.out.println(item.getSubcategory());
+//                System.out.println(item.getStartPrice());
+//                System.out.println(item.getFinishPrice());
+//                System.out.println(item.getIsPhoto());
+//                System.out.println(item.getFilterURL());
+//            }
+//            ArrayList<Filter> filters = jdbcClient.getFilterByURL("tyy");
+//            System.out.println();
+//            for(Filter item : filters){
+//                System.out.println(item.getId());
+//                System.out.println(item.getCity());
+//                System.out.println(item.getCategory());
+//                System.out.println(item.getSubcategory());
+//                System.out.println(item.getStartPrice());
+//                System.out.println(item.getFinishPrice());
+//                System.out.println(item.getIsPhoto());
+//                System.out.println(item.getFilterURL());
+//            }
+            //jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jdfdffoooo");
+            //jdbcClient.categoryAdd("bb", "dd", "ss");
+            //jdbcClient.cityAdd("dff", "ds");
+            //jdbcClient.categoryUpdate(1,"qq", "ww", "ee");
+//            jdbcClient.filterDelete("tyy");
+            System.out.println("add");
+
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getException());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        if(jdbcClient.isTable("category"))
-            Parse.parseCategories(jdbcClient);
-        loadCities();
-        loadCategories();
+//        if(jdbcClient.isTable("category"))
+//            Parse.parseCategories(jdbcClient);
+//        loadCities();
+//        loadCategories();
         launch(args);
     }
 
@@ -55,7 +93,7 @@ public class Main extends Application {
         subcategories_ = new HashMap<String, String>();
         try {
             for (Category item : jdbcClient.categorySelectParent()) {
-                categories_.put(item.getName(), item.getURL());
+                categories_.put(item.getName(), item.getUrl());
             }
         } catch (SQLException e) {
             e.printStackTrace();

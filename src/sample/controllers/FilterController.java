@@ -4,9 +4,6 @@ package sample.controllers;
  * Created by strat on 30.06.15.
  */
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,14 +17,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.Main;
 import sample.custom.NumberTextField;
-import sample.dbclasses.Category;
-import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FilterController {
@@ -54,30 +46,30 @@ public class FilterController {
 
     @FXML
     private void initialize() {
-        JDBCClient jdbcClient = Main.jdbcClient;
-        cityMap = Main.citys;
-        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
-
-        categorMap = Main.categories_;
-        category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
-
-        category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                //System.out.println(               categorMap.get(observable.getValue().toString()).toString());
-                String parentKey = categorMap.get(observable.getValue().toString()).toString();
-                ArrayList<String> subcatArray = new ArrayList<String>();
-                try {
-                    subcategorMap = new HashMap<String, String>();
-                    for (Category item : jdbcClient.categorySelectChild(parentKey)) {
-                        subcategorMap.put(item.getName(), item.getURL());
-                    }
-                    subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        JDBCClient jdbcClient = Main.jdbcClient;
+//        cityMap = Main.citys;
+////        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+//
+//        categorMap = Main.categories_;
+//        category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+//
+//        category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+//                //System.out.println(               categorMap.get(observable.getValue().toString()).toString());
+//                String parentKey = categorMap.get(observable.getValue().toString()).toString();
+//                ArrayList<String> subcatArray = new ArrayList<String>();
+//                try {
+//                    subcategorMap = new HashMap<String, String>();
+//                    for (Category item : jdbcClient.categorySelectChild(parentKey)) {
+//                        subcategorMap.put(item.getName(), item.getUrl());
+//                    }
+//                    subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     public void actionSearch(ActionEvent actionEvent) {

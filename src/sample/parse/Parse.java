@@ -72,7 +72,7 @@ public class Parse {
                     String linkInnerH = links.html();
                     System.out.println("\t\t\t" + linkInnerH); // Name other cities
                     try {
-                        jdbcClient.cityAdd(linkInnerH,linkHref,"");
+                        jdbcClient.cityAdd(linkInnerH,linkHref);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -84,6 +84,8 @@ public class Parse {
             e.printStackTrace();
         }
         catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
