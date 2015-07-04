@@ -1,9 +1,6 @@
 package sample.dbclasses;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class JDBCClient {
@@ -51,21 +48,28 @@ public class JDBCClient {
     }
 
     public void filterDelete(String filterURL) throws SQLException {
-        String query = "DELETE from 'filter' WHERE filterURL = " + filterURL + ";";
+        Filter filter = new Filter();
+        int check = 0;
+        ResultSet resultSet = statement.executeQuery("SELECT 'id' FROM 'filter' WHERE 'filterURL' = '" + filterURL + "';");
+        while (resultSet.next()) {
+            check = resultSet.getInt("id");
+        }
+        System.out.println(check);
+        String query = "DELETE from 'filter' WHERE 'id' = " + check + ";";
         statement.execute(query);
     }
 
-    public void filterUpdate(int id, String name, Double priceFirst, Double priceSecond, String city, String category,
-                             String subcategory, boolean picture) throws SQLException {
-        String query = "UPDATE filter SET name = " + name + ", priceFirst = " + priceFirst + ", priceSecond = "
-                + priceSecond + ", city = " + city + ", category = " + category + ", subcategory = " + subcategory
-                + ", picture = " + picture + " WHERE ID = " + id + ";";
+    public void filterUpdate(int id, String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
+                             boolean isPhoto, String filterURL) throws SQLException {
+        String query = "UPDATE 'filter' SET 'city' = '" + city + "', 'category' = '" + category + "', 'subcategory' = '"
+                + subcategory + "', 'startPrice' = " + startPrice + ", 'finishPrice' = " + finishPrice + ", 'isPhoto' = "
+                + isPhoto + ", 'filterURL' = '" + filterURL + "' WHERE 'id' =; " ;
         statement.execute(query);
     }
 //
 //    public Filter filterSelect(int id) throws SQLException {
 //        String query = "SELECT id, name, priceFirst, priceSecond, city, category, subcategory, picture " +
-//                "FROM filter WHERE ID = " + id + ";";
+//                "FROM filter WHERE ID = " + id + ";" ;
 //        ResultSet resultSet = doExecQuery(connection, query);
 //        Filter filter = new Filter();
 //        while (resultSet.next()) {
