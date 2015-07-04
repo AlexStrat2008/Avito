@@ -109,6 +109,69 @@ public class JDBCClient {
             return null;
     }
 
+    public void cityAdd(String name, String url) throws SQLException {
+        statement.execute("INSERT INTO 'city' (name, url) VALUES ('" + name + "','" + url + "');");
+    }
+
+    public Integer getCityIDByURL(String url) throws SQLException {
+        ResultSet resultSet = statement.executeQuery("SELECT id FROM 'city' WHERE url = '" + url + "'");
+        return resultSet.getInt("id");
+    }
+
+    public void cityDeleteByURL(String url) throws SQLException {
+        statement.execute("DELETE FROM 'city' WHERE url = '" + url + "'");
+    }
+
+    public void cityDeleteByID(int id) throws SQLException {
+        statement.execute("DELETE FROM 'city' WHERE id = '" + id + "'");
+    }
+
+
+    public void cityUpdateByID(int id, String name, String url) throws SQLException {
+        statement.execute("UPDATE city SET name = '" + name + "', url = '" + url + "' where id = '" + id + "';");
+    }
+
+
+    public void cityUpdateByURL(String url, String name) throws SQLException {
+        statement.execute("UPDATE city SET name = '" + name + "' where url = '" + url + "';");
+    }
+
+    public ArrayList<City> getCityByURL(String url) throws SQLException {
+        ArrayList<City> cities;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE url = '" + url + "'");
+        if (resultSet != null) {
+            cities = new ArrayList<>();
+            City city;
+            while (resultSet.next()) {
+                city = new City();
+                city.setId(resultSet.getInt("id"));
+                city.setName(resultSet.getString("name"));
+                city.setURL(resultSet.getString("url"));
+                cities.add(city);
+            }
+            return cities;
+        } else
+            return null;
+    }
+
+    public ArrayList<City> getCityByID(int id) throws SQLException {
+        ArrayList<City> cities;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE id = '" + id + "'");
+        if (resultSet != null) {
+            cities = new ArrayList<>();
+            City city;
+            while (resultSet.next()) {
+                city = new City();
+                city.setId(resultSet.getInt("id"));
+                city.setName(resultSet.getString("name"));
+                city.setURL(resultSet.getString("url"));
+                cities.add(city);
+            }
+            return cities;
+        } else
+            return null;
+    }
+
     public void categoryAdd(String name, String url, String parent) throws SQLException {
         String query = "INSERT INTO category (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
         statement.execute(query);
