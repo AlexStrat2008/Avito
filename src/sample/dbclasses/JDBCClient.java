@@ -25,11 +25,14 @@ public class JDBCClient {
         statement.execute("CREATE TABLE IF NOT EXISTS 'city' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT);");
         System.out.println("Таблица города создана!");
         statement.execute("CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT," +
-                " 'name' TEXT, 'url_photo' TEXT, 'startPrice' INT, 'finishPrice' INT, 'description' TEXT, 'phone' TEXT, " +
+                " 'name' TEXT, 'url_photo' TEXT, 'price' INT, 'description' TEXT, 'phone' TEXT, " +
                 "'comment' TEXT);");
         System.out.println("Таблица объявления создана!");
     }
 
+    /*
+        Фильтр
+     */
     public void filterAdd(String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
                           boolean isPhoto, String filterURL) throws SQLException {
         String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "
@@ -109,6 +112,9 @@ public class JDBCClient {
             return null;
     }
 
+    /*
+        Города
+     */
     public void cityAdd(String name, String url) throws SQLException {
         statement.execute("INSERT INTO 'city' (name, url) VALUES ('" + name + "','" + url + "');");
     }
@@ -171,47 +177,145 @@ public class JDBCClient {
         } else
             return null;
     }
-
+    /*
+        Категории
+     */
     public void categoryAdd(String name, String url, String parent) throws SQLException {
         String query = "INSERT INTO category (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
         statement.execute(query);
     }
 
-    //    }
-//
-//    public Category categorySelect(int id) throws SQLException {
-//        String query = "SELECT id, name, url, parent FROM category WHERE ID = " + id + ";";
-//        ResultSet resultSet = doExecQuery(connection, query);
-//        Category category = new Category();
-//        while (resultSet.next()) {
-//            category.setId(resultSet.getInt("id"));
-//            category.setName(resultSet.getString("name"));
-//            category.setUrl(resultSet.getString("url"));
-//            category.setParent(resultSet.getString("parent"));
-//        }
-//        return category;
-//    }
-//
-//    public boolean isTable(String nameTable) {
-//        String query = "select * from " + nameTable;
-//        Statement statement = null;
-//        try {
-//            statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery(query);
-//            int size =0;
-//            if (resultSet != null)
-//            {
-//                resultSet.beforeFirst();
-//                resultSet.last();
-//                size = resultSet.getRow();
-//            }
-//            System.out.println(size);
-//            return true;
-//        } catch (SQLException e) {
-//            return false;
-//        }
-//    }
-//
+    public Integer getCategoryIDByURL(String url) throws SQLException {
+        ResultSet resultSet = statement.executeQuery("SELECT id FROM 'category' WHERE url = '" + url + "'");
+        return resultSet.getInt("id");
+    }
+
+    public void categoryDeleteByURL(String url) throws SQLException {
+        statement.execute("DELETE FROM 'category' WHERE url = '" + url + "'");
+    }
+
+    public void categoryDeleteByID(int id) throws SQLException {
+        statement.execute("DELETE FROM 'category' WHERE id = '" + id + "'");
+    }
+
+
+    public void categoryUpdateByID(int id, String name, String url, String parent) throws SQLException {
+        statement.execute("UPDATE category SET name = '" + name + "', url = '" + url + "', parent = '" + parent + "' where id = '" + id + "';");
+    }
+
+
+    public void categoryUpdateByURL(String url, String name, String parent) throws SQLException {
+        statement.execute("UPDATE category SET name = '" + name + "', parent = '" + parent + "' where url = '" + url + "';");
+    }
+
+    public ArrayList<Category> getCategoryByURL(String url) throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE url = '" + url + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
+
+    public ArrayList<Category> getCategoryByID(int id) throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE id = '" + id + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
+    /*
+        Объявления
+     */
+    public void adAdd(String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
+        String query = "INSERT INTO ad (url, name, url_photo, price, description, phone, comment) VALUES ('" + url + "','" + name + "','" + url_photo + "','" + price + "','" + description + "','" + phone + "','" + comment + "');";
+        statement.execute(query);
+    }
+
+    public Integer getAdIDByURL(String url) throws SQLException {
+        ResultSet resultSet = statement.executeQuery("SELECT id FROM 'ad' WHERE url = '" + url + "'");
+        return resultSet.getInt("id");
+    }
+
+    public void adDeleteByURL(String url) throws SQLException {
+        statement.execute("DELETE FROM 'ad' WHERE url = '" + url + "'");
+    }
+
+    public void adyDeleteByID(int id) throws SQLException {
+        statement.execute("DELETE FROM 'ad' WHERE id = '" + id + "'");
+    }
+
+
+    public void adUpdateByID(int id, String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
+        statement.execute("UPDATE ad SET url = '" + url + "', name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "' where id = '" + id + "';");
+    }
+
+
+    public void adUpdateByURL(String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
+        statement.execute("UPDATE ad SET name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "' where url = '" + url + "';");
+    }
+
+    public ArrayList<Ad> getAdByURL(String url) throws SQLException {
+        ArrayList<Ad> ads;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'ad' WHERE url = '" + url + "'");
+        if (resultSet != null) {
+            ads = new ArrayList<>();
+            Ad ad = new Ad();
+            while (resultSet.next()) {
+                ad.setId(resultSet.getInt("id"));
+                ad.setName(resultSet.getString("name"));
+                ad.setUrl_photo(resultSet.getString("url_photo"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setDescription(resultSet.getString("description"));
+                ad.setPhone(resultSet.getString("phone"));
+                ad.setComment(resultSet.getString("comment"));
+            }
+            return ads;
+        } else
+            return null;
+    }
+
+    public ArrayList<Ad> getAdByID(int id) throws SQLException {
+        ArrayList<Ad> ads;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'ad' WHERE id = '" + id + "'");
+        if (resultSet != null) {
+            ads = new ArrayList<>();
+            Ad ad = new Ad();
+            while (resultSet.next()) {
+                ad.setId(resultSet.getInt("id"));
+                ad.setName(resultSet.getString("name"));
+                ad.setUrl_photo(resultSet.getString("url_photo"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setDescription(resultSet.getString("description"));
+                ad.setPhone(resultSet.getString("phone"));
+                ad.setComment(resultSet.getString("comment"));
+            }
+            return ads;
+        } else
+            return null;
+    }
+
     public ArrayList<Category> categorySelectChild(String parent) throws SQLException {
         ArrayList<Category> arrayList = new ArrayList<>();
 //        String query = "SELECT id, name, url, parent FROM category WHERE parent = '" + parent + "'";
