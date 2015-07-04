@@ -7,11 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class JDBCClient {
-    private static final String JDBC_DRIVER =  "org.sqlite.JDBC";
+    private static final String JDBC_DRIVER = "org.sqlite.JDBC";
     private static final String DB_URL = "jdbc:sqlite:avitodb.s3db";
 
     private String category = "CREATE TABLE IF NOT EXISTS 'category' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT, 'parent' TEXT);";
     private String filter = "CREATE TABLE IF NOT EXISTS 'filter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'city' TEXT, 'category' TEXT, 'subcategory' TEXT, 'startPrice' INT, 'finishPrice' INT, 'isPhoto' BOOLEAN);";
+
     private String city = "CREATE TABLE IF NOT EXISTS 'city' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT);";
     private String ad = "CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT, 'name' TEXT, 'url_photo' TEXT, 'startPrice' INT, 'finishPrice' INT, 'description' TEXT, 'phone' TEXT, 'comment' TEXT);";
     private Connection connection = null;
@@ -37,27 +38,12 @@ public class JDBCClient {
         System.out.println("Таблица объявления создана!");
     }
 
-//    public void filterAdd(String name, Double priceFirst, Double priceSecond, String city, String category,
-//                          String subcategory, boolean picture) throws SQLException {
-//        String query = "INSERT INTO filter (name, priceFirst, priceSecond, city, category, subcategory, picture) " +
-//                "VALUES ('" + name + "', " + priceFirst + ", " + priceSecond + ", '" + city + "', '" + category + "', '"
-//                + subcategory + "', " + picture + ");";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//            ;
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
-//    }
-//
+    public void filterAdd(String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
+                          boolean isPhoto) throws SQLException {
+        statement.execute("INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', 'isPhoto') VALUES ('" + city + "', '" + category + "','" + subcategory + "','" + startPrice + "','" + finishPrice + "','" + isPhoto + "'); ");
+    }
+
+    //
 //    public void filterDelete(int id) throws SQLException {
 //        String query = "DELETE from filter WHERE ID = " + id + ";";
 //        try {
@@ -150,7 +136,8 @@ public class JDBCClient {
 ////            }
 ////        }
     }
-//
+
+    //
 //    public void categoryDelete(int id) throws SQLException {
 //        String query = "DELETE from category WHERE ID=" + id + ";";
 //        try {
@@ -233,7 +220,8 @@ public class JDBCClient {
 //        }
         return arrayList;
     }
-//
+
+    //
     public ArrayList<Category> categorySelectParent() throws SQLException {
         ArrayList<Category> arrayList = new ArrayList<>();
 //        String query = "SELECT id, name, url, parent FROM category WHERE parent = '1'";
@@ -249,7 +237,8 @@ public class JDBCClient {
 //        }
         return arrayList;
     }
-//
+
+    //
 //    public ArrayList<Category> categorySelectAll() throws SQLException {
 //        ArrayList<Category> arrayList = new ArrayList<>();
 //        String query = "SELECT * FROM category;";

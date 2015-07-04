@@ -45,6 +45,8 @@ public class Main extends Application {
 //        parseCategories();
         try {
             jdbcClient = new JDBCClient();
+            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100,
+            true);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
