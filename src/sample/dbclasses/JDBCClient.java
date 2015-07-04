@@ -30,6 +30,55 @@ public class JDBCClient {
         System.out.println("Таблица объявления создана!");
     }
 
+    public void dropAllTable() throws SQLException {
+        this.adDeleteTable();
+        this.categoryDeleteTable();
+        this.filterDeleteTable();
+        this.cityDeleteTable();
+    }
+    public boolean isCityEmpty(){
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM city LIMIT 1;");
+            int a = resultSet.getFetchDirection();
+            return false;
+        } catch (SQLException e) {
+            return true;
+        }
+    }
+
+    public boolean isFilterEmpty(){
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM filter LIMIT 1;");
+            int a = resultSet.getFetchDirection();
+            return false;
+        } catch (SQLException e) {
+            return true;
+        }
+    }
+
+    public boolean isAdEmpty(){
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM ad LIMIT 1;");
+            int a = resultSet.getFetchDirection();
+            return false;
+        } catch (SQLException e) {
+            return true;
+        }
+    }
+
+    public boolean isCatgoryEmpty(){
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM category LIMIT 1;");
+            int a = resultSet.getFetchDirection();
+            return false;
+        } catch (SQLException e) {
+            return true;
+        }
+    }
     /*
         Фильтр
      */
@@ -39,6 +88,10 @@ public class JDBCClient {
                 + "'isPhoto', 'filterURL') VALUES ('" + city + "', '" + category + "','" + subcategory + "','"
                 + startPrice + "','" + finishPrice + "','" + isPhoto + "','" + filterURL + "'); ";
         statement.execute(query);
+    }
+
+    public void filterDeleteTable() throws SQLException {
+        statement.execute("DROP TABLE filter;");
     }
 
     public Integer getFilterIDByURL(String url) throws SQLException {
@@ -119,6 +172,10 @@ public class JDBCClient {
         statement.execute("INSERT INTO 'city' (name, url) VALUES ('" + name + "','" + url + "');");
     }
 
+    public void cityDeleteTable() throws SQLException {
+        statement.execute("DROP TABLE city;");
+    }
+
     public Integer getCityIDByURL(String url) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT id FROM 'city' WHERE url = '" + url + "'");
         return resultSet.getInt("id");
@@ -183,6 +240,10 @@ public class JDBCClient {
     public void categoryAdd(String name, String url, String parent) throws SQLException {
         String query = "INSERT INTO category (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
         statement.execute(query);
+    }
+
+    public void categoryDeleteTable() throws SQLException {
+        statement.execute("DROP TABLE category;");
     }
 
     public Integer getCategoryIDByURL(String url) throws SQLException {
@@ -251,6 +312,10 @@ public class JDBCClient {
     public void adAdd(String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
         String query = "INSERT INTO ad (url, name, url_photo, price, description, phone, comment) VALUES ('" + url + "','" + name + "','" + url_photo + "','" + price + "','" + description + "','" + phone + "','" + comment + "');";
         statement.execute(query);
+    }
+
+    public void adDeleteTable() throws SQLException {
+        statement.execute("DROP TABLE filter;");
     }
 
     public Integer getAdIDByURL(String url) throws SQLException {

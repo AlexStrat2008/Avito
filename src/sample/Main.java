@@ -20,8 +20,8 @@ public class Main extends Application {
 
     public static JDBCClient jdbcClient;
     public static HashMap<String, String> citys;
-    public static HashMap<String, String> categories_;
-    public static HashMap<String, String> subcategories_;
+//    public static HashMap<String, String> categories;
+    public static HashMap<String, String> subcategories;
     public static ArrayList<Category> categories;
     private static String CitiesURL = "https://www.avito.ru/";
 
@@ -36,69 +36,35 @@ public class Main extends Application {
     public static void main(String[] args) {
         try {
             jdbcClient = new JDBCClient();
-//
-//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jddhf");
-//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "tyy");
-//            jdbcClient.filterUpdateByURL("tyy", "update", "bb", "ccc", 10, 100, true);
-//            int id = jdbcClient.getFilterIDByURL("tyy");
-//            System.out.println(id);
-//            ArrayList<Filter> filters1 = jdbcClient.getFilterByID(id);
-//            System.out.println();
-//            for(Filter item : filters1){
-//                System.out.println(item.getId());
-//                System.out.println(item.getCity());
-//                System.out.println(item.getCategory());
-//                System.out.println(item.getSubcategory());
-//                System.out.println(item.getStartPrice());
-//                System.out.println(item.getFinishPrice());
-//                System.out.println(item.getIsPhoto());
-//                System.out.println(item.getFilterURL());
-//            }
-//            ArrayList<Filter> filters = jdbcClient.getFilterByURL("tyy");
-//            System.out.println();
-//            for(Filter item : filters){
-//                System.out.println(item.getId());
-//                System.out.println(item.getCity());
-//                System.out.println(item.getCategory());
-//                System.out.println(item.getSubcategory());
-//                System.out.println(item.getStartPrice());
-//                System.out.println(item.getFinishPrice());
-//                System.out.println(item.getIsPhoto());
-//                System.out.println(item.getFilterURL());
-//            }
-            //jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jdfdffoooo");
-            //jdbcClient.categoryAdd("bb", "dd", "ss");
-            //jdbcClient.cityAdd("dff", "ds");
-            //jdbcClient.categoryUpdate(1,"qq", "ww", "ee");
-//            jdbcClient.filterDelete("tyy");
-            System.out.println("add");
-
+            if(jdbcClient.isCatgoryEmpty())
+                jdbcClient.categoryAdd("AA","AA","aa");
+//                Parse.parseCategories(jdbcClient);
+            if(jdbcClient.isCityEmpty()){
+//                Parse.parseCities();
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        launch(args);
 //        if(jdbcClient.isTable("category"))
 //            Parse.parseCategories(jdbcClient);
 //        loadCities();
 //        loadCategories();
-        launch(args);
     }
 
-
-
-
-    private static void loadCategories() {
-        categories_ = new HashMap<String, String>();
-        subcategories_ = new HashMap<String, String>();
-        try {
-            for (Category item : jdbcClient.categorySelectParent()) {
-                categories_.put(item.getName(), item.getUrl());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static void loadCategories() {
+//        categories_ = new HashMap<String, String>();
+//        subcategories_ = new HashMap<String, String>();
+//        try {
+//            for (Category item : jdbcClient.categorySelectParent()) {
+//                categories_.put(item.getName(), item.getUrl());
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private static void loadCities() {
         citys = new HashMap<String, String>();

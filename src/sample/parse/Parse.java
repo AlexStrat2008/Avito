@@ -21,7 +21,6 @@ public class Parse {
     static final String PASSWORD = "alex20";
 
     public static void parseCategories (JDBCClient client) {
-
         try {
             Document doc = Jsoup.connect(URL).get();
             Elements categories = doc.select("dl");
@@ -30,8 +29,6 @@ public class Parse {
                 Elements _categories = categor.select("dd");
                 String parentUrl = title.select("a").first().attr("href");
                 try {
-//                    System.out.println(title.select("a").first().html());
-
                     client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href").substring(9),"1");
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -49,7 +46,6 @@ public class Parse {
                     }
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,9 +64,9 @@ public class Parse {
                 for (org.jsoup.nodes.Element _city : city_) {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
-                    System.out.println("\t\t" + linkHref); // address
+//                    System.out.println("\t\t" + linkHref); // address
                     String linkInnerH = links.html();
-                    System.out.println("\t\t\t" + linkInnerH); // Name other cities
+//                    System.out.println("\t\t\t" + linkInnerH); // Name other cities
                     try {
                         jdbcClient.cityAdd(linkInnerH,linkHref);
                     } catch (SQLException e) {
