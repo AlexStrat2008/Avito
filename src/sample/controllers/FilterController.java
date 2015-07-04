@@ -60,7 +60,7 @@ public class FilterController {
 //                try {
 //                    subcategorMap = new HashMap<String, String>();
 //                    for (Category item : jdbcClient.categorySelectChild(parentKey)) {
-//                        subcategorMap.put(item.getName(), item.getURL());
+//                        subcategorMap.put(item.getName(), item.getUrl());
 //                    }
 //                    subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
 //                } catch (SQLException e) {

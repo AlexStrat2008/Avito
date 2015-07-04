@@ -4,7 +4,6 @@ public class City {
     private int id;
     private String name;
     private String URL;
-    private String parent;
 
     public City() {}
 
@@ -12,11 +11,10 @@ public class City {
         this.name = _name;
     }
 
-    public City(int _id, String _URL, String _name, String _parent) {
+    public City(int _id, String _URL, String _name) {
         this.id = _id;
         this.URL = _URL;
         this.name = _name;
-        this.parent = _parent;
     }
 
     public int getId() { return id; }
@@ -27,7 +25,4 @@ public class City {
 
     public String getURL() { return URL; }
     public void setURL(String URL) { this.URL = URL; }
-
-    public String getParent() { return parent; }
-    public void setParent(String parent) { this.parent = parent; }
 }

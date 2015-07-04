@@ -45,8 +45,13 @@ public class Main extends Application {
 //        parseCategories();
         try {
             jdbcClient = new JDBCClient();
-            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100,
-            true);
+            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jddhf");
+            //jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jdfdffoooo");
+            //jdbcClient.categoryAdd("bb", "dd", "ss");
+            //jdbcClient.cityAdd("dff", "ds");
+            //jdbcClient.categoryUpdate(1,"qq", "ww", "ee");
+            jdbcClient.filterDelete("jddhf");
+            System.out.println("add");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -65,7 +70,7 @@ public class Main extends Application {
         subcategories_ = new HashMap<String, String>();
         try {
             for (Category item : jdbcClient.categorySelectParent()) {
-                categories_.put(item.getName(), item.getURL());
+                categories_.put(item.getName(), item.getUrl());
             }
         } catch (SQLException e) {
             e.printStackTrace();

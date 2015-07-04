@@ -10,11 +10,15 @@ public class JDBCClient {
     private static final String JDBC_DRIVER = "org.sqlite.JDBC";
     private static final String DB_URL = "jdbc:sqlite:avitodb.s3db";
 
-    private String category = "CREATE TABLE IF NOT EXISTS 'category' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT, 'parent' TEXT);";
-    private String filter = "CREATE TABLE IF NOT EXISTS 'filter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'city' TEXT, 'category' TEXT, 'subcategory' TEXT, 'startPrice' INT, 'finishPrice' INT, 'isPhoto' BOOLEAN);";
+    private String category = "CREATE TABLE IF NOT EXISTS 'category' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "'name' TEXT, 'url' TEXT, 'parent' TEXT);";
+    private String filter = "CREATE TABLE IF NOT EXISTS 'filter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'city' TEXT," +
+            " 'category' TEXT, 'subcategory' TEXT, 'startPrice' INT, 'finishPrice' INT, 'isPhoto' BOOLEAN, 'filterURL' TEXT);";
 
     private String city = "CREATE TABLE IF NOT EXISTS 'city' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT);";
-    private String ad = "CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT, 'name' TEXT, 'url_photo' TEXT, 'startPrice' INT, 'finishPrice' INT, 'description' TEXT, 'phone' TEXT, 'comment' TEXT);";
+    private String ad = "CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT," +
+            " 'name' TEXT, 'url_photo' TEXT, 'startPrice' INT, 'finishPrice' INT, 'description' TEXT, 'phone' TEXT, " +
+            "'comment' TEXT);";
     private Connection connection = null;
     private Statement statement = null;
 
@@ -39,47 +43,25 @@ public class JDBCClient {
     }
 
     public void filterAdd(String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
-                          boolean isPhoto) throws SQLException {
-        statement.execute("INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', 'isPhoto') VALUES ('" + city + "', '" + category + "','" + subcategory + "','" + startPrice + "','" + finishPrice + "','" + isPhoto + "'); ");
+                          boolean isPhoto, String filterURL) throws SQLException {
+        String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "
+                + "'isPhoto', 'filterURL') VALUES ('" + city + "', '" + category + "','" + subcategory + "','"
+                + startPrice + "','" + finishPrice + "','" + isPhoto + "','" + filterURL +"'); ";
+        statement.execute(query);
     }
 
-    //
-//    public void filterDelete(int id) throws SQLException {
-//        String query = "DELETE from filter WHERE ID = " + id + ";";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
-//    }
-//
-//    public void filterUpdate(int id, String name, Double priceFirst, Double priceSecond, String city, String category,
-//                             String subcategory, boolean picture) throws SQLException {
-//        String query = "UPDATE filter SET name = " + name + ", priceFirst = " + priceFirst + ", priceSecond = "
-//                + priceSecond + ", city = " + city + ", category = " + category + ", subcategory = " + subcategory
-//                + ", picture = " + picture + " WHERE ID = " + id + ";";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
-//    }
+    public void filterDelete(String filterURL) throws SQLException {
+        String query = "DELETE from 'filter' WHERE filterURL = " + filterURL + ";";
+        statement.execute(query);
+    }
+
+    public void filterUpdate(int id, String name, Double priceFirst, Double priceSecond, String city, String category,
+                             String subcategory, boolean picture) throws SQLException {
+        String query = "UPDATE filter SET name = " + name + ", priceFirst = " + priceFirst + ", priceSecond = "
+                + priceSecond + ", city = " + city + ", category = " + category + ", subcategory = " + subcategory
+                + ", picture = " + picture + " WHERE ID = " + id + ";";
+        statement.execute(query);
+    }
 //
 //    public Filter filterSelect(int id) throws SQLException {
 //        String query = "SELECT id, name, priceFirst, priceSecond, city, category, subcategory, picture " +
@@ -119,22 +101,8 @@ public class JDBCClient {
 //    }
 //
     public void categoryAdd(String name, String url, String parent) throws SQLException {
-//        String query = "INSERT INTO category (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//            statement.close();
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-////        } finally {
-////            if (statement != null) {
-////                statement.close();
-////            }
-////            if (connection != null) {
-////                connection.close();
-////            }
-////        }
+        String query = "INSERT INTO category (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
+        statement.execute(query);
     }
 
     //
@@ -154,22 +122,11 @@ public class JDBCClient {
 //            }*/
 //    }
 //
-//    public void categoryUpdate(int id, String name, String url, String parent) throws SQLException {
-//        String query = "UPDATE category SET name = '" + name + "', url = '" + url + "', parent = '" + parent
-//                + "' WHERE ID = " + id + ";";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
+    public void categoryUpdate(int id, String name, String url, String parent) throws SQLException {
+        String query = "UPDATE category SET name = '" + name + "', url = '" + url + "', parent = '" + parent
+                + "' WHERE ID = " + id + ";";
+        statement.execute(query);
+    }
 //    }
 //
 //    public Category categorySelect(int id) throws SQLException {
@@ -179,7 +136,7 @@ public class JDBCClient {
 //        while (resultSet.next()) {
 //            category.setId(resultSet.getInt("id"));
 //            category.setName(resultSet.getString("name"));
-//            category.setURL(resultSet.getString("url"));
+//            category.setUrl(resultSet.getString("url"));
 //            category.setParent(resultSet.getString("parent"));
 //        }
 //        return category;
@@ -214,7 +171,7 @@ public class JDBCClient {
 //            Category category = new Category();
 //            category.setId(resultSet.getInt("id"));
 //            category.setName(resultSet.getString("name"));
-//            category.setURL(resultSet.getString("url"));
+//            category.setUrl(resultSet.getString("url"));
 //            category.setParent(resultSet.getString("parent"));
 //            arrayList.add(category);
 //        }
@@ -231,7 +188,7 @@ public class JDBCClient {
 //            Category category = new Category();
 //            category.setId(resultSet.getInt("id"));
 //            category.setName(resultSet.getString("name"));
-//            category.setURL(resultSet.getString("url"));
+//            category.setUrl(resultSet.getString("url"));
 //            category.setParent(resultSet.getString("parent"));
 //            arrayList.add(category);
 //        }
@@ -248,46 +205,17 @@ public class JDBCClient {
 //            Category category = new Category();
 //            category.setId(resultSet.getInt("id"));
 //            category.setName(resultSet.getString("name"));
-//            category.setURL(resultSet.getString("url"));
+//            category.setUrl(resultSet.getString("url"));
 //            category.setParent(resultSet.getString("parent"));
 //            arrayList.add(category);
 //        }
 //        return arrayList;
 //    }
 //
-    public void cityAdd(String name, String url, String parent) throws SQLException {
-//        String query = "INSERT INTO city (name, url, parent) VALUES ('" + name + "','" + url + "','" + parent + "');";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
+    public void cityAdd(String name, String url) throws SQLException {
+        String query = "INSERT INTO city (name, url) VALUES ('" + name + "','" + url + "');";
+        statement.execute(query);
     }
-//
-//    public void cityDelete(int id) throws SQLException {
-//        String query = "DELETE from city WHERE ID=" + id + ";";
-//        try {
-//            statement = connection.createStatement();
-//            doUpdateQuery(connection, query);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } /*finally {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }*/
-//    }
 //
 //    public void cityUpdate(int id, String name, String url, String parent) throws SQLException {
 //        String query = "UPDATE city SET name = '" + name + "', url = '" + url + "', parent = '" + parent
@@ -314,7 +242,7 @@ public class JDBCClient {
 //        while (resultSet.next()) {
 //            city.setId(resultSet.getInt("id"));
 //            city.setName(resultSet.getString("name"));
-//            city.setURL(resultSet.getString("url"));
+//            city.setUrl(resultSet.getString("url"));
 //            city.setParent(resultSet.getString("parent"));
 //        }
 //        return city;
@@ -329,7 +257,7 @@ public class JDBCClient {
 //            City city = new City();
 //            city.setId(resultSet.getInt("id"));
 //            city.setName(resultSet.getString("name"));
-//            city.setURL(resultSet.getString("url"));
+//            city.setUrl(resultSet.getString("url"));
 //            city.setParent(resultSet.getString("parent"));
 //            arrayList.add(city);
 //        }
@@ -393,7 +321,7 @@ public class JDBCClient {
 //        Comment comment = new Comment();
 //        while (resultSet.next()) {
 //            comment.setId(resultSet.getInt("id"));
-//            comment.setURL(resultSet.getString("url"));
+//            comment.setUrl(resultSet.getString("url"));
 //            comment.setDescription(resultSet.getString("description"));
 //        }
 //        return comment;
@@ -406,7 +334,7 @@ public class JDBCClient {
 //        while (resultSet.next()) {
 //            Comment comment = new Comment();
 //            comment.setId(resultSet.getInt("id"));
-//            comment.setURL(resultSet.getString("url"));
+//            comment.setUrl(resultSet.getString("url"));
 //            comment.setDescription(resultSet.getString("description"));
 //            arrayList.add(comment);
 //        }
