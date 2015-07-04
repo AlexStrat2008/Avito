@@ -24,14 +24,7 @@ public class Main extends Application {
     public static HashMap<String, String> subcategories_;
     public static ArrayList<Category> categories;
 
-    private static String URL = "https://www.avito.ru/map";
     private static String CitiesURL = "https://www.avito.ru/";
-
-    private static String mainUrl = "http://www.avito.ru";
-
-    static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
-    static final String LOGIN = "postgres";
-    static final String PASSWORD = "10041994";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -45,13 +38,41 @@ public class Main extends Application {
 //        parseCategories();
         try {
             jdbcClient = new JDBCClient();
-            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jddhf");
-            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "tyy");
+//
+//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jddhf");
+//            jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "tyy");
+//            jdbcClient.filterUpdateByURL("tyy", "update", "bb", "ccc", 10, 100, true);
+//            int id = jdbcClient.getFilterIDByURL("tyy");
+//            System.out.println(id);
+//            ArrayList<Filter> filters1 = jdbcClient.getFilterByID(id);
+//            System.out.println();
+//            for(Filter item : filters1){
+//                System.out.println(item.getId());
+//                System.out.println(item.getCity());
+//                System.out.println(item.getCategory());
+//                System.out.println(item.getSubcategory());
+//                System.out.println(item.getStartPrice());
+//                System.out.println(item.getFinishPrice());
+//                System.out.println(item.getIsPhoto());
+//                System.out.println(item.getFilterURL());
+//            }
+//            ArrayList<Filter> filters = jdbcClient.getFilterByURL("tyy");
+//            System.out.println();
+//            for(Filter item : filters){
+//                System.out.println(item.getId());
+//                System.out.println(item.getCity());
+//                System.out.println(item.getCategory());
+//                System.out.println(item.getSubcategory());
+//                System.out.println(item.getStartPrice());
+//                System.out.println(item.getFinishPrice());
+//                System.out.println(item.getIsPhoto());
+//                System.out.println(item.getFilterURL());
+//            }
             //jdbcClient.filterAdd("aaa", "bb", "ccc", 10, 100, true, "jdfdffoooo");
             //jdbcClient.categoryAdd("bb", "dd", "ss");
             //jdbcClient.cityAdd("dff", "ds");
             //jdbcClient.categoryUpdate(1,"qq", "ww", "ee");
-            jdbcClient.filterDelete("tyy");
+//            jdbcClient.filterDelete("tyy");
             System.out.println("add");
 
         } catch (ClassNotFoundException e) {
