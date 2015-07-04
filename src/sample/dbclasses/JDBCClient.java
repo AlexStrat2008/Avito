@@ -12,23 +12,26 @@ public class JDBCClient {
 
     public JDBCClient() throws ClassNotFoundException, SQLException {
         Class.forName(JDBC_DRIVER);
-        System.out.println("Драйвер подключен");
         connection = DriverManager.getConnection(DB_URL);
-        System.out.println("База Подключена!");
         statement = connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS 'category' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "'name' TEXT, 'url' TEXT, 'parent' TEXT);");
-        System.out.println("Таблица категории создана!");
         statement.execute("CREATE TABLE IF NOT EXISTS 'filter' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'city' TEXT," +
                 " 'category' TEXT, 'subcategory' TEXT, 'startPrice' INT, 'finishPrice' INT, 'isPhoto' BOOLEAN, 'filterURL' TEXT);");
-        System.out.println("Таблица фильтры создана!");
         statement.execute("CREATE TABLE IF NOT EXISTS 'city' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT);");
-        System.out.println("Таблица города создана!");
         statement.execute("CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT," +
                 " 'name' TEXT, 'url_photo' TEXT, 'price' INT, 'description' TEXT, 'phone' TEXT, " +
                 "'comment' TEXT);");
-        System.out.println("Таблица объявления создана!");
     }
+
+    public void closeConnection() throws SQLException {
+        connection.close();
+    }
+
+    public void closeStatement() throws SQLException {
+        statement.close();
+    }
+
 
     public void dropAllTable() throws SQLException {
         this.adDeleteTable();
@@ -165,6 +168,30 @@ public class JDBCClient {
             return null;
     }
 
+    public ArrayList<Filter> getFilterAll() throws SQLException {
+        ArrayList<Filter> filters;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter'");
+        if (resultSet != null) {
+            filters = new ArrayList<>();
+            Filter filter;
+            while (resultSet.next()) {
+                filter = new Filter();
+                filter.setId(resultSet.getInt("id"));
+                filter.setCity(resultSet.getString("city"));
+                filter.setCategory(resultSet.getString("category"));
+                filter.setSubcategory(resultSet.getString("subcategory"));
+                filter.setStartPrice(resultSet.getInt("startPrice"));
+                filter.setFinishPrice(resultSet.getInt("finishPrice"));
+                filter.setIsPhoto(resultSet.getBoolean("isPhoto"));
+                filter.setFilterURL(resultSet.getString("filterURL"));
+                filters.add(filter);
+            }
+            return filters;
+        } else
+            return null;
+    }
+
+
     /*
         Города
      */
@@ -202,6 +229,24 @@ public class JDBCClient {
     public ArrayList<City> getCityByURL(String url) throws SQLException {
         ArrayList<City> cities;
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE url = '" + url + "';");
+        if (resultSet != null) {
+            cities = new ArrayList<>();
+            City city;
+            while (resultSet.next()) {
+                city = new City();
+                city.setId(resultSet.getInt("id"));
+                city.setName(resultSet.getString("name"));
+                city.setURL(resultSet.getString("url"));
+                cities.add(city);
+            }
+            return cities;
+        } else
+            return null;
+    }
+
+    public ArrayList<City> getCityAll() throws SQLException {
+        ArrayList<City> cities;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city'");
         if (resultSet != null) {
             cities = new ArrayList<>();
             City city;
@@ -306,6 +351,25 @@ public class JDBCClient {
         } else
             return null;
     }
+
+    public ArrayList<Category> getCategoryAll() throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
     /*
         Объявления
      */
@@ -381,38 +445,43 @@ public class JDBCClient {
             return null;
     }
 
+    public ArrayList<Ad> getAdAll() throws SQLException {
+        ArrayList<Ad> ads;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'ad'");
+        if (resultSet != null) {
+            ads = new ArrayList<>();
+            Ad ad = new Ad();
+            while (resultSet.next()) {
+                ad.setId(resultSet.getInt("id"));
+                ad.setName(resultSet.getString("name"));
+                ad.setUrl_photo(resultSet.getString("url_photo"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setDescription(resultSet.getString("description"));
+                ad.setPhone(resultSet.getString("phone"));
+                ad.setComment(resultSet.getString("comment"));
+            }
+            return ads;
+        } else
+            return null;
+    }
+
     public ArrayList<Category> categorySelectChild(String parent) throws SQLException {
-        ArrayList<Category> arrayList = new ArrayList<>();
-//        String query = "SELECT id, name, url, parent FROM category WHERE parent = '" + parent + "'";
-//        Statement statement = connection.createStatement();
-//        ResultSet resultSet = statement.executeQuery(query);
-//        while (resultSet.next()) {
-//            Category category = new Category();
-//            category.setId(resultSet.getInt("id"));
-//            category.setName(resultSet.getString("name"));
-//            category.setUrl(resultSet.getString("url"));
-//            category.setParent(resultSet.getString("parent"));
-//            arrayList.add(category);
-//        }
-        return arrayList;
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE parent = '" + parent + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
     }
-
-    //
-    public ArrayList<Category> categorySelectParent() throws SQLException {
-        ArrayList<Category> arrayList = new ArrayList<>();
-//        String query = "SELECT id, name, url, parent FROM category WHERE parent = '1'";
-//        Statement statement = connection.createStatement();
-//        ResultSet resultSet = statement.executeQuery(query);
-//        while (resultSet.next()) {
-//            Category category = new Category();
-//            category.setId(resultSet.getInt("id"));
-//            category.setName(resultSet.getString("name"));
-//            category.setUrl(resultSet.getString("url"));
-//            category.setParent(resultSet.getString("parent"));
-//            arrayList.add(category);
-//        }
-        return arrayList;
-    }
-
 
 }

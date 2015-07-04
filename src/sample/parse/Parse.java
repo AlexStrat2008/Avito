@@ -15,11 +15,6 @@ import java.sql.SQLException;
 public class Parse {
     private static String URL = "https://www.avito.ru/map";
     private static String CitiesURL = "https://www.avito.ru/";
-    private static String mainUrl = "http://www.avito.ru";
-    static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
-    static final String LOGIN = "postgres";
-    static final String PASSWORD = "alex20";
-
     public static void parseCategories (JDBCClient client) {
         try {
             Document doc = Jsoup.connect(URL).get();
@@ -51,37 +46,24 @@ public class Parse {
         }
     }
 
-    public static void parseCities() {
+    public static void parseCities(JDBCClient jdbcClient) {
         try {
-            JDBCClient jdbcClient = new JDBCClient();
             Document doc  = Jsoup.connect(CitiesURL).get();
             Elements cities = doc.select("div.col-2");
-            //System.out.println("\t\t" + cities);
-            //Elements _cities = cities.select("cities");
-
             for (org.jsoup.nodes.Element city : cities) {
                 Elements city_ = city.select("*");
                 for (org.jsoup.nodes.Element _city : city_) {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
-//                    System.out.println("\t\t" + linkHref); // address
                     String linkInnerH = links.html();
-//                    System.out.println("\t\t\t" + linkInnerH); // Name other cities
                     try {
-                        jdbcClient.cityAdd(linkInnerH,linkHref);
+                        jdbcClient.cityAdd(linkInnerH,linkHref.substring(15));
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
-
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
