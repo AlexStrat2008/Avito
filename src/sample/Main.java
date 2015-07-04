@@ -24,15 +24,7 @@ public class Main extends Application {
     public static HashMap<String, String> categories_;
     public static HashMap<String, String> subcategories_;
     public static ArrayList<Category> categories;
-
-    private static String URL = "https://www.avito.ru/map";
     private static String CitiesURL = "https://www.avito.ru/";
-
-    private static String mainUrl = "http://www.avito.ru";
-
-    static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
-    static final String LOGIN = "postgres";
-    static final String PASSWORD = "10041994";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,7 +35,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        parseCategories();
         try {
             jdbcClient = new JDBCClient();
         } catch (ClassNotFoundException e) {
@@ -56,6 +47,9 @@ public class Main extends Application {
         launch(args);
     }
 
+
+
+
     private static void loadCategories() {
         categories_ = new HashMap<String, String>();
         subcategories_ = new HashMap<String, String>();
@@ -66,7 +60,6 @@ public class Main extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     private static void loadCities() {
@@ -74,15 +67,12 @@ public class Main extends Application {
         try {
             Document doc = Jsoup.connect(CitiesURL).get();
             Elements cities = doc.select("div.col-2");
-            //System.out.println("\t\t" + cities);
-            //Elements _cities = cities.select("cities");
 
             for (org.jsoup.nodes.Element city : cities) {
                 Elements city_ = city.select("*");
                 for (org.jsoup.nodes.Element _city : city_) {
                     org.jsoup.nodes.Element links = _city.select("a").first();
                     String linkHref = links.attr("href");
-                    System.out.println("\t\t" + linkHref); // address
                     String linkInnerH = links.html();
                     citys.put(linkInnerH, linkHref.substring(15));
                 }

@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -41,7 +42,8 @@ public class FilterController {
     public Button toSearch;
     @FXML
     public CheckBox photocheck;
-
+    @FXML
+    public TextField urlAd;
     public ChoiceBox subcategory;
 
     public ChoiceBox category;
@@ -80,34 +82,40 @@ public class FilterController {
 
     public void actionSearch(ActionEvent actionEvent) {
         Stage stageClose = (Stage) toSearch.getScene().getWindow();
-        try {
-            if (citiescategory.getValue() != null) {
-                String categ ="";
-                String curCity = cityMap.get(citiescategory.getValue().toString());
-                if(subcategory.getValue() != null){
-                    categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+        if(urlAd.getText().isEmpty()) {
+            try {
+                if (citiescategory.getValue() != null) {
+                    String categ = "";
+                    String curCity = cityMap.get(citiescategory.getValue().toString());
+                    if (subcategory.getValue() != null) {
+                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+                    } else if (category.getValue() != null) {
+                        categ = "/" + categorMap.get(category.getValue().toString());
+                        ;
+                    } else {
+                        categ = "/";
+                    }
+                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+                    System.out.println(MainController.httpQuery);
+                    openMainWindow(stageClose);
+                } else {
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(stageClose);
+                    VBox dialogVbox = new VBox(20);
+                    dialogVbox.getChildren().add(new Text("Выберете город"));
+                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
+                    dialog.setScene(dialogScene);
+                    dialog.show();
                 }
-                else if(category.getValue() != null){
-                    categ = "/" + categorMap.get(category.getValue().toString());;
-                }
-                else{
-                    categ = "/";
-                }
-                MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
-                System.out.println(MainController.httpQuery);
-                openMainWindow(stageClose);
-            } else {
-                final Stage dialog = new Stage();
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initOwner(stageClose);
-                VBox dialogVbox = new VBox(20);
-                dialogVbox.getChildren().add(new Text("Выберете город"));
-                Scene dialogScene = new Scene(dialogVbox, 150, 50);
-                dialog.setScene(dialogScene);
-                dialog.show();
+            } catch (Exception e) {
+                System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
             }
-        } catch (Exception e) {
-            System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
+        }
+        else{
+            MainController.httpQuery = urlAd.getText();
+            System.out.println(MainController.httpQuery);
+            openMainWindow(stageClose);
         }
     }
 
