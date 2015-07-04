@@ -55,7 +55,7 @@ public class Main extends Application {
 //            Parse.parseCategories(jdbcClient);
 //        loadCities();
 //        loadCategories();
-//        launch(args);
+        launch(args);
     }
 
     private static void loadCategories() {
