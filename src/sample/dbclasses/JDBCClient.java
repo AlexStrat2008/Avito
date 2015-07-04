@@ -201,7 +201,7 @@ public class JDBCClient {
 
     public ArrayList<City> getCityByURL(String url) throws SQLException {
         ArrayList<City> cities;
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE url = '" + url + "'");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE url = '" + url + "';");
         if (resultSet != null) {
             cities = new ArrayList<>();
             City city;
@@ -219,7 +219,7 @@ public class JDBCClient {
 
     public ArrayList<City> getCityByID(int id) throws SQLException {
         ArrayList<City> cities;
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE id = '" + id + "'");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'city' WHERE id = '" + id + "';");
         if (resultSet != null) {
             cities = new ArrayList<>();
             City city;
