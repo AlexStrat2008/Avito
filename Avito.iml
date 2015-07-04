@@ -11,5 +11,6 @@
     <orderEntry type="library" exported="" name="javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
     <orderEntry type="library" exported="" name="yielder-0.3.0" level="project" />
     <orderEntry type="library" exported="" name="org.postgresql:postgresql:9.4-1201-jdbc41" level="project" />
+    <orderEntry type="library" exported="" name="org.glassfish.jersey:jax-rs-ri:2.0-rc1" level="project" />
   </component>
 </module>

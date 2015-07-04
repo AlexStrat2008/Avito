@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import sample.Main;
 import sample.api.AvitoAd;
 import sample.api.AvitoApi;
 
@@ -31,21 +32,13 @@ public class MainController {
     private ObservableList observableList;
 
     public MainController(){
-        observableList = FXCollections.observableArrayList();
+        observableList = Main.adsObservableList;
     }
     @FXML
     private void initialize() {
         setListView();
-        ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(new Runnable() {
-            @Override
-            public void run() {
-                download();
-            }
-        });
-
     }
-    private void download() {
+    /*private void download() {
         AvitoApi avitoApi = new AvitoApi();
         try {
             for (AvitoAd ad : avitoApi.getAdsFromRawQueryYield(httpQuery)) {
@@ -57,7 +50,7 @@ public class MainController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void setListView(){
         listView.setItems(observableList);

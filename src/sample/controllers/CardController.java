@@ -29,7 +29,7 @@ public class CardController{
     }
     public void setInfo(String name, String description, Long price, Image foto) {
         this.description.setText(description);
-        this.price.setText(price.toString());
+        this.price.setText(price != null ? price.toString() : "--");
         this.foto.setImage(foto);
         this.name.setText(name);
     }
