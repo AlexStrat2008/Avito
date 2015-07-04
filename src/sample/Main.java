@@ -10,7 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import sample.dbclasses.Category;
 import sample.dbclasses.JDBCClient;
-import sample.parse.Parse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -46,14 +45,17 @@ public class Main extends Application {
 //        parseCategories();
         try {
             jdbcClient = new JDBCClient();
+
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getException());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        if(jdbcClient.isTable("category"))
-            Parse.parseCategories(jdbcClient);
-        loadCities();
-        loadCategories();
-        launch(args);
+//        if(jdbcClient.isTable("category"))
+//            Parse.parseCategories(jdbcClient);
+//        loadCities();
+//        loadCategories();
+//        launch(args);
     }
 
     private static void loadCategories() {

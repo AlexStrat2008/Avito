@@ -4,41 +4,34 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class JDBCClient implements DBFunction {
-    static final String JDBC_DRIVER = "org.sqlite.Driver";
-    static final String URL = "jdbc:postgresql://localhost:5432/";
-    static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
-    static final String LOGIN = "postgres";
-    static final String PASSWORD = "147432";
+    private static final String JDBC_DRIVER =  "org.sqlite.JDBC";
+    private static final String DB_URL = "jdbc:sqlite:avitodb.s3db";
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
-    private String categoryCT = "CREATE TABLE IF NOT EXISTS category (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
-            " url TEXT, parent TEXT);";
-    private String cityCT = "CREATE TABLE IF NOT EXISTS city (id SERIAL PRIMARY KEY NOT NULL, name TEXT, url TEXT, parent TEXT);";
-    private String commentCT = "CREATE TABLE IF NOT EXISTS comment (id SERIAL PRIMARY KEY NOT NULL, url TEXT, description TEXT);";
-    private String filterCT = "CREATE TABLE IF NOT EXISTS filter (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
-            " priceFirst DOUBLE PRECISION, priceSecond DOUBLE PRECISION, city TEXT, category TEXT, " +
-            "subcategory TEXT, picture BOOLEAN);";
+//    private String categoryCT = "CREATE TABLE IF NOT EXISTS category (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
+//            " url TEXT, parent TEXT);";
+//    private String cityCT = "CREATE TABLE IF NOT EXISTS city (id SERIAL PRIMARY KEY NOT NULL, name TEXT, url TEXT, parent TEXT);";
+//    private String commentCT = "CREATE TABLE IF NOT EXISTS comment (id SERIAL PRIMARY KEY NOT NULL, url TEXT, description TEXT);";
+//    private String filterCT = "CREATE TABLE IF NOT EXISTS filter (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
+//            " priceFirst DOUBLE PRECISION, priceSecond DOUBLE PRECISION, city TEXT, category TEXT, " +
+//            "subcategory TEXT, picture BOOLEAN);";
 
     private Connection connection = null;
     private Statement statement = null;
 
     //    Доделать!!! Коряво работает
-    public JDBCClient() throws ClassNotFoundException {
-        try {
+    public JDBCClient() throws ClassNotFoundException, SQLException {
             Class.forName(JDBC_DRIVER);
             System.out.println("Драйвер подключен");
-            connection = DriverManager.getConnection(DB_URL, LOGIN, PASSWORD);
-
-        } catch (SQLException e) {
-            createTables();
-        }
+            connection = DriverManager.getConnection(DB_URL);
+            System.out.println("База Подключена!");
     }
 
     public Connection getDBConnection(String URL, String login, String password) {
         try {
             Class.forName(JDBC_DRIVER);
-            System.out.println("Драйвер подключен");
+            System.out.println("Драйвер подключен!");
             connection = DriverManager.getConnection(URL, login, password);
             return connection;
         } catch (SQLException e) {
@@ -267,8 +260,14 @@ public class JDBCClient implements DBFunction {
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            resultSet.next();
-            resultSet.next();
+            int size =0;
+            if (resultSet != null)
+            {
+                resultSet.beforeFirst();
+                resultSet.last();
+                size = resultSet.getRow();
+            }
+            System.out.println(size);
             return true;
         } catch (SQLException e) {
             return false;
