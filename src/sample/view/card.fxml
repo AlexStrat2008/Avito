@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.9998779296875" prefWidth="484.9998779296875" style="-fx-background-color: #87CEFA" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.9998779296875" prefWidth="484.9998779296875" style="-fx-background-color: #87CEFA" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <Pane layoutX="0.0" layoutY="0.0" prefHeight="215.0" prefWidth="484.9998779296875">
       <children>
@@ -32,7 +32,7 @@
           </font>
         </Label>
         <Label fx:id="description" alignment="TOP_LEFT" layoutX="162.0" layoutY="58.0" prefHeight="83.00009999999747" prefWidth="308.9998779296875" text="Нет описания." wrapText="true" />
-        <TextArea layoutX="14.0" layoutY="150.0" prefHeight="52.0" prefWidth="355.0" text="пока так коментирование" />
+        <TextArea layoutX="14.0" layoutY="150.0" prefHeight="52.0" prefWidth="355.0" promptText="коментарии..." />
       </children>
     </Pane>
   </children>
