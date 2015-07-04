@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class JDBCClient implements DBFunction {
-    static final String JDBC_DRIVER = "org.postgresql.Driver";
+    static final String JDBC_DRIVER = "org.sqlite.Driver";
     static final String URL = "jdbc:postgresql://localhost:5432/";
     static final String DB_URL = "jdbc:postgresql://localhost:5432/avitodb";
     static final String LOGIN = "postgres";
@@ -12,11 +12,11 @@ public class JDBCClient implements DBFunction {
 
     private String createDB = "CREATE DATABASE avitodb ENCODING 'UTF8';";
 
-    private String categoryCT = "CREATE TABLE category (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
+    private String categoryCT = "CREATE TABLE IF NOT EXISTS category (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
             " url TEXT, parent TEXT);";
-    private String cityCT = "CREATE TABLE city (id SERIAL PRIMARY KEY NOT NULL, name TEXT, url TEXT, parent TEXT);";
-    private String commentCT = "CREATE TABLE comment (id SERIAL PRIMARY KEY NOT NULL, url TEXT, description TEXT);";
-    private String filterCT = "CREATE TABLE filter (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
+    private String cityCT = "CREATE TABLE IF NOT EXISTS city (id SERIAL PRIMARY KEY NOT NULL, name TEXT, url TEXT, parent TEXT);";
+    private String commentCT = "CREATE TABLE IF NOT EXISTS comment (id SERIAL PRIMARY KEY NOT NULL, url TEXT, description TEXT);";
+    private String filterCT = "CREATE TABLE IF NOT EXISTS filter (id SERIAL PRIMARY KEY NOT NULL, name TEXT," +
             " priceFirst DOUBLE PRECISION, priceSecond DOUBLE PRECISION, city TEXT, category TEXT, " +
             "subcategory TEXT, picture BOOLEAN);";
 
@@ -82,7 +82,7 @@ public class JDBCClient implements DBFunction {
             connection = getDBConnection(DB_URL, LOGIN, PASSWORD);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 try {
                     statement.close();
@@ -97,7 +97,7 @@ public class JDBCClient implements DBFunction {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
     public void filterAdd(String name, Double priceFirst, Double priceSecond, String city, String category,
@@ -111,14 +111,14 @@ public class JDBCClient implements DBFunction {
             ;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void filterDelete(int id) throws SQLException {
@@ -128,14 +128,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void filterUpdate(int id, String name, Double priceFirst, Double priceSecond, String city, String category,
@@ -148,14 +148,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public Filter filterSelect(int id) throws SQLException {
@@ -221,14 +221,13 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
-            }
-        }
+            }*/
     }
 
     public void categoryUpdate(int id, String name, String url, String parent) throws SQLException {
@@ -239,14 +238,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public Category categorySelect(int id) throws SQLException {
@@ -331,14 +330,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void cityDelete(int id) throws SQLException {
@@ -348,14 +347,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void cityUpdate(int id, String name, String url, String parent) throws SQLException {
@@ -366,14 +365,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public City citySelect(int id) throws SQLException {
@@ -412,14 +411,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void commentDelete(int id) throws SQLException {
@@ -429,14 +428,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public void commentUpdate(int id, String url, String description) throws SQLException {
@@ -446,14 +445,14 @@ public class JDBCClient implements DBFunction {
             doUpdateQuery(connection, query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        } /*finally {
             if (statement != null) {
                 statement.close();
             }
             if (connection != null) {
                 connection.close();
             }
-        }
+        }*/
     }
 
     public Comment commentSelect(int id) throws SQLException {
