@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import sample.models.Filter;
 import sample.parse.Parse;
 import sample.services.AvitoAdsService;
 import sample.trey.MyTrayIcon;
+import sample.services.AvitoAdsSuperService;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -25,44 +27,41 @@ public class Main extends Application {
 
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
-    private  static AvitoAdsService avitoAdsService;
     private static MyTrayIcon myTrayIcon;
+    private  static AvitoAdsSuperService avitoAdsService;
+    public final static Duration ServiceRequestPeriod = Duration.seconds(30);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        avitoAdsService.start();
-        Platform.setImplicitExit(false);
-        Parent root = FXMLLoader.load(getClass().getResource("/sample/view/filter.fxml"));
-        Platform.setImplicitExit(false);
-        primaryStage.setTitle("filter");
+        restartAdsService();
+        Parent root = FXMLLoader.load(getClass().getResource("/sample/view/main.fxml"));
         primaryStage.setScene(new Scene(root));
         myTrayIcon = new MyTrayIcon();
         myTrayIcon.createTrayIcon(primaryStage);
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        avitoAdsService = new AvitoAdsService(filter, null, null);
-        avitoAdsService.setPeriod(Duration.seconds(60));
-        avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+    public static void restartAdsService() {
+        System.out.println(filter);
+        if (avitoAdsService != null) avitoAdsService.cancel();
+        avitoAdsService = new AvitoAdsSuperService(filter, null);
+        avitoAdsService.setPeriod(ServiceRequestPeriod);
+        avitoAdsService.setDelay(Duration.seconds(1));
+        avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
             @Override
-            public void handle(WorkerStateEvent event) {
-                System.out.println("Service refreshed data");
-                try {
-                    adsObservableList.addAll(avitoAdsService.getValue());
-                    adsObservableList.sort(new Comparator<AvitoAd>() {
+            public void onChanged(Change<? extends AvitoAd> c) {
+                while (c.next()) {
+                    if (c.wasAdded()) {
+                        adsObservableList.addAll(c.getAddedSubList());
+                    }
+                }
 
-                        //более новые в начале
-                        @Override
-                        public int compare(AvitoAd ad1, AvitoAd ad2) {
-                            myTrayIcon.newAd();
-                            return ad1.getDateTime().compareTo(ad2.getDateTime()) * (-1);
-                        }
-                    });
-                } catch (NullPointerException e) {}
             }
         });
+        avitoAdsService.start();
+    }
 
+    public static void main(String[] args) {
         try {
             JDBCClient jdbcClient = new JDBCClient();
             if(jdbcClient.isCatgoryEmpty())

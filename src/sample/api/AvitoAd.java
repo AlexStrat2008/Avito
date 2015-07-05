@@ -27,7 +27,7 @@ public class AvitoAd {
 
     @Override
     public  String toString() {
-        return String.format("Name: %s Price: %s Photo: %s Uri: %s Description: %s", getName(), getPrice(), getPhoto(), getURI(), getDescription());
+        return String.format("Name: %s Price: %s Photo: %s Uri: %s Description: %s DateTime: %s", getName(), getPrice(), getPhoto(), getURI(), getDescription(), getDateTime());
     }
 
     public String getName() {

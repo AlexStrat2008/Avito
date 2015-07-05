@@ -42,6 +42,7 @@ public class AvitoAdsService extends ScheduledService<ObservableList<AvitoAd>>{
                 ObservableList<AvitoAd> observableList = FXCollections.observableArrayList();
                 try {
                     for (AvitoAd ad : avitoApi.getAds(filter)) {
+
                         if ((lastAdUri==null || !ad.getURI().toString().equals(lastAdUri.toString()))
                                 && (minDateTime==null || ad.getDateTime().compareTo(minDateTime) >=0)) {
                             observableList.add(ad);
