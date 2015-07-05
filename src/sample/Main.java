@@ -23,11 +23,6 @@ import java.util.Comparator;
 
 public class Main extends Application {
 
-
-
-    public static JDBCClient jdbcClient;
-
-
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
     private  static AvitoAdsService avitoAdsService;
@@ -36,8 +31,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         avitoAdsService.start();
-//        createTrayIcon(primaryStage);
-
         Platform.setImplicitExit(false);
         Parent root = FXMLLoader.load(getClass().getResource("/sample/view/filter.fxml"));
         Platform.setImplicitExit(false);
@@ -50,7 +43,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         avitoAdsService = new AvitoAdsService(filter, null, null);
-        avitoAdsService.setPeriod(Duration.seconds(20));
+        avitoAdsService.setPeriod(Duration.seconds(60));
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
@@ -66,9 +59,7 @@ public class Main extends Application {
                             return ad1.getDateTime().compareTo(ad2.getDateTime()) * (-1);
                         }
                     });
-                } catch (NullPointerException e) {
-
-                }
+                } catch (NullPointerException e) {}
             }
         });
 

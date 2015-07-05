@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="521.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.FavoritesController">
+  <children>
+    <Pane layoutX="0.0" layoutY="-1.0" prefHeight="614.0" prefWidth="521.0">
+      <children>
+        <ListView fx:id="listViewFavorites" layoutX="0.0" layoutY="-5.0" prefHeight="620.0" prefWidth="521.0" />
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>

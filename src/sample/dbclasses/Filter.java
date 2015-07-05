@@ -27,6 +27,16 @@ public class Filter {
         this.isPhoto = _isPhoto;
         this.filterURL = _filterURL;
     }
+    public Filter(String _city, String _category, String _subcategory , Integer _startPrice,
+                  Integer _finishPrice, boolean _isPhoto, String _filterURL) {
+        this.city = _city;
+        this.category = _category;
+        this.subcategory = _subcategory;
+        this.startPrice = _startPrice;
+        this.finishPrice = _finishPrice;
+        this.isPhoto = _isPhoto;
+        this.filterURL = _filterURL;
+    }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

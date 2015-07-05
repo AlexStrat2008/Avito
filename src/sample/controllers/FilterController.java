@@ -101,17 +101,19 @@ public class FilterController {
         if(urlAd.getText().isEmpty()) {
             try {
                 if (citiescategory.getValue() != null) {
-                    String categ = "";
-                    String curCity = cityMap.get(citiescategory.getValue().toString());
-                    if (subcategory.getValue() != null) {
-                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
-                    } else if (category.getValue() != null) {
-                        categ = "/" + categorMap.get(category.getValue().toString());
-                        ;
-                    } else {
-                        categ = "/";
-                    }
-                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+//                    String categ = "";
+//                    String curCity = cityMap.get(citiescategory.getValue().toString());
+//                    if (subcategory.getValue() != null) {
+//                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+//                    } else if (category.getValue() != null) {
+//                        categ = "/" + categorMap.get(category.getValue().toString());
+//                        ;
+//                    } else {
+//                        categ = "/";
+//                    }
+//                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+
+
                     System.out.println(MainController.httpQuery);
                     openMainWindow(stageClose);
                 } else {

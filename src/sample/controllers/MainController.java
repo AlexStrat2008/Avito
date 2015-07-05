@@ -1,6 +1,5 @@
 package sample.controllers;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,17 +11,15 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import sample.Main;
 import sample.api.AvitoAd;
-import sample.api.AvitoApi;
+import sample.listviewcell.ListViewCell;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainController {
 
     protected static Stage stageMain;
     protected static String httpQuery;
+    public Button favorites;
     @FXML
     private Button changeFilter;
     @FXML
@@ -67,13 +64,12 @@ public class MainController {
             stage.setScene(scene);
             stage.setTitle("Filter");
             stage.show();
+/*Возможность передать значения как на Android'e*/
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         stageClose.close();
     }
-
-
 
     public void actionAddFilter(ActionEvent actionEvent) {
         Stage stageClose = (Stage) addFilter.getScene().getWindow();
@@ -89,6 +85,19 @@ public class MainController {
             System.out.println(e.getMessage());
         }
         stageClose.close();
+    }
 
+    public void actionFavorites(ActionEvent actionEvent) {
+        Parent parent = null;
+        try {
+            parent = FXMLLoader.load(getClass().getResource("/sample/view/favorites.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Favorites");
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
