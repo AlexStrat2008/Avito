@@ -65,6 +65,8 @@ public class Main extends Application {
             if(jdbcClient.isCityEmpty()){
                 Parse.parseCities(jdbcClient);
             }
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

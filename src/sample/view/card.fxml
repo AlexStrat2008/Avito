@@ -8,8 +8,9 @@
 
 <AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="485.0" style="-fx-background-color: #87CEFA" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <Pane layoutX="0.0" layoutY="0.0" prefHeight="249.0" prefWidth="485.0">
+    <Pane prefHeight="249.0" prefWidth="485.0">
       <children>
+            <TextField fx:id="urlAd" prefHeight="25.0" prefWidth="65.0" visible="false" />
         <ImageView fx:id="foto" fitHeight="109.0" fitWidth="147.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../image/nophoto.jpg" />
@@ -32,9 +33,10 @@
           </font>
         </Label>
         <Label fx:id="description" alignment="TOP_LEFT" layoutX="162.0" layoutY="42.0" prefHeight="141.0" prefWidth="309.0" text="Нет описания." wrapText="true" />
-        <TextArea layoutX="14.0" layoutY="184.0" prefHeight="52.0" prefWidth="355.0" promptText="коментарии..." />
+        <TextArea fx:id="comment" layoutX="14.0" layoutY="184.0" prefHeight="52.0" prefWidth="355.0" promptText="коментарии..." />
             <CheckBox fx:id="saveAd" layoutX="14.0" layoutY="141.0" mnemonicParsing="false" onAction="#onAcionSaveAd" text="Избранное" />
             <TextField fx:id="phoneAd" layoutX="14.0" layoutY="159.0" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
+            <TextField fx:id="urlPhoto" layoutX="63.0" layoutY="2.0" prefHeight="25.0" prefWidth="65.0" visible="false" />
       </children>
     </Pane>
   </children>

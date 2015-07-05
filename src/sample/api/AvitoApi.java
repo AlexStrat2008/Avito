@@ -81,14 +81,12 @@ public class AvitoApi {
                     uri,
                     getDateTimeFromElement(item)));
         }
-
         return  ads;
     }
 
     public List<AvitoAd> getAds(Filter filter) throws IOException, URISyntaxException {
         return getAdsFromRawQuery(filter.toRawQuery());
     }
-
 
     private String getNameFromElement(Element element) {
         return element.select("div.description > h3.title > a").first().ownText();
