@@ -23,9 +23,10 @@ import java.util.Comparator;
 
 public class Main extends Application {
 
-    private boolean firstTime;
+
 
     public static JDBCClient jdbcClient;
+
 
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
@@ -36,7 +37,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         avitoAdsService.start();
 //        createTrayIcon(primaryStage);
-        firstTime = true;
+
         Platform.setImplicitExit(false);
         Parent root = FXMLLoader.load(getClass().getResource("/sample/view/filter.fxml"));
         Platform.setImplicitExit(false);
@@ -72,12 +73,14 @@ public class Main extends Application {
         });
 
         try {
-            jdbcClient = new JDBCClient();
+            JDBCClient jdbcClient = new JDBCClient();
             if(jdbcClient.isCatgoryEmpty())
                 Parse.parseCategories(jdbcClient);
             if(jdbcClient.isCityEmpty()){
                 Parse.parseCities(jdbcClient);
             }
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
