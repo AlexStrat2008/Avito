@@ -20,8 +20,6 @@ import java.util.Comparator;
 
 public class Main extends Application {
 
-    public static JDBCClient jdbcClient;
-
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
     private  static AvitoAdsService avitoAdsService;
@@ -59,7 +57,7 @@ public class Main extends Application {
             }
         });
         try {
-            jdbcClient = new JDBCClient();
+            JDBCClient jdbcClient = new JDBCClient();
             if(jdbcClient.isCatgoryEmpty())
                 Parse.parseCategories(jdbcClient);
             if(jdbcClient.isCityEmpty()){
