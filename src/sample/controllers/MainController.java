@@ -2,6 +2,7 @@ package sample.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,19 +39,6 @@ public class MainController {
     private void initialize() {
         setListView();
     }
-    /*private void download() {
-        AvitoApi avitoApi = new AvitoApi();
-        try {
-            for (AvitoAd ad : avitoApi.getAdsFromRawQueryYield(httpQuery)) {
-                observableList.add(ad);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void setListView(){
         listView.setItems(observableList);
