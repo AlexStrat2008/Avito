@@ -67,6 +67,7 @@ public class MainController {
             stage.setScene(scene);
             stage.setTitle("Filter");
             stage.show();
+/*Возможность передать значения как на Android'e*/
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

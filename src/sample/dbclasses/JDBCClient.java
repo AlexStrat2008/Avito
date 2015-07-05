@@ -93,6 +93,13 @@ public class JDBCClient {
         statement.execute(query);
     }
 
+    public void filterAdd(Filter filter) throws SQLException {
+        String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "
+                + "'isPhoto', 'filterURL') VALUES ('" + filter.getCity() + "', '" + filter.getCategory() + "','" + filter.getSubcategory() + "','"
+                + filter.getStartPrice() + "','" + filter.getFinishPrice() + "','" + filter.getIsPhoto() + "','" + filter.getFilterURL() + "'); ";
+        statement.execute(query);
+    }
+
     public void filterDeleteTable() throws SQLException {
         statement.execute("DROP TABLE filter;");
     }
@@ -166,6 +173,25 @@ public class JDBCClient {
             return filters;
         } else
             return null;
+    }
+/*Изменения Ивана*/
+    public Filter GetFilterByID(int id) throws SQLException {
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter' WHERE id = '" + id + "'");
+        Filter filter = new Filter();
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                filter.setId(resultSet.getInt("id"));
+                filter.setCity(resultSet.getString("city"));
+                filter.setCategory(resultSet.getString("category"));
+                filter.setSubcategory(resultSet.getString("subcategory"));
+                filter.setStartPrice(resultSet.getInt("startPrice"));
+                filter.setFinishPrice(resultSet.getInt("finishPrice"));
+                filter.setIsPhoto(resultSet.getBoolean("isPhoto"));
+                filter.setFilterURL(resultSet.getString("filterURL"));
+            }
+            return filter;
+        } else
+            return filter;
     }
 
     public ArrayList<Filter> getFilterAll() throws SQLException {
