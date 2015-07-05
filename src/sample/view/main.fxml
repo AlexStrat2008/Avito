@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="521.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.controllers.MainController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="521.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainController">
   <children>
     <Pane layoutX="0.0" layoutY="-1.0" prefHeight="614.0" prefWidth="521.0">
       <children>
-        <SplitMenuButton layoutX="14.0" layoutY="20.0" mnemonicParsing="false" prefHeight="30.9609375" prefWidth="151.0" text="Вкладки">
+        <SplitMenuButton layoutX="14.0" layoutY="20.0" mnemonicParsing="false" prefHeight="30.9609375" prefWidth="151.0" text="Вкладки" visible="false">
           <items>
             <MenuItem mnemonicParsing="false" text="Action 1" />
             <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -15,7 +16,8 @@
         </SplitMenuButton>
         <ListView fx:id="listView" layoutX="0.0" layoutY="68.0" prefHeight="547.0" prefWidth="521.0" />
         <Button fx:id="changeFilter" layoutX="356.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionChangeFilter" prefHeight="31.0" prefWidth="151.0" text="Изменить фильтр" />
-        <Button fx:id="addFilter" layoutX="192.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionAddFilter" prefHeight="31.0" prefWidth="151.0" text="Добавить фильтр" />
+        <Button fx:id="addFilter" layoutX="192.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionAddFilter" prefHeight="31.0" prefWidth="151.0" text="Добавить фильтр" visible="false" />
+            <Button fx:id="favorites" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#actionFavorites" prefHeight="31.0" prefWidth="151.0" text="Избранное" />
       </children>
     </Pane>
   </children>

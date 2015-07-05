@@ -12,13 +12,12 @@ import javafx.scene.layout.AnchorPane;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
-import java.net.URI;
 import java.sql.SQLException;
 
 /**
  * Created by strat on 30.06.15.
  */
-public class CardController{
+public class CardController {
     public AnchorPane itemPane;
     public ImageView foto;
     public Label price;
@@ -30,7 +29,7 @@ public class CardController{
     public TextField urlPhoto;
     public TextArea comment;
 
-    public CardController(){
+    public CardController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sample/view/card.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -39,24 +38,30 @@ public class CardController{
             e.printStackTrace();
         }
     }
-    public void setInfo(String name, String description, Long price, URI foto, String url) {
+
+    public void setInfo(String name, String description, Long price, String foto, String url, String comment, boolean saveAd, String phone) {
         this.description.setText(description);
         this.price.setText(price != null ? price.toString() : "--");
-        this.foto.setImage(new Image(foto == null ? "/sample/image/nophoto.jpg" : foto.toString()));
+        this.foto.setImage(new Image(foto == null || foto.isEmpty() ? "/sample/image/nophoto.jpg" : foto));
         this.name.setText(name);
         this.urlAd.setText(url);
         this.urlPhoto.setText(foto.toString());
+        this.phoneAd.setText(phone);
+        this.saveAd.setSelected(saveAd);
+        this.comment.setText(comment);
     }
 
-    public AnchorPane getItem()
-    {
+    public AnchorPane getItem() {
         return itemPane;
     }
 
     public void onAcionSaveAd(ActionEvent actionEvent) {
         try {
             JDBCClient jdbcClient = new JDBCClient();
-            jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "":phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText());
+            if (saveAd.isSelected() && jdbcClient.isAdExistsByUrl(urlAd.getText()))
+                jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText());
+            else
+                jdbcClient.adDeleteByURL(urlAd.getText());
             jdbcClient.closeStatement();
             jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {
@@ -64,6 +69,6 @@ public class CardController{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(urlAd.getText());
+        System.out.println(saveAd.isSelected());
     }
 }

@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
-import sample.dbclasses.Filter;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
@@ -46,7 +45,6 @@ public class FilterController {
     @FXML
     public TextField urlAd;
     public ChoiceBox subcategory;
-    JDBCClient jdbcClient;
 
     public ChoiceBox category;
     //    map городов
@@ -54,38 +52,9 @@ public class FilterController {
     private HashMap<String, String> categorMap;
     private HashMap<String, String> subcategorMap = new HashMap<String, String>();
 
-    private boolean isEditFilter = false;
-    private int IDEditFilter;
-
-
     @FXML
     private void initialize() {
-        /*Воможность получить значение из другого окна*/
-        //isEditFilter
-        //IDEditFilter
-        /*--------------------------------------------*/
-        /*Так как нет загрузки, закомментирую код*/
-        /*НЕ ТРОГАТЬ!!!!*/
-      /*  Filter editFilter = new Filter();
-        if (isEditFilter) {
-            try {
-                editFilter = jdbcClient.GetFilterByID(IDEditFilter);
-                if (editFilter!=null) {
-                    citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
-                    category.setItems(FXCollections.observableArrayList(editFilter.getCategory()));
-                    subcategory.setItems(FXCollections.observableArrayList(editFilter.getSubcategory()));
-                    startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                    finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
-                    photocheck.setSelected(editFilter.getIsPhoto());
-                    urlAd.setText(String.valueOf(editFilter.getFilterURL()));
-
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        else {}
-        */
+        JDBCClient jdbcClient;
         categorMap = new HashMap<String, String>();
         try {
             jdbcClient = new JDBCClient();
@@ -132,29 +101,21 @@ public class FilterController {
         if(urlAd.getText().isEmpty()) {
             try {
                 if (citiescategory.getValue() != null) {
-                    String categ = "";
-                    String curCity = cityMap.get(citiescategory.getValue().toString());
-                    if (subcategory.getValue() != null) {
-                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
-                    } else if (category.getValue() != null) {
-                        categ = "/" + categorMap.get(category.getValue().toString());
-                        ;
-                    } else {
-                        categ = "/";
-                    }
-                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
-/*Добавление фильтра в бд*/
-                    Filter filter = new Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
-                            Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
-                    jdbcClient.filterAdd(filter);
-/*-----------------------*/
-                     /*Воможность отправить значение в другое окно*/
-        //IDEditFilter;
-        /*--------------------------------------------*/
+//                    String categ = "";
+//                    String curCity = cityMap.get(citiescategory.getValue().toString());
+//                    if (subcategory.getValue() != null) {
+//                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+//                    } else if (category.getValue() != null) {
+//                        categ = "/" + categorMap.get(category.getValue().toString());
+//                        ;
+//                    } else {
+//                        categ = "/";
+//                    }
+//                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
+
 
                     System.out.println(MainController.httpQuery);
                     openMainWindow(stageClose);
-
                 } else {
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);

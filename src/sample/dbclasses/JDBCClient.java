@@ -39,7 +39,8 @@ public class JDBCClient {
         this.filterDeleteTable();
         this.cityDeleteTable();
     }
-    public boolean isCityEmpty(){
+
+    public boolean isCityEmpty() {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SELECT * FROM city LIMIT 1;");
@@ -50,7 +51,7 @@ public class JDBCClient {
         }
     }
 
-    public boolean isFilterEmpty(){
+    public boolean isFilterEmpty() {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SELECT * FROM filter LIMIT 1;");
@@ -61,7 +62,7 @@ public class JDBCClient {
         }
     }
 
-    public boolean isAdEmpty(){
+    public boolean isAdEmpty() {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SELECT * FROM ad LIMIT 1;");
@@ -72,7 +73,7 @@ public class JDBCClient {
         }
     }
 
-    public boolean isCatgoryEmpty(){
+    public boolean isCatgoryEmpty() {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SELECT * FROM category LIMIT 1;");
@@ -82,6 +83,7 @@ public class JDBCClient {
             return true;
         }
     }
+
     /*
         Фильтр
      */
@@ -194,7 +196,7 @@ public class JDBCClient {
             return filter;
     }
 
-    public ArrayList<Filter> getFilterAll() throws SQLException {
+    public ArrayList<Filter> getFilter() throws SQLException {
         ArrayList<Filter> filters;
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter'");
         if (resultSet != null) {
@@ -305,6 +307,7 @@ public class JDBCClient {
         } else
             return null;
     }
+
     /*
         Категории
      */
@@ -396,6 +399,7 @@ public class JDBCClient {
         } else
             return null;
     }
+
     /*
         Объявления
      */
@@ -440,11 +444,13 @@ public class JDBCClient {
             while (resultSet.next()) {
                 ad.setId(resultSet.getInt("id"));
                 ad.setName(resultSet.getString("name"));
+                ad.setUrl(resultSet.getString("url"));
                 ad.setUrl_photo(resultSet.getString("url_photo"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setDescription(resultSet.getString("description"));
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
+                ads.add(ad);
             }
             return ads;
         } else
@@ -459,16 +465,29 @@ public class JDBCClient {
             Ad ad = new Ad();
             while (resultSet.next()) {
                 ad.setId(resultSet.getInt("id"));
+                ad.setUrl(resultSet.getString("url"));
                 ad.setName(resultSet.getString("name"));
                 ad.setUrl_photo(resultSet.getString("url_photo"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setDescription(resultSet.getString("description"));
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
+                ads.add(ad);
             }
             return ads;
         } else
             return null;
+    }
+
+    public boolean isAdExistsByUrl(String url) {
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT id FROM ad WHERE url = '" + url + "';");
+            int a = resultSet.getFetchDirection();
+            return false;
+        } catch (SQLException e) {
+            return true;
+        }
     }
 
     public ArrayList<Ad> getAdAll() throws SQLException {
@@ -476,8 +495,9 @@ public class JDBCClient {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'ad'");
         if (resultSet != null) {
             ads = new ArrayList<>();
-            Ad ad = new Ad();
+            Ad ad;
             while (resultSet.next()) {
+                ad = new Ad();
                 ad.setId(resultSet.getInt("id"));
                 ad.setName(resultSet.getString("name"));
                 ad.setUrl_photo(resultSet.getString("url_photo"));
@@ -485,6 +505,8 @@ public class JDBCClient {
                 ad.setDescription(resultSet.getString("description"));
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
+                ad.setUrl(resultSet.getString("url"));
+                ads.add(ad);
             }
             return ads;
         } else

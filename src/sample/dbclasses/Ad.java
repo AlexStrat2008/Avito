@@ -5,7 +5,6 @@ public class Ad {
     private String url;
     private String name;
     private String url_photo;
-
     private Integer price;
     private String description;
     private String phone;

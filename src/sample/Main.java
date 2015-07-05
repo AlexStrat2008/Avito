@@ -22,7 +22,7 @@ public class Main extends Application {
 
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
-    private  static AvitoAdsService avitoAdsService;
+    private static AvitoAdsService avitoAdsService;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,9 +35,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        parseCategories();
+
         avitoAdsService = new AvitoAdsService(filter, null, null);
-        avitoAdsService.setPeriod(Duration.seconds(20));
+        avitoAdsService.setPeriod(Duration.seconds(60));
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
@@ -51,9 +51,7 @@ public class Main extends Application {
                             return ad1.getDateTime().compareTo(ad2.getDateTime()) * (-1);
                         }
                     });
-                } catch (NullPointerException e) {
-
-                }
+                } catch (NullPointerException e) {}
             }
         });
         try {
