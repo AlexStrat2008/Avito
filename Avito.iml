@@ -4,13 +4,10 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="org.jsoup:jsoup:1.8.2" level="project" />
-    <orderEntry type="library" exported="" name="javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="yielder-0.3.0" level="project" />
-    <orderEntry type="library" exported="" name="org.postgresql:postgresql:9.4-1201-jdbc41" level="project" />
-    <orderEntry type="library" exported="" name="org.glassfish.jersey:jax-rs-ri:2.0-rc1" level="project" />
+    <orderEntry type="library" name="activation-1.1" level="project" />
   </component>
 </module>

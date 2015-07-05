@@ -6,33 +6,35 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.9998779296875" prefWidth="484.9998779296875" style="-fx-background-color: #87CEFA" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="485.0" style="-fx-background-color: #87CEFA" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <Pane layoutX="0.0" layoutY="0.0" prefHeight="215.0" prefWidth="484.9998779296875">
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="249.0" prefWidth="485.0">
       <children>
-        <ImageView fx:id="foto" fitHeight="97.0" fitWidth="129.98000174129712" layoutX="18.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="foto" fitHeight="109.0" fitWidth="147.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../image/nophoto.jpg" />
           </image>
         </ImageView>
-        <Label fx:id="name" layoutX="184.0" layoutY="7.0" prefHeight="25.961037499997474" prefWidth="82.99997792968497" text="Название">
+        <Label fx:id="name" alignment="CENTER" layoutX="63.0" layoutY="1.0" prefHeight="26.0" prefWidth="330.0" text="Название">
           <font>
             <Font name="System Bold Italic" size="14.0" />
           </font>
         </Label>
-        <Button layoutX="384.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.9609375" style="-fx-background-color: #1E90FF" text="Подробнее" textFill="WHITE">
+        <Button layoutX="377.0" layoutY="197.0" mnemonicParsing="false" prefHeight="25.9609375" style="-fx-background-color: #1E90FF" text="Подробнее" textFill="WHITE">
           <font>
             <Font name="System Bold" size="12.0" />
           </font>
         </Button>
-        <Label layoutX="162.0" layoutY="33.0" text="Цена:" />
-        <Label fx:id="price" layoutX="210.0" layoutY="33.0" minHeight="15.960845947265625" prefHeight="15.960845947265625" text="4300">
+        <Label layoutX="162.0" layoutY="26.0" text="Цена:" />
+        <Label fx:id="price" layoutX="210.0" layoutY="26.0" minHeight="15.960845947265625" prefHeight="16.0" prefWidth="65.0" text="4300">
           <font>
             <Font size="14.0" />
           </font>
         </Label>
-        <Label fx:id="description" alignment="TOP_LEFT" layoutX="162.0" layoutY="58.0" prefHeight="83.00009999999747" prefWidth="308.9998779296875" text="Нет описания." wrapText="true" />
-        <TextArea layoutX="14.0" layoutY="150.0" prefHeight="52.0" prefWidth="355.0" text="пока так коментирование" />
+        <Label fx:id="description" alignment="TOP_LEFT" layoutX="162.0" layoutY="42.0" prefHeight="141.0" prefWidth="309.0" text="Нет описания." wrapText="true" />
+        <TextArea layoutX="14.0" layoutY="184.0" prefHeight="52.0" prefWidth="355.0" promptText="коментарии..." />
+            <CheckBox fx:id="saveAd" layoutX="14.0" layoutY="141.0" mnemonicParsing="false" onAction="#onAcionSaveAd" text="Избранное" />
+            <TextField fx:id="phoneAd" layoutX="14.0" layoutY="159.0" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
       </children>
     </Pane>
   </children>

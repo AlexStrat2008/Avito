@@ -3,7 +3,7 @@ package sample.dbclasses;
 public class Category {
     private int id;
     private String name;
-    private String URL;
+    private String url;
     private String parent;
 
     public Category() {}
@@ -14,7 +14,7 @@ public class Category {
 
     public Category(int _id, String _URL, String _name, String _parent) {
         this.id = _id;
-        this.URL = _URL;
+        this.url = _URL;
         this.name = _name;
         this.parent = _parent;
     }
@@ -25,8 +25,8 @@ public class Category {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getURL() { return URL; }
-    public void setURL(String URL) { this.URL = URL; }
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
 
     public String getParent() { return parent; }
     public void setParent(String parent) { this.parent = parent; }

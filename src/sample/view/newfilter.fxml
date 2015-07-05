@@ -13,7 +13,7 @@
         <Font name="System Bold" size="14.0" />
       </font>
     </Label>
-    <TextField layoutX="31.0" layoutY="66.0" prefHeight="31.0" prefWidth="216.0" />
+    <TextField fx:id="blabla" layoutX="31.0" layoutY="66.0" prefHeight="31.0" prefWidth="216.0" />
     <Button layoutX="162.0" layoutY="150.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="85.0" style="-fx-background-color: #1E90FF" text="Добавить" textFill="WHITE">
       <font>
         <Font name="System Bold" size="12.0" />
