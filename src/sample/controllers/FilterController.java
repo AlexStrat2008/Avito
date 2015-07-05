@@ -4,6 +4,7 @@ package sample.controllers;
  * Created by strat on 30.06.15.
  */
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,10 +21,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.Main;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
 import sample.dbclasses.JDBCClient;
+import sample.models.Filter;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -101,25 +104,28 @@ public class FilterController {
         if(urlAd.getText().isEmpty()) {
             try {
                 if (citiescategory.getValue() != null) {
-                    String categ = "";
-                    String curCity = cityMap.get(citiescategory.getValue().toString());
+                    String cityValue = cityMap.get(citiescategory.getValue().toString());
+                    String categoryValue = "";
                     if (subcategory.getValue() != null) {
-                        categ = "/" + subcategorMap.get(subcategory.getValue().toString());
+                        categoryValue = subcategorMap.get(subcategory.getValue().toString());
                     } else if (category.getValue() != null) {
-                        categ = "/" + categorMap.get(category.getValue().toString());
-                        ;
-                    } else {
-                        categ = "/";
+                        categoryValue = categorMap.get(category.getValue().toString());
                     }
-                    MainController.httpQuery = "https://www.avito.ru/" + curCity + categ + (photocheck.isSelected() ? "?i=1" : "?") + (finishPrice.getText().equals("") ? "" : "&pmax=" + finishPrice.getText()) + (startPrice.getText().equals("") ? "" : "&pmin=" + startPrice.getText());
-                    System.out.println(MainController.httpQuery);
+                    long minPrice = Long.parseLong(startPrice.getText());
+                    long maxPrice = Long.parseLong(finishPrice.getText());
+                    boolean onlyWithPhoto = photocheck.isSelected();
+                    Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
+                    Main.filter = filter;
+                    Main.adsObservableList.clear();
+                    Main.restartAdsService();
                     openMainWindow(stageClose);
+
                 } else {
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initOwner(stageClose);
                     VBox dialogVbox = new VBox(20);
-                    dialogVbox.getChildren().add(new Text("Выберете город"));
+                    dialogVbox.getChildren().add(new Text("Выберите город"));
                     Scene dialogScene = new Scene(dialogVbox, 150, 50);
                     dialog.setScene(dialogScene);
                     dialog.show();

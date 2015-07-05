@@ -4,7 +4,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import sample.com.benjiweber.yield.*;
+import sample.com.benjiweber.yield.Yielderable.*;
+
 import sample.models.Filter;
 
 import java.io.IOException;
@@ -40,31 +43,35 @@ public class AvitoApi {
         put("декабря", 12);
     }};
 
-    public Yielderable<AvitoAd> getAdsFromRawQueryYield(String query) throws IOException, URISyntaxException {
+    public Yielderable<AvitoAd> getAdsFromRawQueryYield(String query) {
         return yield -> {
-            Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
-            Elements items = doc.select("div.catalog-list div.item");
-            for (Element item : items) {
-                URI uri = getURIFromElement(item);
-                AvitoAd ad = new AvitoAd(
-                        getNameFromElement(item),
-                        getPriceFromElement(item),
-                        getPhotoFromElement(item),
-                        getAdDescription(uri),
-                        uri,
-                        getDateTimeFromElement(item));
+            try {
+                Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
+                Elements items = doc.select("div.catalog-list div.item");
+                for (Element item : items) {
+                    URI uri = getURIFromElement(item);
+                    AvitoAd ad = new AvitoAd(
+                            getNameFromElement(item),
+                            getPriceFromElement(item),
+                            getPhotoFromElement(item),
+                            getAdDescription(uri),
+                            uri,
+                            getDateTimeFromElement(item));
 
-                yield.returning(ad);
+                    yield.returning(ad);
+                }
+            } catch (Exception e) {
+                yield.breaking();
             }
 
         };
     }
 
-    public Yielderable<AvitoAd> getAdsYield(Filter filter) throws IOException, URISyntaxException {
-        return yield -> getAdsFromRawQueryYield(filter.toRawQuery());
+    public Yielderable<AvitoAd> getAdsYield(Filter filter) {
+        return getAdsFromRawQueryYield(filter.toRawQuery());
     }
 
-    public List<AvitoAd> getAdsFromRawQuery(String query) throws IOException, URISyntaxException {
+    public List<AvitoAd> getAdsFromRawQuery(String query) throws IOException {
         Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
 
         Elements items = doc.select("div.catalog-list div.item");
@@ -85,7 +92,7 @@ public class AvitoApi {
         return  ads;
     }
 
-    public List<AvitoAd> getAds(Filter filter) throws IOException, URISyntaxException {
+    public List<AvitoAd> getAds(Filter filter) throws IOException {
         return getAdsFromRawQuery(filter.toRawQuery());
     }
 
@@ -108,7 +115,7 @@ public class AvitoApi {
         return  price;
     }
 
-    private URI getPhotoFromElement(Element element) throws URISyntaxException {
+    private URI getPhotoFromElement(Element element){
         Element photo = element.select("div.b-photo > a.photo-wrapper > img").first();
         String src = "";
         if (photo != null) {
@@ -122,9 +129,14 @@ public class AvitoApi {
 
     }
 
-    private  String getAdDescription(URI adUri) throws IOException{
-        Document doc = Jsoup.connect(hostURL.resolve(adUri).toURL().toString()).get();
+    private  String getAdDescription(URI adUri){
         StringBuilder text = new StringBuilder("");
+        Document doc;
+        try {
+             doc = Jsoup.connect(hostURL.resolve(adUri).toURL().toString()).get();
+        } catch (Exception e) {
+            return text.toString();
+        }
         try {
             Elements itemParams = doc.select("div.description-expanded div.item-params");
             itemParams.forEach(element -> {
