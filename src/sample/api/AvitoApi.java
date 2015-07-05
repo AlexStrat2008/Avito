@@ -5,12 +5,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import sample.com.benjiweber.yield.*;
+import sample.models.Filter;
 
-import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 //import org.apache.commons.lang3.StringEscapeUtils;
@@ -21,12 +25,20 @@ import java.util.List;
 public class AvitoApi {
 
     private final static URI hostURL = URI.create("http://avito.ru/");
-
-    public String test() throws IOException{
-        Document doc = Jsoup.connect(hostURL.resolve("ulyanovsk/avtomobili?p=2").toURL().toString()).get();
-        String title = doc.title();
-        return  title;
-    }
+    private final static HashMap<String, Integer> months = new HashMap<String, Integer>() {{
+        put("января", 1);
+        put("февраля", 2);
+        put("марта", 3);
+        put("апреля", 4);
+        put("мая", 5);
+        put("июня", 6);
+        put("июля", 7);
+        put("августа", 8);
+        put("сентября", 9);
+        put("октября", 10);
+        put("ноября", 11);
+        put("декабря", 12);
+    }};
 
     public Yielderable<AvitoAd> getAdsFromRawQueryYield(String query) throws IOException, URISyntaxException {
         return yield -> {
@@ -39,29 +51,21 @@ public class AvitoApi {
                         getPriceFromElement(item),
                         getPhotoFromElement(item),
                         getAdDescription(uri),
-                        uri);
+                        uri,
+                        getDateTimeFromElement(item));
 
                 yield.returning(ad);
             }
 
         };
     }
-    /*
-     * �������������
-        AvitoApi avitoApi = new AvitoApi();
-        try {
-            List<AvitoAd> ads = avitoApi.getAdsFromRawQuery("ulyanovsk/avtomobili?p=2");
-            for(AvitoAd ad : ads) {
-                System.out.println(ad);
-            }
 
-            System.out.println(ads.size());
-        } catch(IOException e) {
-            System.out.println(e.getMessage() != null ? e.getMessage() : "error");
-        }
-     */
+    public Yielderable<AvitoAd> getAdsYield(Filter filter) throws IOException, URISyntaxException {
+        return yield -> getAdsFromRawQueryYield(filter.toRawQuery());
+    }
+
     public List<AvitoAd> getAdsFromRawQuery(String query) throws IOException, URISyntaxException {
-        Document doc = Jsoup.connect(hostURL.resolve(query).toURL().toString()).get();
+        Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
 
         Elements items = doc.select("div.catalog-list div.item");
 
@@ -74,37 +78,17 @@ public class AvitoApi {
                     getPriceFromElement(item),
                     getPhotoFromElement(item),
                     getAdDescription(uri),
-                    uri));
+                    uri,
+                    getDateTimeFromElement(item)));
         }
 
         return  ads;
     }
-    /*
-    AvitoApi avitoApi = new AvitoApi();
-        try {
-            List<AvitoAd> ads = avitoApi.getAds("ulyanovsk", 2, 1000000, 100000, false, "avtomobili");
-            for(AvitoAd ad : ads) {
-                System.out.println(ad);
-            }
 
-            System.out.println(ads.size());
-        } catch(IOException e) {
-            System.out.println(e.getMessage() != null ? e.getMessage() : "error");
-        }
-     */
-    public List<AvitoAd> getAds(String city, int page, long maxPrice, long minPrice, boolean onlyWithPhoto, String... categories) throws IOException, URISyntaxException {
-        UriBuilder uriBuilder = UriBuilder
-                .fromUri("")
-                .segment(city)
-                .segment(categories)
-                .queryParam("p", page)
-                .queryParam("pmax", maxPrice)
-                .queryParam("pmin", minPrice)
-                .queryParam("i", onlyWithPhoto ? "1" : "0");
-        URI uri = uriBuilder.build();
-
-        return getAdsFromRawQuery(uri.toString());
+    public List<AvitoAd> getAds(Filter filter) throws IOException, URISyntaxException {
+        return getAdsFromRawQuery(filter.toRawQuery());
     }
+
 
     private String getNameFromElement(Element element) {
         return element.select("div.description > h3.title > a").first().ownText();
@@ -141,22 +125,64 @@ public class AvitoApi {
     private  String getAdDescription(URI adUri) throws IOException{
         Document doc = Jsoup.connect(hostURL.resolve(adUri).toURL().toString()).get();
         StringBuilder text = new StringBuilder("");
-        Elements itemParams = doc.select("div.description-expanded div.item-params");
-        itemParams.forEach(element -> {
-            text.append(element.text() != null ? element.text() : "");
-            text.append(System.lineSeparator());
-        });
+        try {
+            Elements itemParams = doc.select("div.description-expanded div.item-params");
+            itemParams.forEach(element -> {
+                text.append(element.text() != null ? element.text() : "");
+                text.append(System.lineSeparator());
+            });
+        } catch (NullPointerException e) {
 
-        Elements descriptions = doc.select("div.description-text > div[itemprop=description]").first().getElementsByTag("p");
-        descriptions.forEach(p -> {
-            text.append(p.text());
-            text.append(System.lineSeparator());
-        });
+        }
+
+        try {
+            Elements descriptions = doc.select("div.description-text > div[itemprop=description]").first().getElementsByTag("p");
+            descriptions.forEach(p -> {
+                text.append(p.text());
+                text.append(System.lineSeparator());
+            });
+        } catch (NullPointerException e) {
+
+        }
+
         return text.toString();
     }
 
     private URI getURIFromElement(Element element) {
         String uri = element.select("div.description > h3.title > a").first().attr("href");
         return URI.create(uri);
+    }
+
+    private LocalDateTime getDateTimeFromElement(Element element) {
+        String sDateTime = element.select("div.description > div.data > div.date").first().ownText().trim();
+        String[] words = sDateTime.split(" ");
+        LocalDateTime dateTime;
+        if (words.length == 2) {
+            LocalDate date;
+            if (words[0].equals("Сегодня")) {
+                date = LocalDate.now();
+            } else if (words[0].equals("Вчера")) {
+                date = LocalDate.now().minusDays(1);
+            } else {
+                date = LocalDate.now().minusDays(500);
+            }
+
+            LocalTime time = LocalTime.parse(words[1]);
+            dateTime = LocalDateTime.of(date, time);
+
+        } else if (words.length == 3) {
+            //just fuck off
+            int year = LocalDate.now().getYear();
+            Integer month = months.get(words[1]);
+            int day = Integer.parseInt(words[0]);
+            LocalDate date = LocalDate.of(year, month.intValue(), day);
+            LocalTime time = LocalTime.parse(words[2]);
+
+            dateTime = LocalDateTime.of(date, time);
+        } else {
+            dateTime = LocalDateTime.now().minusDays(600);
+        }
+
+        return dateTime;
     }
 }
