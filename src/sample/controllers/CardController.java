@@ -1,7 +1,10 @@
 package sample.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +20,8 @@ public class CardController{
     public Label price;
     public Label description;
     public Label name;
+    public TextField phoneAd;
+    public CheckBox saveAd;
 
     public CardController(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sample/view/card.fxml"));
@@ -39,4 +44,6 @@ public class CardController{
         return itemPane;
     }
 
+    public void onAcionSaveAd(ActionEvent actionEvent) {
+    }
 }
