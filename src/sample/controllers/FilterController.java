@@ -66,7 +66,10 @@ public class FilterController {
             sample.dbclasses.Filter editFilter;
             if (!jdbcClient.getFilter().isEmpty()) {
                 System.out.println("filter is not empty" + jdbcClient.getFilter().size());
-                editFilter = new sample.dbclasses.Filter(jdbcClient.GetFilterByID(1));
+//                jdbcClient.getFilter();
+                editFilter = new sample.dbclasses.Filter(jdbcClient.getFilter().get(0));
+//                editFilter = jdbcClient.getFilterByID(MainController.idFileter).get(0);
+
                 System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
 
                 //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
@@ -89,14 +92,14 @@ public class FilterController {
                 subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
 
                 startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
+                finishPrice.setText(String.valueOf(editFilter.getFinishPrice()));
                 photocheck.setSelected(editFilter.getIsPhoto());
                 urlAd.setText(String.valueOf(editFilter.getFilterURL()));
 
 
             } else {
                 citiescategory.setItems(FXCollections.observableArrayList(""));
-                category.setItems(FXCollections.observableArrayList(""));
+                category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
                 subcategory.setItems(FXCollections.observableArrayList(""));
                 startPrice.setText(String.valueOf(""));
                 finishPrice.setText(String.valueOf(""));
@@ -139,6 +142,16 @@ public class FilterController {
     }
 
     public void actionSearch(ActionEvent actionEvent) {
+        try {
+            JDBCClient jdbcClient = new JDBCClient();
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         Stage stageClose = (Stage) toSearch.getScene().getWindow();
         if(urlAd.getText().isEmpty()) {
             try {
@@ -168,7 +181,7 @@ public class FilterController {
                     openMainWindow(stageClose);
 /*Добавление фильтра в бд*/
                     JDBCClient jdbcClient = new JDBCClient();
-
+                    jdbcClient.filterDelete();
                     sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
                             Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
                     jdbcClient.filterAdd(filterBD);

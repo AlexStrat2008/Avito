@@ -2,7 +2,6 @@ package sample.dbclasses;
 
 import java.sql.*;
 import java.util.ArrayList;
-import sample.dbclasses.Filter;
 
 public class JDBCClient {
     private static final String JDBC_DRIVER = "org.sqlite.JDBC";
@@ -110,6 +109,10 @@ public class JDBCClient {
     public Integer getFilterIDByURL(String url) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT id FROM 'filter' WHERE filterURL = '" + url + "'");
         return resultSet.getInt("id");
+    }
+
+    public void filterDelete() throws SQLException {
+        statement.execute("DELETE FROM 'filter'");
     }
 
     public void filterDeleteByURL(String url) throws SQLException {
