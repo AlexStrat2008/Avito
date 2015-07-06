@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -27,6 +28,7 @@ public class App extends Application {
     private static MyTrayIcon myTrayIcon;
     private  static AvitoAdsSuperService avitoAdsService;
     public final static Duration ServiceRequestPeriod = Duration.minutes(1);
+    public static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,6 +37,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root));
         myTrayIcon = new MyTrayIcon();
         myTrayIcon.createTrayIcon(primaryStage);
+        hostServices = this.getHostServices();
         primaryStage.show();
     }
 

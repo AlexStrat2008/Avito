@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import sample.App;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class CardController {
         System.out.println(saveAd.isSelected());
     }
 
-    public void actionAdMore(ActionEvent actionEvent) {
-//
+    public void actionAdMore(ActionEvent actionEvent){
+        App.hostServices.showDocument("http://www.example.com/");
     }
 }
