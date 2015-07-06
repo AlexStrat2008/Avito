@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.Main;
+import sample.*;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
@@ -116,9 +116,9 @@ public class FilterController {
                     long maxPrice = Long.parseLong(finishPrice.getText());
                     boolean onlyWithPhoto = photocheck.isSelected();
                     Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
-                    Main.filter = filter;
-                    Main.adsObservableList.clear();
-                    Main.restartAdsService();
+                    App.filter = filter;
+                    App.adsObservableList.clear();
+                    App.restartAdsService();
                     openMainWindow(stageClose);
 
                 } else {
@@ -137,9 +137,9 @@ public class FilterController {
         }
         else{
             Filter filter = new Filter(urlAd.getText());
-            Main.filter = filter;
-            Main.adsObservableList.clear();
-            Main.restartAdsService();
+            App.filter = filter;
+            App.adsObservableList.clear();
+            App.restartAdsService();
             openMainWindow(stageClose);
         }
     }

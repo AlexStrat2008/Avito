@@ -23,7 +23,7 @@ import sample.services.AvitoAdsSuperService;
 import java.sql.SQLException;
 import java.util.Comparator;
 
-public class Main extends Application {
+public class App extends Application {
 
     public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();

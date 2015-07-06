@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import sample.Main;
+import sample.*;
 import sample.api.AvitoAd;
 import sample.listviewcell.ListViewCell;
 
@@ -30,7 +30,7 @@ public class MainController {
     private ObservableList observableList;
 
     public MainController(){
-        observableList = Main.adsObservableList;
+        observableList = App.adsObservableList;
     }
     @FXML
     private void initialize() {
