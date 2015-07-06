@@ -14,7 +14,13 @@ public class ListViewCell extends ListCell<AvitoAd> {
         super.updateItem(item, empty);
         if (item != null) {
             CardController cardController = new CardController();
-            cardController.setInfo(item.getName(), item.getDescription(), item.getPrice(), item.getPhoto().toString(), item.getURI().toString(), "", false, "");
+            cardController.setInfo(
+                    item.getName(),
+                    item.getDescription(),
+                    item.getPrice(),
+                    item.getPhoto() != null ? item.getPhoto().toString() : "",
+                    item.getURI().toString(),
+                    "", false, "");
             try {
                 setGraphic(cardController.getItem());
             } catch (Exception e) {

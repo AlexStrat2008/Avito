@@ -16,7 +16,7 @@ import sample.api.AvitoAd;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 import sample.parse.Parse;
-import sample.services.AvitoAdsService;
+
 import sample.trey.MyTrayIcon;
 import sample.services.AvitoAdsSuperService;
 
@@ -29,7 +29,7 @@ public class Main extends Application {
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
     private static MyTrayIcon myTrayIcon;
     private  static AvitoAdsSuperService avitoAdsService;
-    public final static Duration ServiceRequestPeriod = Duration.seconds(30);
+    public final static Duration ServiceRequestPeriod = Duration.minutes(1);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -42,7 +42,6 @@ public class Main extends Application {
     }
 
     public static void restartAdsService() {
-        System.out.println(filter);
         if (avitoAdsService != null) avitoAdsService.cancel();
         avitoAdsService = new AvitoAdsSuperService(filter, null);
         avitoAdsService.setPeriod(ServiceRequestPeriod);

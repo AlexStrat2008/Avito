@@ -136,8 +136,10 @@ public class FilterController {
             }
         }
         else{
-//            MainController.httpQuery = urlAd.getText();
-//            System.out.println(MainController.httpQuery);
+            Filter filter = new Filter(urlAd.getText());
+            Main.filter = filter;
+            Main.adsObservableList.clear();
+            Main.restartAdsService();
             openMainWindow(stageClose);
         }
     }

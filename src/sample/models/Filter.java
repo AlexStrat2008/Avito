@@ -4,7 +4,8 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 /**
- * Created by Alexandr on 04.07.2015.
+ *
+ * not enough cool
  */
 public class Filter {
     private String city;
@@ -12,6 +13,7 @@ public class Filter {
     private long minPrice;
     private boolean onlyWithPhoto;
     private String category;
+    private String rawQuery;
 
     public Filter(String city, long maxPrice, long minPrice, boolean onlyWithPhoto, String category) {
         this.city = city;
@@ -21,8 +23,14 @@ public class Filter {
         this.category = category;
     }
 
+    public Filter(String rawQuery) {
+        this.rawQuery = rawQuery==null ? "" : rawQuery;
+    }
+
     public String toRawQuery()
     {
+        if (rawQuery != null) return rawQuery;
+
         UriBuilder uriBuilder = UriBuilder
                 .fromUri("")
                 .segment(city)
@@ -35,43 +43,5 @@ public class Filter {
         return uri.toString();
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public long getMaxPrice() {
-        return maxPrice;
-    }
-
-    public void setMaxPrice(long maxPrice) {
-        this.maxPrice = maxPrice;
-    }
-
-    public long getMinPrice() {
-        return minPrice;
-    }
-
-    public void setMinPrice(long minPrice) {
-        this.minPrice = minPrice;
-    }
-
-    public boolean isOnlyWithPhoto() {
-        return onlyWithPhoto;
-    }
-
-    public void setOnlyWithPhoto(boolean onlyWithPhoto) {
-        this.onlyWithPhoto = onlyWithPhoto;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }
