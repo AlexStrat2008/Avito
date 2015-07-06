@@ -112,8 +112,15 @@ public class FilterController {
                     } else if (category.getValue() != null) {
                         categoryValue = categorMap.get(category.getValue().toString());
                     }
-                    long minPrice = Long.parseLong(startPrice.getText());
-                    long maxPrice = Long.parseLong(finishPrice.getText());
+                    long minPrice = 0;
+                    try {
+                        minPrice = Long.parseLong(startPrice.getText());
+                    } catch (Exception e) {}
+                    long maxPrice = 0;
+                    try {
+                        maxPrice = Long.parseLong(finishPrice.getText());
+                    } catch (Exception e) {}
+
                     boolean onlyWithPhoto = photocheck.isSelected();
                     Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
                     App.filter = filter;
