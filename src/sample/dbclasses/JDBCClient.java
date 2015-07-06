@@ -2,6 +2,7 @@ package sample.dbclasses;
 
 import java.sql.*;
 import java.util.ArrayList;
+import sample.dbclasses.Filter;
 
 public class JDBCClient {
     private static final String JDBC_DRIVER = "org.sqlite.JDBC";
@@ -365,6 +366,25 @@ public class JDBCClient {
     public ArrayList<Category> getCategoryByID(int id) throws SQLException {
         ArrayList<Category> categories;
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE id = '" + id + "'");
+        if (resultSet != null) {
+            categories = new ArrayList<>();
+            Category category;
+            while (resultSet.next()) {
+                category = new Category();
+                category.setId(resultSet.getInt("id"));
+                category.setName(resultSet.getString("name"));
+                category.setParent(resultSet.getString("parent"));
+                category.setUrl(resultSet.getString("url"));
+                categories.add(category);
+            }
+            return categories;
+        } else
+            return null;
+    }
+
+    public ArrayList<Category> getCategoryByName(String name) throws SQLException {
+        ArrayList<Category> categories;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'category' WHERE name = '" + name + "'");
         if (resultSet != null) {
             categories = new ArrayList<>();
             Category category;

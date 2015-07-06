@@ -37,7 +37,16 @@ public class Filter {
         this.isPhoto = _isPhoto;
         this.filterURL = _filterURL;
     }
-
+    public Filter(Filter filter) {
+        this.id = filter.getId();
+        this.city = filter.getCity();
+        this.category = filter.getCategory();
+        this.subcategory = filter.getSubcategory();
+        this.startPrice = filter.getStartPrice();
+        this.finishPrice = filter.getFinishPrice();
+        this.isPhoto = filter.getIsPhoto();
+        this.filterURL = filter.getFilterURL();
+    }
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

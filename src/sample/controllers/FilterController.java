@@ -64,8 +64,48 @@ public class FilterController {
 
             loadCategories(jdbcClient);
             loadCities(jdbcClient);
+            sample.dbclasses.Filter editFilter;
+            if (!jdbcClient.getFilter().isEmpty()) {
+                System.out.println("filter is not empty" + jdbcClient.getFilter().size());
+                editFilter = new sample.dbclasses.Filter(jdbcClient.GetFilterByID(1));
+                System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
 
-            category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+                //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
+                citiescategory.setValue(editFilter.getCity());
+
+                category.setValue(editFilter.getCategory());
+                category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+
+                subcategory.setValue(editFilter.getSubcategory());
+
+                subcategorMap = new HashMap<String, String>();
+                System.out.println(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl());
+                for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
+                    subcategorMap.put(item.getName(), item.getUrl());
+                    System.out.println("subcategory = " + item.getName());
+
+                }
+                System.out.println("subcategory = " + subcategorMap.size());
+
+                subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+
+                startPrice.setText(String.valueOf(editFilter.getStartPrice()));
+                finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
+                photocheck.setSelected(editFilter.getIsPhoto());
+                urlAd.setText(String.valueOf(editFilter.getFilterURL()));
+
+
+            } else {
+                citiescategory.setItems(FXCollections.observableArrayList(""));
+                category.setItems(FXCollections.observableArrayList(""));
+                subcategory.setItems(FXCollections.observableArrayList(""));
+                startPrice.setText(String.valueOf(""));
+                finishPrice.setText(String.valueOf(""));
+                photocheck.setSelected(false);
+                urlAd.setText("");
+
+            }
+           // category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
             category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
                 @Override
                 public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -120,7 +160,15 @@ public class FilterController {
                     Main.adsObservableList.clear();
                     Main.restartAdsService();
                     openMainWindow(stageClose);
+/*Добавление фильтра в бд*/
+                    JDBCClient jdbcClient = new JDBCClient();
 
+                    sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
+                            Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
+                    jdbcClient.filterAdd(filterBD);
+                    jdbcClient.closeStatement();
+                    jdbcClient.closeConnection();
+/*-----------------------*/
                 } else {
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
