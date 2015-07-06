@@ -60,32 +60,38 @@ public class FilterController {
 
     @FXML
     private void initialize() {
-        /*Воможность получить значение из другого окна*/
-        //isEditFilter
-        //IDEditFilter
+        Filter editFilter = new Filter();
         /*--------------------------------------------*/
         /*Так как нет загрузки, закомментирую код*/
         /*НЕ ТРОГАТЬ!!!!*/
-      /*  Filter editFilter = new Filter();
-        if (isEditFilter) {
-            try {
-                editFilter = jdbcClient.GetFilterByID(IDEditFilter);
-                if (editFilter!=null) {
-                    citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
-                    category.setItems(FXCollections.observableArrayList(editFilter.getCategory()));
-                    subcategory.setItems(FXCollections.observableArrayList(editFilter.getSubcategory()));
-                    startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                    finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
-                    photocheck.setSelected(editFilter.getIsPhoto());
-                    urlAd.setText(String.valueOf(editFilter.getFilterURL()));
+        try {
+            if (!jdbcClient.getFilterAll().isEmpty()) {
+                editFilter =                 jdbcClient.GetFilterByID(1);
+                citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
+                category.setItems(FXCollections.observableArrayList(editFilter.getCategory()));
+                subcategory.setItems(FXCollections.observableArrayList(editFilter.getSubcategory()));
+                startPrice.setText(String.valueOf(editFilter.getStartPrice()));
+                finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
+                photocheck.setSelected(editFilter.getIsPhoto());
+                urlAd.setText(String.valueOf(editFilter.getFilterURL()));
 
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+
+            } else {
+                citiescategory.setItems(FXCollections.observableArrayList(""));
+                category.setItems(FXCollections.observableArrayList(""));
+                subcategory.setItems(FXCollections.observableArrayList(""));
+                startPrice.setText(String.valueOf(""));
+                finishPrice.setText(String.valueOf(""));
+                photocheck.setSelected(false);
+                urlAd.setText("");
+
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        else {}
-        */
+
+
+
         categorMap = new HashMap<String, String>();
         try {
             jdbcClient = new JDBCClient();
