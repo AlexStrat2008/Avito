@@ -4,7 +4,6 @@ package sample.controllers;
  * Created by strat on 30.06.15.
  */
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

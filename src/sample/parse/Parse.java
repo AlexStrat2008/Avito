@@ -63,6 +63,11 @@ public class Parse {
                     }
                 }
             }
+            try {
+                jdbcClient.cityAdd("По всей России","rossiya");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
