@@ -57,6 +57,12 @@ public class App extends Application {
 
             }
         });
+        avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                myTrayIcon.newAd(((ObservableList)event.getSource().getValue()).size());
+            }
+        });
         avitoAdsService.start();
     }
 
