@@ -8,10 +8,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="activation-1.1" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib1" level="project" />
-    <orderEntry type="library" name="lib2" level="project" />
+    <orderEntry type="library" exported="" name="javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
+    <orderEntry type="library" exported="" name="org.glassfish.jersey:jax-rs-ri:2.0-rc1" level="project" />
+    <orderEntry type="library" exported="" name="org.jsoup:jsoup:1.8.2" level="project" />
+    <orderEntry type="library" exported="" name="sqlite-jdbc-3.8.10.1" level="project" />
+    <orderEntry type="library" exported="" name="yielder-0.3.0" level="project" />
   </component>
 </module>
 

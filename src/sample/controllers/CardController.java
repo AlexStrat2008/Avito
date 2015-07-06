@@ -45,7 +45,7 @@ public class CardController {
         this.foto.setImage(new Image(foto == null || foto.isEmpty() ? "/sample/image/nophoto.jpg" : foto));
         this.name.setText(name);
         this.urlAd.setText(url);
-        this.urlPhoto.setText(foto.toString());
+        this.urlPhoto.setText(foto == null ? "" : foto.toString());
         this.phoneAd.setText(phone);
         this.saveAd.setSelected(saveAd);
         this.comment.setText(comment);

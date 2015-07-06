@@ -32,29 +32,29 @@ public class MyTrayIcon extends JDialog {
     }
     public void createTrayIcon(final Stage stage) {
         if (SystemTray.isSupported()) {
-            SystemTray tray = SystemTray.getSystemTray(); //подгрузили систем трей для работы
+            SystemTray tray = SystemTray.getSystemTray(); //РїРѕРґРіСЂСѓР·РёР»Рё СЃРёСЃС‚РµРј С‚СЂРµР№ РґР»СЏ СЂР°Р±РѕС‚С‹
 
-            java.awt.Image image = null; //мутим изображение иконки
+            java.awt.Image image = null; //РјСѓС‚РёРј РёР·РѕР±СЂР°Р¶РµРЅРёРµ РёРєРѕРЅРєРё
             try {
                 image = ImageIO.read(new File("src/sexy_girl.png"));
             } catch (IOException ex) {
                 System.out.println(ex);
             }
-            //ловим момент закрытия окна
+            //Р»РѕРІРёРј РјРѕРјРµРЅС‚ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent t) {
                     hide(stage);
                 }
             });
-            // по закрытию окна уходим в трей
+            // РїРѕ Р·Р°РєСЂС‹С‚РёСЋ РѕРєРЅР° СѓС…РѕРґРёРј РІ С‚СЂРµР№
             final ActionListener closeListener = new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     System.exit(0);
                 }
             };
-            //листнер на событие открытия из трея
+            //Р»РёСЃС‚РЅРµСЂ РЅР° СЃРѕР±С‹С‚РёРµ РѕС‚РєСЂС‹С‚РёСЏ РёР· С‚СЂРµСЏ
             ActionListener showListener = new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -66,14 +66,14 @@ public class MyTrayIcon extends JDialog {
                     });
                 }
             };
-            // меню трея
+            // РјРµРЅСЋ С‚СЂРµСЏ
             PopupMenu popup = new PopupMenu();
 
             MenuItem showItem = new MenuItem("Show");
-            showItem.addActionListener(showListener);//обработчик события
+            showItem.addActionListener(showListener);//РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРѕР±С‹С‚РёСЏ
             popup.add(showItem);
             MenuItem closeItem = new MenuItem("Close");
-            closeItem.addActionListener(closeListener);//обработчик события
+            closeItem.addActionListener(closeListener);//РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРѕР±С‹С‚РёСЏ
             popup.add(closeItem);
             trayIcon = new TrayIcon(image, "Avito App", popup);
             trayIcon.setImageAutoSize(true);
@@ -98,8 +98,8 @@ public class MyTrayIcon extends JDialog {
         }
     }
 
-    public void newAd(){
-        trayIcon.displayMessage("NOVOE","SMOTRI SUKA", java.awt.TrayIcon.MessageType.INFO);
+    public void newAd(int count){
+        trayIcon.displayMessage("РЈРІРµРґРѕРјР»РµРЅРёРµ", "РќРѕРІС‹С… РѕР±СЉСЏРІР»РµРЅРёР№: " + count, java.awt.TrayIcon.MessageType.INFO);
     }
 
     public void showProgramIsMinimizedMsg() {

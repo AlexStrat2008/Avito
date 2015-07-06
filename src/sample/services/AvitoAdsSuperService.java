@@ -36,6 +36,8 @@ public class AvitoAdsSuperService extends ScheduledService {
             @Override
             protected Object call() throws Exception {
 
+                newDataList.clear();
+
                 LocalDateTime newestDateTime = minDateTime;
 
                 for(AvitoAd ad : avitoApi.getAdsYield(filter)) {
