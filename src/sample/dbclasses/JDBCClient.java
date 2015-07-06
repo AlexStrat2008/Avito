@@ -21,7 +21,7 @@ public class JDBCClient {
         statement.execute("CREATE TABLE IF NOT EXISTS 'city' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, 'url' TEXT);");
         statement.execute("CREATE TABLE IF NOT EXISTS 'ad' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'url' TEXT," +
                 " 'name' TEXT, 'url_photo' TEXT, 'price' INT, 'description' TEXT, 'phone' TEXT, " +
-                "'comment' TEXT);");
+                "'comment' TEXT, 'favorit' BOOLEAN);");
     }
 
     public void closeConnection() throws SQLException {
@@ -180,7 +180,8 @@ public class JDBCClient {
         } else
             return null;
     }
-/*Изменения Ивана*/
+
+    /*Изменения Ивана*/
     public Filter GetFilterByID(int id) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter' WHERE id = '" + id + "'");
         Filter filter = new Filter();
@@ -426,8 +427,8 @@ public class JDBCClient {
     /*
         Объявления
      */
-    public void adAdd(String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
-        String query = "INSERT INTO ad (url, name, url_photo, price, description, phone, comment) VALUES ('" + url + "','" + name + "','" + url_photo + "','" + price + "','" + description + "','" + phone + "','" + comment + "');";
+    public void adAdd(String url, String name, String url_photo, int price, String description, String phone, String comment, boolean isFavorit) throws SQLException {
+        String query = "INSERT INTO ad (url, name, url_photo, price, description, phone, comment, favorit) VALUES ('" + url + "','" + name + "','" + url_photo + "','" + price + "','" + description + "','" + phone + "','" + comment + "', '" + isFavorit + "');";
         statement.execute(query);
     }
 
@@ -449,13 +450,13 @@ public class JDBCClient {
     }
 
 
-    public void adUpdateByID(int id, String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
-        statement.execute("UPDATE ad SET url = '" + url + "', name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "' where id = '" + id + "';");
+    public void adUpdateByID(int id, String url, String name, String url_photo, int price, String description, String phone, String comment, boolean isFavorit) throws SQLException {
+        statement.execute("UPDATE ad SET url = '" + url + "', name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "', favorit = '" + isFavorit + "' where id = '" + id + "';");
     }
 
 
-    public void adUpdateByURL(String url, String name, String url_photo, int price, String description, String phone, String comment) throws SQLException {
-        statement.execute("UPDATE ad SET name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "' where url = '" + url + "';");
+    public void adUpdateByURL(String url, String name, String url_photo, int price, String description, String phone, String comment, boolean isFavorit) throws SQLException {
+        statement.execute("UPDATE ad SET name = '" + name + "', url_photo = '" + url_photo + "', price = '" + price + "', description = '" + description + "', phone = '" + phone + "', comment = '" + comment + "', favorit = '" + isFavorit + "' where url = '" + url + "';");
     }
 
     public ArrayList<Ad> getAdByURL(String url) throws SQLException {
@@ -473,6 +474,7 @@ public class JDBCClient {
                 ad.setDescription(resultSet.getString("description"));
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
+                ad.setIsFavorit(resultSet.getBoolean("favorit"));
                 ads.add(ad);
             }
             return ads;
@@ -495,6 +497,7 @@ public class JDBCClient {
                 ad.setDescription(resultSet.getString("description"));
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
+                ad.setIsFavorit(resultSet.getBoolean("favorit"));
                 ads.add(ad);
             }
             return ads;
@@ -507,9 +510,9 @@ public class JDBCClient {
         try {
             resultSet = statement.executeQuery("SELECT id FROM ad WHERE url = '" + url + "';");
             int a = resultSet.getFetchDirection();
-            return false;
-        } catch (SQLException e) {
             return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -529,6 +532,7 @@ public class JDBCClient {
                 ad.setPhone(resultSet.getString("phone"));
                 ad.setComment(resultSet.getString("comment"));
                 ad.setUrl(resultSet.getString("url"));
+                ad.setIsFavorit(resultSet.getBoolean("favorit"));
                 ads.add(ad);
             }
             return ads;
