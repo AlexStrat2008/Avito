@@ -74,7 +74,7 @@ public class JDBCClient {
         }
     }
 
-    public boolean isCatgoryEmpty() {
+    public boolean isCategoryEmpty() {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SELECT * FROM category LIMIT 1;");
@@ -155,7 +155,7 @@ public class JDBCClient {
             return null;
     }
 
-    public ArrayList<Filter> getFilterByID(int id) throws SQLException {
+    public ArrayList<Filter> GetFilterByID(int id) throws SQLException {
         ArrayList<Filter> filters;
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter' WHERE id = '" + id + "'");
         if (resultSet != null) {
@@ -178,7 +178,7 @@ public class JDBCClient {
             return null;
     }
 /*Изменения Ивана*/
-    public Filter GetFilterByID(int id) throws SQLException {
+    public Filter getFilterByID(int id) throws SQLException {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM 'filter' WHERE id = '" + id + "'");
         Filter filter = new Filter();
         if (resultSet != null) {
@@ -441,7 +441,7 @@ public class JDBCClient {
         statement.execute("DELETE FROM 'ad' WHERE url = '" + url + "'");
     }
 
-    public void adyDeleteByID(int id) throws SQLException {
+    public void adDeleteByID(int id) throws SQLException {
         statement.execute("DELETE FROM 'ad' WHERE id = '" + id + "'");
     }
 
@@ -504,9 +504,9 @@ public class JDBCClient {
         try {
             resultSet = statement.executeQuery("SELECT id FROM ad WHERE url = '" + url + "';");
             int a = resultSet.getFetchDirection();
-            return false;
-        } catch (SQLException e) {
             return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 

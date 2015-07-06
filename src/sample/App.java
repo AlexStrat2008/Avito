@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 public class App extends Application {
 
-    public static Filter filter = new Filter("rossiya", 0, 0, true, "transport");
+    public static Filter filter = new Filter("/rossiya/koshki");
     public static ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
     private static MyTrayIcon myTrayIcon;
     private  static AvitoAdsSuperService avitoAdsService;
@@ -41,9 +41,9 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void restartAdsService() {
+    public static void restartAdsService() throws ClassNotFoundException, SQLException{
         if (avitoAdsService != null) avitoAdsService.cancel();
-        avitoAdsService = new AvitoAdsSuperService(filter, null);
+        avitoAdsService = new AvitoAdsSuperService(filter);
         avitoAdsService.setPeriod(ServiceRequestPeriod);
         avitoAdsService.setDelay(Duration.seconds(1));
         avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
@@ -69,7 +69,7 @@ public class App extends Application {
     public static void main(String[] args) {
         try {
             JDBCClient jdbcClient = new JDBCClient();
-            if(jdbcClient.isCatgoryEmpty())
+            if(jdbcClient.isCategoryEmpty())
                 Parse.parseCategories(jdbcClient);
             if(jdbcClient.isCityEmpty()){
                 Parse.parseCities(jdbcClient);
