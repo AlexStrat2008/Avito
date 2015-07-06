@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import sample.Main;
+import sample.App;
 import sample.api.*;
 import sample.models.Filter;
 

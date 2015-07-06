@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.Main;
+import sample.*;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
@@ -111,13 +111,20 @@ public class FilterController {
                     } else if (category.getValue() != null) {
                         categoryValue = categorMap.get(category.getValue().toString());
                     }
-                    long minPrice = Long.parseLong(startPrice.getText());
-                    long maxPrice = Long.parseLong(finishPrice.getText());
+                    long minPrice = 0;
+                    try {
+                        minPrice = Long.parseLong(startPrice.getText());
+                    } catch (Exception e) {}
+                    long maxPrice = 0;
+                    try {
+                        maxPrice = Long.parseLong(finishPrice.getText());
+                    } catch (Exception e) {}
+
                     boolean onlyWithPhoto = photocheck.isSelected();
                     Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
-                    Main.filter = filter;
-                    Main.adsObservableList.clear();
-                    Main.restartAdsService();
+                    App.filter = filter;
+                    App.adsObservableList.clear();
+                    App.restartAdsService();
                     openMainWindow(stageClose);
 
                 } else {
@@ -135,8 +142,10 @@ public class FilterController {
             }
         }
         else{
-//            MainController.httpQuery = urlAd.getText();
-//            System.out.println(MainController.httpQuery);
+            Filter filter = new Filter(urlAd.getText());
+            App.filter = filter;
+            App.adsObservableList.clear();
+            App.restartAdsService();
             openMainWindow(stageClose);
         }
     }
