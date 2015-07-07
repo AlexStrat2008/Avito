@@ -26,8 +26,7 @@ import sample.models.Filter;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class FilterController {
 
@@ -50,6 +49,7 @@ public class FilterController {
     private HashMap<String, String> cityMap;
     private HashMap<String, String> categorMap;
     private HashMap<String, String> subcategorMap = new HashMap<String, String>();
+    private TreeMap<String, String> sortedCityMap;
 
     @FXML
     private void initialize() {
@@ -134,7 +134,7 @@ public class FilterController {
             e.printStackTrace();
         }
 
-        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+        citiescategory.setItems(FXCollections.observableArrayList(sortedCityMap.keySet()));
     }
 
     public void actionSearch(ActionEvent actionEvent) {
@@ -153,7 +153,7 @@ public class FilterController {
             try {
                 if (citiescategory.getValue() != null) {
 
-                    String cityValue = cityMap.get(citiescategory.getValue().toString());
+                    String cityValue = sortedCityMap.get(citiescategory.getValue().toString());
                     String categoryValue = "";
                     if (subcategory.getValue() != null) {
                         categoryValue = subcategorMap.get(subcategory.getValue().toString());
@@ -223,6 +223,7 @@ public class FilterController {
             for (City item : jdbcClient.getCityAll()) {
                 cityMap.put(item.getName(), item.getURL());
             }
+            sortedCityMap = new TreeMap<String, String>(cityMap);
         } catch (SQLException e) {
             e.printStackTrace();
         }
