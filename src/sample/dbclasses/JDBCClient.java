@@ -102,6 +102,7 @@ public class JDBCClient {
                 + "'isPhoto', 'filterURL') VALUES ('" + filter.getCity() + "', '" + filter.getCategory() + "','" + filter.getSubcategory() + "','"
                 + filter.getStartPrice() + "','" + filter.getFinishPrice() + "','" + filter.getIsPhoto() + "','" + filter.getFilterURL() + "'); ";
         statement.execute(query);
+        System.out.println(query + "     ");
     }
 
     public void filterDeleteTable() throws SQLException {
