@@ -22,5 +22,27 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="activation-1.11" level="project" />
+    <orderEntry type="library" name="activation-1.1" level="project" />
+    <orderEntry type="library" name="asm-all-repackaged-2.1.78" level="project" />
+    <orderEntry type="library" name="cglib-2.1.78" level="project" />
+    <orderEntry type="library" name="guava-14.0" level="project" />
+    <orderEntry type="library" name="hk2-api-2.1.78" level="project" />
+    <orderEntry type="library" name="hk2-locator-2.1.78" level="project" />
+    <orderEntry type="library" name="hk2-utils-2.1.78" level="project" />
+    <orderEntry type="library" name="javax.annotation-api-1.2-b02" level="project" />
+    <orderEntry type="library" name="javax.inject-1" level="project" />
+    <orderEntry type="library" name="javax.inject-2.1.78" level="project" />
+    <orderEntry type="library" name="javax.ws.rs-api-2.0.1-javadoc" level="project" />
+    <orderEntry type="library" name="javax.ws.rs-api-2.0.1" level="project" />
+    <orderEntry type="library" name="jax-rs-ri-2.0-rc1" level="project" />
+    <orderEntry type="library" name="jaxb-api-2.1" level="project" />
+    <orderEntry type="library" name="jsoup-1.8.2" level="project" />
+    <orderEntry type="library" name="junit-4.12" level="project" />
+    <orderEntry type="library" name="org.osgi.core-4.2.0" level="project" />
+    <orderEntry type="library" name="persistence-api-1.0" level="project" />
+    <orderEntry type="library" name="sqlite-jdbc-3.8.10.1" level="project" />
+    <orderEntry type="library" name="stax-api-1.0-2" level="project" />
+    <orderEntry type="library" name="validation-api-1.1.0.CR3" level="project" />
+    <orderEntry type="library" name="yielder-0.3.0" level="project" />
   </component>
 </module>
