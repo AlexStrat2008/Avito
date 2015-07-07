@@ -50,11 +50,12 @@ public class FilterController {
     private HashMap<String, String> categorMap;
     private HashMap<String, String> subcategorMap = new HashMap<String, String>();
     private TreeMap<String, String> sortedCityMap;
+    private TreeMap<String, String> sortedCategorMap;
+    private TreeMap<String, String> sortedSubcategorMap;
 
     @FXML
     private void initialize() {
         JDBCClient jdbcClient;
-        categorMap = new HashMap<String, String>();
         try {
             jdbcClient = new JDBCClient();
 
@@ -73,7 +74,7 @@ public class FilterController {
                 citiescategory.setValue(editFilter.getCity());
 
                 category.setValue(editFilter.getCategory());
-                category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+                category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
 
                 subcategory.setValue(editFilter.getSubcategory());
 
@@ -83,9 +84,10 @@ public class FilterController {
                     subcategorMap.put(item.getName(), item.getUrl());
                     System.out.println("subcategory = " + item.getName());
                 }
-                System.out.println("subcategory = " + subcategorMap.size());
+                sortedSubcategorMap = new TreeMap<String, String>(subcategorMap);
+                System.out.println("subcategory = " + sortedSubcategorMap.size());
 
-                subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+                subcategory.setItems(FXCollections.observableArrayList(sortedSubcategorMap.keySet()));
 
                 startPrice.setText(String.valueOf(editFilter.getStartPrice()));
                 finishPrice.setText(String.valueOf(editFilter.getFinishPrice()));
@@ -95,7 +97,7 @@ public class FilterController {
 
             } else {
                 citiescategory.setItems(FXCollections.observableArrayList(""));
-                category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+                category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
                 subcategory.setItems(FXCollections.observableArrayList(""));
                 startPrice.setText(String.valueOf(""));
                 finishPrice.setText(String.valueOf(""));
@@ -103,11 +105,11 @@ public class FilterController {
                 urlAd.setText("");
 
             }
-           // category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
+           // category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
             category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
                 @Override
                 public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                    String parentKey = categorMap.get(observable.getValue().toString()).toString();
+                    String parentKey = sortedCategorMap.get(observable.getValue().toString()).toString();
                     ArrayList<String> subcatArray = new ArrayList<String>();
                     try {
                         JDBCClient jdbcClient = new JDBCClient();
@@ -115,7 +117,8 @@ public class FilterController {
                         for (Category item : jdbcClient.categorySelectChild(parentKey)) {
                             subcategorMap.put(item.getName(), item.getUrl());
                         }
-                        subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
+                        sortedSubcategorMap = new TreeMap<String, String>(subcategorMap);
+                        subcategory.setItems(FXCollections.observableArrayList(sortedSubcategorMap.keySet()));
                         jdbcClient.closeStatement();
                         jdbcClient.closeConnection();
                     } catch (SQLException e) {
@@ -158,7 +161,7 @@ public class FilterController {
                     if (subcategory.getValue() != null) {
                         categoryValue = subcategorMap.get(subcategory.getValue().toString());
                     } else if (category.getValue() != null) {
-                        categoryValue = categorMap.get(category.getValue().toString());
+                        categoryValue = sortedCategorMap.get(category.getValue().toString());
                     }
                     long minPrice = 0;
                     try {
@@ -208,10 +211,12 @@ public class FilterController {
     }
 
     private void loadCategories(JDBCClient jdbcClient) {
+        categorMap = new HashMap<String, String>();
         try {
             for (Category item : jdbcClient.categorySelectChild("1")) {
                 categorMap.put(item.getName(), item.getUrl());
             }
+            sortedCategorMap = new TreeMap<String, String>(categorMap);
         } catch (SQLException e) {
             e.printStackTrace();
         }
