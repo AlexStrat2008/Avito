@@ -168,7 +168,7 @@ public class FilterController {
                     try {
                         minPrice = Long.parseLong(startPrice.getText());
                     } catch (Exception e) {}
-                    long maxPrice = 0;
+                    long maxPrice = 1000000000;
                     try {
                         maxPrice = Long.parseLong(finishPrice.getText());
                     } catch (Exception e) {}

@@ -21,7 +21,7 @@ public class Parse {
             Elements categories = doc.select("dl");
             for (org.jsoup.nodes.Element categor : categories) {
                 org.jsoup.nodes.Element title = categor.select("dt").first();
-                Elements _categories = categor.select("dd");
+                Elements _categories = categor.select("dd:not(dd.params*)");
                 String parentUrl = title.select("a").first().attr("href");
                 try {
                     client.categoryAdd(title.select("a").first().html(), title.select("a").first().attr("href").substring(9),"1");

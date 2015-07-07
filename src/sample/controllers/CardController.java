@@ -58,7 +58,7 @@ public class CardController {
         try {
             JDBCClient jdbcClient = new JDBCClient();
             if (saveAd.isSelected() && jdbcClient.isAdExistsByUrl(urlAd.getText()))
-                jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText());
+            {}//   jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText());
             else
                 jdbcClient.adDeleteByURL(urlAd.getText());
             jdbcClient.closeStatement();
