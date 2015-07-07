@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -55,15 +57,25 @@ public class App extends Application {
         Platform.setImplicitExit(false);
         this.primaryStage = primaryStage;
         myTrayIcon = new MyTrayIcon(this);
+        refreshApp();
+    }
 
-        if(loadFilter()) {
-            System.out.println(filter.toRawQuery());
-            restartAdsService();
-            openMainWindow();
-        } else {
-            openFilterWindow();
+    public void refreshApp() {
+        try {
+            primaryStage.close();
+            adsObservableList.clear();
+            if(loadFilter()) {
+                restartAdsService();
+                openMainWindow();
+            } else {
+                openFilterWindow();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Critical Error");
+            alert.showAndWait();
+            System.exit(-1);
         }
-
     }
 
     public void openFilterWindow() {
@@ -131,22 +143,24 @@ public class App extends Application {
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                myTrayIcon.newAd(((ObservableList) event.getSource().getValue()).size());
+                int size = ((ObservableList) event.getSource().getValue()).size();
+                if (size > 0) {
+                    myTrayIcon.newAd(((ObservableList) event.getSource().getValue()).size());
+                }
+
             }
         });
         avitoAdsService.start();
     }
 
-    public void refreshApp(Filter filter) {
-
-    }
-
     private boolean loadFilter() throws SQLException, ClassNotFoundException {
         JDBCClient jdbcClient = new JDBCClient();
         if (jdbcClient.isFilterEmpty()) {
+            jdbcClient.closeConnection();
             return false;
         } else {
             sample.dbclasses.Filter dbFilter = jdbcClient.getFilterByID(1);
+            jdbcClient.closeConnection();
             Filter filter;
             String rawQuery = dbFilter.getFilterURL();
             if (rawQuery != null && !rawQuery.isEmpty()) {
@@ -154,6 +168,7 @@ public class App extends Application {
             } else {
 
                 String subcategory = dbFilter.getSubcategory();
+                System.out.println(dbFilter.getFinishPrice());
                 filter = new Filter(dbFilter.getCity(),
                                     dbFilter.getFinishPrice().longValue(),
                                     dbFilter.getStartPrice().longValue(),

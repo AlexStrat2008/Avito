@@ -429,7 +429,7 @@ public class JDBCClient {
     }
 
     public void adDeleteTable() throws SQLException {
-        statement.execute("DROP TABLE filter;");
+        statement.execute("DROP TABLE ad;");
     }
 
     public Integer getAdIDByURL(String url) throws SQLException {

@@ -29,7 +29,6 @@ public class AvitoAdsSuperService extends ScheduledService {
 
     public AvitoAdsSuperService(Filter filter) throws ClassNotFoundException, SQLException{
         this.filter = filter;
-        this.jdbcClient = new JDBCClient();
     }
 
     private boolean isNew(AvitoAd ad) {
@@ -43,7 +42,7 @@ public class AvitoAdsSuperService extends ScheduledService {
             protected Object call() throws Exception {
 
                 newDataList.clear();
-
+                jdbcClient = new JDBCClient();
                 for (AvitoAd ad : avitoApi.getAdsYield(filter)) {
                     if (isNew(ad)) {
 
@@ -60,6 +59,8 @@ public class AvitoAdsSuperService extends ScheduledService {
                         );
                     }
                 }
+                jdbcClient.closeStatement();
+                jdbcClient.closeConnection();
                 return getNewDataList();
             }
         };

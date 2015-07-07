@@ -44,7 +44,9 @@ public class Filter {
     }
 
     public Filter(String rawQuery) {
-        this.rawQuery = rawQuery==null ? "" : rawQuery;
+        rawQuery = rawQuery==null ? "" : rawQuery;
+        UriBuilder uriBuilder = UriBuilder.fromUri(rawQuery).scheme(null).host(null);
+        this.rawQuery = uriBuilder.build().toString();
     }
 
     public String toRawQuery()
