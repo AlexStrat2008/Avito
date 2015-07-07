@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import org.junit.*;
-import sample.dbclasses.JDBCClientTest;
-import sample.dbclasses.Filter;
 
 public class JDBCClient {
     private static final String JDBC_DRIVER = "org.sqlite.JDBC";

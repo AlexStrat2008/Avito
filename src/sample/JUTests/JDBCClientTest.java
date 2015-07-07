@@ -1,4 +1,4 @@
-package sample.dbclasses;
+package sample.JUTests;
 
 import org.junit.Assert;
 import org.junit.*;
