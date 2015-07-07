@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import sample.api.AvitoAd;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
+import sample.parse.Parse;
 import sample.services.AvitoAdsSuperService;
 import sample.trey.MyTrayIcon;
 
@@ -69,11 +70,11 @@ public class App extends Application {
         try {
             JDBCClient jdbcClient = new JDBCClient();
             System.out.println(jdbcClient.isAdExistsByUrl("qwe"));
-//            if(jdbcClient.isCatgoryEmpty())
-//                Parse.parseCategories(jdbcClient);
-//            if(jdbcClient.isCityEmpty()){
-//                Parse.parseCities(jdbcClient);
-//            }
+            if(jdbcClient.isCatgoryEmpty())
+                Parse.parseCategories(jdbcClient);
+            if(jdbcClient.isCityEmpty()){
+                Parse.parseCities(jdbcClient);
+            }
             jdbcClient.closeStatement();
             jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {
@@ -81,6 +82,6 @@ public class App extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        launch(args);
+        launch(args);
     }
 }
