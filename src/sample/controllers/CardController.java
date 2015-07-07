@@ -59,6 +59,7 @@ public class CardController {
         this.urlAd.setText(url);
         this.urlPhoto.setText(foto == null ? "" : foto.toString());
         this.phoneAd.setText(phone);
+//        this.favoritBottom.setGraphic();
 //        this.saveAd.setSelected(saveAd);
         this.comment.setText(comment);
     }
