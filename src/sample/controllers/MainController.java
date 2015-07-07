@@ -50,9 +50,9 @@ public class MainController {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setTitle("Filter");
+            stage.setTitle("Фильтр");
             stage.show();
-/*Возможность передать значения как на Android'e*/
+/*Р’РѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїРµСЂРµРґР°С‚СЊ Р·РЅР°С‡РµРЅРёСЏ РєР°Рє РЅР° Android'e*/
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -67,7 +67,7 @@ public class MainController {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setTitle("AddFilter");
+            stage.setTitle("Добавить фильтр");
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -82,7 +82,7 @@ public class MainController {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setTitle("Favorites");
+            stage.setTitle("Избранное");
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());

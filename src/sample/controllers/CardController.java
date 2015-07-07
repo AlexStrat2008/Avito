@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import sample.App;
 import sample.dbclasses.JDBCClient;
 
+import javax.print.attribute.standard.Severity;
+import javax.sound.sampled.Control;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -59,6 +61,7 @@ public class CardController {
         this.urlAd.setText(url);
         this.urlPhoto.setText(foto == null ? "" : foto.toString());
         this.phoneAd.setText(phone);
+
 //        this.saveAd.setSelected(saveAd);
         this.comment.setText(comment);
     }
@@ -71,7 +74,15 @@ public class CardController {
         App.hostServices.showDocument("http://www.example.com/");
     }
 
+    //public void onBlaBla(ActionEvent actionEvent){
+     //   int x =5;
+
+       // phoneAd.setText(Integer.toString(x));
+   // }
+
     public void actionFavoritBottom(ActionEvent actionEvent) {
+
+
         try {
             System.out.println(urlAd.getText());
             JDBCClient jdbcClient = new JDBCClient();

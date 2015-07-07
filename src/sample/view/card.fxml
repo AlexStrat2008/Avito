@@ -35,7 +35,7 @@
         </Label>
         <Label fx:id="description" alignment="TOP_LEFT" layoutX="171.0" layoutY="42.0" prefHeight="131.0" prefWidth="300.0" text="Нет описания." wrapText="true" />
         <TextArea fx:id="comment" layoutX="14.0" layoutY="183.0" prefHeight="52.0" prefWidth="237.0" promptText="коментарии..." />
-            <TextField fx:id="phoneAd" layoutX="14.0" layoutY="148.0" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
+            <TextField fx:id="phoneAd" layoutX="14.0" layoutY="148.0" onAction="#onBlaBla" onMouseExited="#id1" onMousePressed="#id1" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
             <TextField fx:id="urlPhoto" layoutX="63.0" layoutY="2.0" prefHeight="25.0" prefWidth="65.0" visible="false" />
             <Button fx:id="favoritBottom" layoutX="345.0" layoutY="197.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#actionFavoritBottom" prefHeight="25.0" prefWidth="25.0">
                <font>

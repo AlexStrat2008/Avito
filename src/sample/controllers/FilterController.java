@@ -235,7 +235,7 @@ public class FilterController {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setTitle("Main");
+            stage.setTitle("Авито Парсер ver.1.1");
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
