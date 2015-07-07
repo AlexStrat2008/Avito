@@ -175,7 +175,7 @@ public class FilterController {
                     App.adsObservableList.clear();
                     App.restartAdsService();
                     openMainWindow(stageClose);
-/*Добавление фильтра в бд*/
+                        /*Добавление фильтра в бд*/
                     JDBCClient jdbcClient = new JDBCClient();
                     jdbcClient.filterDelete();
                     sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
