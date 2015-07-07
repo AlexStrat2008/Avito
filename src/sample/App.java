@@ -33,7 +33,7 @@ public class App extends Application {
     private  static AvitoAdsSuperService avitoAdsService;
     public final static Duration ServiceRequestPeriod = Duration.minutes(1);
     public static HostServices hostServices;
-
+/*коммит*/
     @Override
     public void start(Stage primaryStage) throws Exception {
         restartAdsService();
