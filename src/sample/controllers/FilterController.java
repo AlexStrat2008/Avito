@@ -71,7 +71,6 @@ public class FilterController {
 
                 //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
                 citiescategory.setValue(editFilter.getCity());
-
                 category.setValue(editFilter.getCategory());
                 category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
 

@@ -39,7 +39,7 @@ public class Filter {
     }
     public Filter(Filter filter) {
         this.id = filter.getId();
-        this.city = filter.getCity();
+        this.city = filter.getCity(); System.out.println(city);
         this.category = filter.getCategory();
         this.subcategory = filter.getSubcategory();
         this.startPrice = filter.getStartPrice();

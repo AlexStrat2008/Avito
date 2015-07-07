@@ -23,6 +23,8 @@ public class City {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getURL() { return URL; }
-    public void setURL(String URL) { this.URL = URL; }
+    public String getURL() { return URL;
+
+       }
+    public void setURL(String URL) { this.URL = URL;  }
 }

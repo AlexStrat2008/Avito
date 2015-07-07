@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import sample.custom.NumberTextField?>
-<GridPane alignment="CENTER" hgap="10.0" prefHeight="413.0" prefWidth="374.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.controllers.FilterController">
+
+<GridPane alignment="CENTER" hgap="10.0" prefHeight="413.0" prefWidth="374.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.FilterController">
   <children>
     <AnchorPane prefHeight="402.0" prefWidth="359.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
       <children>

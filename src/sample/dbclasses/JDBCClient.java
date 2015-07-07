@@ -2,6 +2,9 @@ package sample.dbclasses;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import org.junit.*;
+import sample.dbclasses.JDBCClientTest;
 import sample.dbclasses.Filter;
 
 public class JDBCClient {
@@ -24,7 +27,7 @@ public class JDBCClient {
                 " 'name' TEXT, 'url_photo' TEXT, 'price' INT, 'description' TEXT, 'phone' TEXT, " +
                 "'comment' TEXT);");
     }
-
+    @BeforeClass
     public void closeConnection() throws SQLException {
         connection.close();
     }
