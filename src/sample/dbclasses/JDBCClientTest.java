@@ -26,7 +26,8 @@ public class JDBCClientTest extends TestCase {
     }
     @Test
     public void testCloseConnection() throws Exception {
-
+        connection = DriverManager.getConnection("jdbc:sqlite:avitodb.s3db");
+        statement = connection.createStatement();
 
         String DB_URL = "jdbc:sqlite:avitodb.s3db";
         connection = DriverManager.getConnection(DB_URL);
@@ -45,7 +46,7 @@ public class JDBCClientTest extends TestCase {
     @Test
     public void testCloseStatement() throws Exception {
 
-       // connection.
+       statement.close();
 
     }
 
@@ -54,19 +55,20 @@ public class JDBCClientTest extends TestCase {
     @Test
     public void testFilterAdd() throws Exception {
 
-        connection = DriverManager.getConnection("jdbc:sqlite:avitodb.s3db");
-        statement = connection.createStatement();
-
-        statement.execute("CREATE TABLE filter1 ('id' INTEGER PRIMARY KEY, " +
-          "'name' TEXT, 'url' TEXT, 'parent' TEXT);"); System.out.println("Created");
-
-        statement.execute("DROP TABLE filter1");
-        System.out.println("Deleted");
-
     }
 
     @Test
      public void testAdDeleteTable() throws Exception {
 
+    }
+
+    @Test
+    public void testFilterDeleteTable() throws Exception {
+
+        statement.execute("CREATE TABLE filter1 ('id' INTEGER PRIMARY KEY, " +
+                "'name' TEXT, 'url' TEXT, 'parent' TEXT);"); System.out.println("Created");
+
+        statement.execute("DROP TABLE filter1");
+        System.out.println("Deleted");
     }
 }

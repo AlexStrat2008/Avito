@@ -84,17 +84,6 @@ public class MyTrayIcon extends JDialog {
             } catch (AWTException e) {
                 System.err.println(e);
             }
-//            MouseAdapter mouseAdapter = new MouseAdapter() {
-//
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    //systemTray.remove(trayIcon);
-//
-//                    trayIcon.displayMessage("System Tray App","Simple Demo", java.awt.TrayIcon.MessageType.INFO);
-//                }
-//            };
-
-//            trayIcon.addMouseListener(mouseAdapter);
         }
     }
 

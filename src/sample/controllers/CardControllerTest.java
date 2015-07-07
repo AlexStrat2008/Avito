@@ -15,6 +15,8 @@ import static org.junit.Assert.*;
  */
 public class CardControllerTest {
     public Label name;
+    private String text;
+
     @Test
     public void testSetInfo() throws Exception {
         //String name = this.name.setText("");
@@ -25,5 +27,11 @@ public class CardControllerTest {
     @Test
     public void testOnAcionSaveAd() throws Exception {
         JDBCClient jdbc = new JDBCClient();
+    }
+
+    @Test
+    public void testSetInfo1() throws Exception {
+
+
     }
 }
