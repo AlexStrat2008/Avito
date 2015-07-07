@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -34,6 +35,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         restartAdsService();
         Parent root = FXMLLoader.load(getClass().getResource("/sample/view/main.fxml"));
+        Platform.setImplicitExit(false);
         primaryStage.setScene(new Scene(root));
         myTrayIcon = new MyTrayIcon();
         myTrayIcon.createTrayIcon(primaryStage);
@@ -60,7 +62,7 @@ public class App extends Application {
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                myTrayIcon.newAd(((ObservableList)event.getSource().getValue()).size());
+               myTrayIcon.newAd(((ObservableList)event.getSource().getValue()).size());
             }
         });
         avitoAdsService.start();
