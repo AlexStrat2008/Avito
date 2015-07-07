@@ -71,7 +71,7 @@ public class AvitoAd {
     }
 
     public void setUri(URI uri) {
-        this.uri = uri;
+        this.uri = uri;;
     }
 
     public void setDateTime(LocalDateTime dateTime) {

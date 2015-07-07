@@ -1,5 +1,7 @@
 package sample.dbclasses;
 
+import org.junit.Before;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -87,6 +89,8 @@ public class JDBCClient {
     /*
         Фильтр
      */
+
+    @Before
     public void filterAdd(String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
                           boolean isPhoto, String filterURL) throws SQLException {
         String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "

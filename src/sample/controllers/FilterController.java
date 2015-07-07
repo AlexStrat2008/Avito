@@ -71,7 +71,6 @@ public class FilterController {
 
                 //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
                 citiescategory.setValue(editFilter.getCity());
-
                 category.setValue(editFilter.getCategory());
                 category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
 
@@ -164,7 +163,7 @@ public class FilterController {
                     try {
                         minPrice = Long.parseLong(startPrice.getText());
                     } catch (Exception e) {}
-                    long maxPrice = 0;
+                    long maxPrice = 1000000000;
                     try {
                         maxPrice = Long.parseLong(finishPrice.getText());
                     } catch (Exception e) {}
@@ -175,7 +174,7 @@ public class FilterController {
                     App.adsObservableList.clear();
                     App.restartAdsService();
                     openMainWindow(stageClose);
-/*Добавление фильтра в бд*/
+                        /*Добавление фильтра в бд*/
                     JDBCClient jdbcClient = new JDBCClient();
                     jdbcClient.filterDelete();
                     sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
