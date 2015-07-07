@@ -66,7 +66,7 @@ public class MyTrayIcon extends JDialog {
                     });
                 }
             };
-            // меню трея
+            // меню трея//
             PopupMenu popup = new PopupMenu();
 
             MenuItem showItem = new MenuItem("Show");
