@@ -5,7 +5,6 @@ package sample.trey;
  */
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -15,8 +14,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -41,7 +38,7 @@ public class MyTrayIcon extends JDialog {
                 System.out.println(ex);
             }
             //ловим момент закрытия окна
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            stage.setOnCloseRequest(new EventHandler<WindowEvent >() {
                 @Override
                 public void handle(WindowEvent t) {
                     hide(stage);
@@ -53,7 +50,7 @@ public class MyTrayIcon extends JDialog {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     System.exit(0);
                 }
-            };
+                };
             //листнер на событие открытия из трея
             ActionListener showListener = new ActionListener() {
                 @Override
@@ -84,28 +81,28 @@ public class MyTrayIcon extends JDialog {
             } catch (AWTException e) {
                 System.err.println(e);
             }
-//            MouseAdapter mouseAdapter = new MouseAdapter() {
-//
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    //systemTray.remove(trayIcon);
-//
-//                    trayIcon.displayMessage("System Tray App","Simple Demo", java.awt.TrayIcon.MessageType.INFO);
-//                }
-//            };
+           // MouseAdapter mouseAdapter = new MouseAdapter() {
 
-//            trayIcon.addMouseListener(mouseAdapter);
+              // @Override
+             //   public void mouseClicked(MouseEvent e) {
+                    //systemTray.remove(trayIcon);
+
+                 //   trayIcon.displayMessage("System Tray App","Simple Demo", java.awt.TrayIcon.MessageType.INFO);
+               // }
+           // };
+
+           // trayIcon.addMouseListener(mouseAdapter);
         }
     }
 
-    public void newAd(int count){
+   public void newAd(int count){
         trayIcon.displayMessage("Уведомление", "Новых объявлений: " + count, java.awt.TrayIcon.MessageType.INFO);
     }
 
     public void showProgramIsMinimizedMsg() {
         if (true) {
-            trayIcon.displayMessage("Some message.",
-                    "Some other message.",
+            trayIcon.displayMessage("Вы свернули приложение",
+                    "Здесь вы можете увидеть уведомления о новых объявлениях.",
                     TrayIcon.MessageType.INFO);
            // firstTime = false;
         }

@@ -1,5 +1,7 @@
 package sample.dbclasses;
 
+import org.junit.Before;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -87,6 +89,8 @@ public class JDBCClient {
     /*
         Фильтр
      */
+
+    @Before
     public void filterAdd(String city, String category, String subcategory, Integer startPrice, Integer finishPrice,
                           boolean isPhoto, String filterURL) throws SQLException {
         String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "
@@ -514,6 +518,21 @@ public class JDBCClient {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    public boolean isAdExistsByUrlFavorit(String url) {
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT favorit FROM ad WHERE url = '" + url + "';");
+            return Boolean.valueOf(resultSet.getString("favorit"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void changeAdFavorit(String url, boolean favorit) throws SQLException {
+            statement.execute("UPDATE ad SET favorit = '" + favorit + "' WHERE url = '" + url + "';");
     }
 
     public ArrayList<Ad> getAdAll() throws SQLException {

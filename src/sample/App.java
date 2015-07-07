@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -12,17 +13,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import sample.api.AvitoAd;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 import sample.parse.Parse;
 import sample.services.AvitoAdsSuperService;
 import sample.trey.MyTrayIcon;
+import sun.util.logging.PlatformLogger;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class App extends Application {
@@ -38,6 +36,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         restartAdsService();
         Parent root = FXMLLoader.load(getClass().getResource("/sample/view/main.fxml"));
+        Platform.setImplicitExit(false);
         primaryStage.setScene(new Scene(root));
         myTrayIcon = new MyTrayIcon();
         myTrayIcon.createTrayIcon(primaryStage);
@@ -64,14 +63,14 @@ public class App extends Application {
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                myTrayIcon.newAd(((ObservableList)event.getSource().getValue()).size());
+               myTrayIcon.newAd(((ObservableList)event.getSource().getValue()).size());
             }
         });
         avitoAdsService.start();
     }
 
     public static void main(String[] args) {
-
+        com.sun.javafx.Logging.getCSSLogger().setLevel(PlatformLogger.Level.OFF);
         try {
             JDBCClient jdbcClient = new JDBCClient();
             System.out.println(jdbcClient.isAdExistsByUrl("qwe"));

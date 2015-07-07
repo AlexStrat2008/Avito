@@ -28,6 +28,7 @@ import java.util.List;
 public class AvitoApi {
 
     private final static URI hostURL = URI.create("http://avito.ru/");
+
     private final static HashMap<String, Integer> months = new HashMap<String, Integer>() {{
         put("января", 1);
         put("февраля", 2);
@@ -56,6 +57,7 @@ public class AvitoApi {
                             getPhotoFromElement(item),
                             getAdDescription(uri),
                             uri,
+
                             getDateTimeFromElement(item));
 
                     yield.returning(ad);
