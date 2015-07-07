@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="485.0" style="-fx-background-color: #87CEFA" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <Pane prefHeight="249.0" prefWidth="485.0">
       <children>
@@ -21,7 +21,7 @@
             <Font name="System Bold Italic" size="14.0" />
           </font>
         </Label>
-        <Button fx:id="adMore" layoutX="377.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionAdMore" prefHeight="25.9609375" style="-fx-background-color: #1E90FF" text="Подробнее" textFill="WHITE">
+        <Button fx:id="adMore" layoutX="377.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionAdMore" prefHeight="25.9609375" text="Подробнее">
           <font>
             <Font name="System Bold" size="12.0" />
           </font>

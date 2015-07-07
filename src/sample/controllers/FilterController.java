@@ -16,11 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.*;
+import sample.App;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
@@ -85,7 +82,6 @@ public class FilterController {
                 for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
                     subcategorMap.put(item.getName(), item.getUrl());
                     System.out.println("subcategory = " + item.getName());
-
                 }
                 System.out.println("subcategory = " + subcategorMap.size());
 
@@ -189,14 +185,14 @@ public class FilterController {
                     jdbcClient.closeConnection();
 /*-----------------------*/
                 } else {
-                    final Stage dialog = new Stage();
-                    dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner(stageClose);
-                    VBox dialogVbox = new VBox(20);
-                    dialogVbox.getChildren().add(new Text("Выберите город"));
-                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
-                    dialog.setScene(dialogScene);
-                    dialog.show();
+//                    final Stage dialog = new Stage();
+//                    dialog.initModality(Modality.APPLICATION_MODAL);
+//                    dialog.initOwner(stageClose);
+//                    VBox dialogVbox = new VBox(20);
+//                    dialogVbox.getChildren().add(new Text("Выберите город"));
+//                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
+//                    dialog.setScene(dialogScene);
+//                    dialog.show();
                 }
             } catch (Exception e) {
                 System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
