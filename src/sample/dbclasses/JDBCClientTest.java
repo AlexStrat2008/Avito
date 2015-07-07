@@ -18,14 +18,11 @@ public class JDBCClientTest extends TestCase {
     @Test
     public void testDropAllTable() throws Exception {
 
-
-
     }
     @Test
     public void testCloseConnection() throws Exception {
         connection = DriverManager.getConnection("jdbc:sqlite:avitodb.s3db");
         statement = connection.createStatement();
-
         String DB_URL = "jdbc:sqlite:avitodb.s3db";
         connection = DriverManager.getConnection(DB_URL);
 
@@ -35,19 +32,12 @@ public class JDBCClientTest extends TestCase {
             System.out.println("Connection is opened");
             //Assert.fail("Fail test!");
         }
-
     }
-
-
 
     @Test
     public void testCloseStatement() throws Exception {
-
        statement.close();
-
     }
-
-
 
     @Test
     public void testFilterAdd() throws Exception {
