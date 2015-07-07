@@ -6,9 +6,11 @@ import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import sample.api.AvitoAd;
 import sample.api.AvitoApi;
+import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 
 import java.net.URI;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
@@ -17,17 +19,20 @@ import java.time.LocalDateTime;
 public class AvitoAdsSuperService extends ScheduledService {
 
     private Filter filter;
-    private LocalDateTime minDateTime;
-    private final static AvitoApi avitoApi = new AvitoApi();
+    private AvitoApi avitoApi = new AvitoApi();
     private ObservableList<AvitoAd> newDataList = FXCollections.observableArrayList();
+    private JDBCClient jdbcClient;
 
     public ObservableList<AvitoAd> getNewDataList() {
         return newDataList;
     }
 
-    public AvitoAdsSuperService(Filter filter, LocalDateTime minDateTime) {
+    public AvitoAdsSuperService(Filter filter) throws ClassNotFoundException, SQLException{
         this.filter = filter;
-        this.minDateTime = minDateTime;
+    }
+
+    private boolean isNew(AvitoAd ad) {
+        return !jdbcClient.isAdExistsByUrl(ad.getURI().toString());
     }
 
     @Override
@@ -37,21 +42,25 @@ public class AvitoAdsSuperService extends ScheduledService {
             protected Object call() throws Exception {
 
                 newDataList.clear();
+                jdbcClient = new JDBCClient();
+                for (AvitoAd ad : avitoApi.getAdsYield(filter)) {
+                    if (isNew(ad)) {
 
-                LocalDateTime newestDateTime = minDateTime;
-
-                for(AvitoAd ad : avitoApi.getAdsYield(filter)) {
-
-                    if (minDateTime == null || ad.getDateTime().compareTo(minDateTime) >=0) {
                         newDataList.add(ad);
-                    }
-
-                    if (newestDateTime == null || ad.getDateTime().compareTo(newestDateTime) > 0) {
-                        newestDateTime = ad.getDateTime();
+                        jdbcClient.adAdd(
+                                ad.getURI() == null ? "" : ad.getURI().toString(),
+                                ad.getName(),
+                                ad.getPhoto() == null ? "" : ad.getPhoto().toString(),
+                                //блять не могли long в базе сделать
+                                ad.getPrice() == null ? 0 : ad.getPrice().intValue(),
+                                ad.getDescription(),
+                                "",
+                                ""
+                        );
                     }
                 }
-
-                minDateTime = newestDateTime;
+                jdbcClient.closeStatement();
+                jdbcClient.closeConnection();
                 return getNewDataList();
             }
         };

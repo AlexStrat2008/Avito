@@ -9,25 +9,26 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.App;
+import javafx.scene.control.*;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+//Переделать нахуй, полный пиздец
 public class FilterController {
 
     @FXML
@@ -53,6 +54,52 @@ public class FilterController {
     private TreeMap<String, String> sortedCategorMap;
     private TreeMap<String, String> sortedSubcategorMap;
 
+    private App app;
+
+    public void setApp(App app) {
+        this.app = app;
+        setView();
+    }
+
+    private void setView() {
+        Filter filter = app.getFilter();
+        ArrayList<Category> allCategories = new ArrayList<>();
+        try {
+            JDBCClient client = new JDBCClient();
+            allCategories = client.getCategoryAll();
+            client.closeConnection();
+        } catch (Exception e) {}
+
+        if (filter != null) {
+            urlAd.setText(filter.toRawQuery());
+            finishPrice.setText(filter.getMaxPrice() > 0 ? filter.getMaxPrice() + "" : "");
+            startPrice.setText(filter.getMinPrice() > 0 ? filter.getMinPrice() + "" : "");
+            photocheck.setSelected(filter.isOnlyWithPhoto());
+
+            String city_value = filter.getCity() != null ? filter.getCity() : "";
+
+            for (Map.Entry<String, String> c : cityMap.entrySet()) {
+                if (c.getValue().equals(city_value)) {
+                    citiescategory.setValue(c.getKey());
+                }
+            }
+            String category_value = filter.getCategory() != null ? filter.getCategory() : "";
+            Category c = allCategories.stream().filter(x -> x.getUrl().equals(category_value)).findFirst().orElse(null);
+            System.out.println(c);
+            if (c != null) {
+                if (c.getParent().equals("1")) {
+                    category.setValue(c.getName());
+                } else {
+                    Category p = allCategories.stream().filter(x -> x.getUrl().equals(c.getParent())).findFirst().orElse(null);
+                    if (p != null) {
+                        category.setValue(p.getName());
+                    }
+                    subcategory.setValue(c.getName());
+                }
+            }
+        }
+    }
+
     @FXML
     private void initialize() {
         JDBCClient jdbcClient;
@@ -62,49 +109,60 @@ public class FilterController {
             loadCategories(jdbcClient);
             loadCities(jdbcClient);
             sample.dbclasses.Filter editFilter;
-            if (!jdbcClient.getFilter().isEmpty()) {
+            if (!jdbcClient.isFilterEmpty()) {
                 System.out.println("filter is not empty" + jdbcClient.getFilter().size());
-//                jdbcClient.getFilter();
-                editFilter = new sample.dbclasses.Filter(jdbcClient.getFilter().get(0));
-//                editFilter = jdbcClient.getFilterByID(MainController.idFileter).get(0);
-
+                editFilter = new sample.dbclasses.Filter(jdbcClient.getFilterByID(1));
                 System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
 
-                //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
-                citiescategory.setValue(editFilter.getCity());
-                category.setValue(editFilter.getCategory());
+                citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
+
+                //citiescategory.setValue(editFilter.getCity());
+
+                //category.setValue(editFilter.getCategory());
                 category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
 
-                subcategory.setValue(editFilter.getSubcategory());
+                //subcategory.setValue(editFilter.getSubcategory());
 
-                subcategorMap = new HashMap<String, String>();
-                System.out.println(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl());
-                for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
+                //System.out.println(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl());
+                /*for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
                     subcategorMap.put(item.getName(), item.getUrl());
                     System.out.println("subcategory = " + item.getName());
                 }
                 sortedSubcategorMap = new TreeMap<String, String>(subcategorMap);
                 System.out.println("subcategory = " + sortedSubcategorMap.size());
 
-                subcategory.setItems(FXCollections.observableArrayList(sortedSubcategorMap.keySet()));
+                }*/
+                //System.out.println("subcategory = " + subcategorMap.size());
 
-                startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                finishPrice.setText(String.valueOf(editFilter.getFinishPrice()));
-                photocheck.setSelected(editFilter.getIsPhoto());
-                urlAd.setText(String.valueOf(editFilter.getFilterURL()));
+//                subcategory.setItems(FXCollections.observableArrayList(sortedSubcategorMap.keySet()));
+
+//<<<<<<< HEAD
+//                startPrice.setText(String.valueOf(editFilter.getStartPrice()));
+//                finishPrice.setText(String.valueOf(editFilter.getFinishPrice()));
+//                photocheck.setSelected(editFilter.getIsPhoto());
+//                urlAd.setText(String.valueOf(editFilter.getFilterURL()));
+//
+//
+//            } else {
+//                citiescategory.setItems(FXCollections.observableArrayList(""));
+//                category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
+//                subcategory.setItems(FXCollections.observableArrayList(""));
+//=======
 
 
+                subcategorMap = new HashMap<String, String>();
             } else {
-                citiescategory.setItems(FXCollections.observableArrayList(""));
-                category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
-                subcategory.setItems(FXCollections.observableArrayList(""));
+                //citiescategory.setItems(FXCollections.observableArrayList(""));
+                //category.setItems(FXCollections.observableArrayList(""));
+                //subcategory.setItems(FXCollections.observableArrayList(""));
+//>>>>>>> nubl
                 startPrice.setText(String.valueOf(""));
                 finishPrice.setText(String.valueOf(""));
                 photocheck.setSelected(false);
                 urlAd.setText("");
 
             }
-           // category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
+            // category.setItems(FXCollections.observableArrayList(sortedCategorMap.keySet()));
             category.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
                 @Override
                 public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -136,76 +194,138 @@ public class FilterController {
             e.printStackTrace();
         }
 
-        citiescategory.setItems(FXCollections.observableArrayList(sortedCityMap.keySet()));
+//<<<<<<< HEAD
+//        citiescategory.setItems(FXCollections.observableArrayList(sortedCityMap.keySet()));
+//    }
+//
+//    public void actionSearch(ActionEvent actionEvent) {
+//        try {
+//            JDBCClient jdbcClient = new JDBCClient();
+//            jdbcClient.closeStatement();
+//            jdbcClient.closeConnection();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//=======
+        citiescategory.setItems(FXCollections.observableArrayList(cityMap.keySet()));
+        category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
     }
 
     public void actionSearch(ActionEvent actionEvent) {
-        try {
-            JDBCClient jdbcClient = new JDBCClient();
-            jdbcClient.closeStatement();
-            jdbcClient.closeConnection();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//>>>>>>> nubl
 
         Stage stageClose = (Stage) toSearch.getScene().getWindow();
-        if(urlAd.getText().isEmpty()) {
-            try {
-                if (citiescategory.getValue() != null) {
 
-                    String cityValue = sortedCityMap.get(citiescategory.getValue().toString());
-                    String categoryValue = "";
-                    if (subcategory.getValue() != null) {
-                        categoryValue = subcategorMap.get(subcategory.getValue().toString());
-                    } else if (category.getValue() != null) {
-                        categoryValue = sortedCategorMap.get(category.getValue().toString());
-                    }
-                    long minPrice = 0;
-                    try {
-                        minPrice = Long.parseLong(startPrice.getText());
-                    } catch (Exception e) {}
-                    long maxPrice = 1000000000;
-                    try {
-                        maxPrice = Long.parseLong(finishPrice.getText());
-                    } catch (Exception e) {}
+        if (urlAd.getText().isEmpty()) {
+//<<<<<<< HEAD
+//            try {
+//                if (citiescategory.getValue() != null) {
+//
+//                    String cityValue = sortedCityMap.get(citiescategory.getValue().toString());
+//                    String categoryValue = "";
+//                    if (subcategory.getValue() != null) {
+//                        categoryValue = subcategorMap.get(subcategory.getValue().toString());
+//                    } else if (category.getValue() != null) {
+//                        categoryValue = sortedCategorMap.get(category.getValue().toString());
+//                    }
+//                    long minPrice = 0;
+//                    try {
+//                        minPrice = Long.parseLong(startPrice.getText());
+//                    } catch (Exception e) {}
+//                    long maxPrice = 1000000000;
+//                    try {
+//                        maxPrice = Long.parseLong(finishPrice.getText());
+//                    } catch (Exception e) {}
+//
+//                    boolean onlyWithPhoto = photocheck.isSelected();
+//                    Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
+//                    App.filter = filter;
+//                    App.adsObservableList.clear();
+//                    App.restartAdsService();
+//                    openMainWindow(stageClose);
+//                        /*Добавление фильтра в бд*/
+//                    JDBCClient jdbcClient = new JDBCClient();
+//                    jdbcClient.filterDelete();
+//                    sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
+//                            Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
+//=======
+            if (citiescategory.getValue() != null) {
+                String cityValue = cityMap.get(citiescategory.getValue().toString());
+                String categoryValue = "";
+                String subcategoryValue = "";
+                if (subcategory.getValue() != null) {
+                    subcategoryValue = subcategorMap.get(subcategory.getValue().toString());
+                }
+                if (category.getValue() != null) {
+                    categoryValue = categorMap.get(category.getValue().toString());
+                }
+                int minPrice = 0;
+                try {
+                    minPrice = Integer.parseInt(startPrice.getText().isEmpty() ? "0" : startPrice.getText());
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Минимальная цена указана неверно");
+                    alert.showAndWait();
+                    return;
+                }
+                int maxPrice = 0;
+                try {
+                    maxPrice = Integer.parseInt(finishPrice.getText().isEmpty() ? "0" : finishPrice.getText());
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Максимальная цена указана неверно");
+                    alert.showAndWait();
+                    return;
+                }
 
-                    boolean onlyWithPhoto = photocheck.isSelected();
-                    Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
-                    App.filter = filter;
-                    App.adsObservableList.clear();
-                    App.restartAdsService();
-                    openMainWindow(stageClose);
-                        /*Добавление фильтра в бд*/
+/*Добавление фильтра в бд*/
+                sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(cityValue, categoryValue.toString(), subcategoryValue.toString(),
+                        minPrice, maxPrice, photocheck.isSelected(), "");
+                try {
                     JDBCClient jdbcClient = new JDBCClient();
-                    jdbcClient.filterDelete();
-                    sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
-                            Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
+                    jdbcClient.filterDeleteTable();
+                    jdbcClient.adDeleteTable();
+                    jdbcClient.closeStatement();
+                    jdbcClient.closeConnection();
+                    jdbcClient = new JDBCClient();
+//>>>>>>> nubl
                     jdbcClient.filterAdd(filterBD);
                     jdbcClient.closeStatement();
                     jdbcClient.closeConnection();
-/*-----------------------*/
-                } else {
-//                    final Stage dialog = new Stage();
-//                    dialog.initModality(Modality.APPLICATION_MODAL);
-//                    dialog.initOwner(stageClose);
-//                    VBox dialogVbox = new VBox(20);
-//                    dialogVbox.getChildren().add(new Text("Выберите город"));
-//                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
-//                    dialog.setScene(dialogScene);
-//                    dialog.show();
+
+                    stageClose.close();
+                    app.refreshApp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    stageClose.close();
+                    app.refreshApp();
                 }
-            } catch (Exception e) {
-                System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Обязательно укажите город");
+                alert.showAndWait();
+                return;
             }
-        }
-        else{
+        } else {
             Filter filter = new Filter(urlAd.getText());
-            App.filter = filter;
-            App.adsObservableList.clear();
-            App.restartAdsService();
-            openMainWindow(stageClose);
+            sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter("", "", "", 0, 0, false, filter.toRawQuery());
+            try {
+                JDBCClient jdbcClient = new JDBCClient();
+                jdbcClient = new JDBCClient();
+                jdbcClient.filterDeleteTable();
+                jdbcClient.adDeleteTable();
+                jdbcClient.closeStatement();
+                jdbcClient.closeConnection();
+                jdbcClient = new JDBCClient();
+                jdbcClient.filterAdd(filterBD);
+                jdbcClient.closeStatement();
+                jdbcClient.closeConnection();
+                stageClose.close();
+                app.refreshApp();
+            } catch (Exception e) {
+                e.printStackTrace();
+                stageClose.close();
+                app.refreshApp();
+            }
         }
     }
 
@@ -232,20 +352,4 @@ public class FilterController {
             e.printStackTrace();
         }
     }
-
-    private void openMainWindow(Stage stageClose) {
-        Parent parent = null;
-        try {
-            parent = FXMLLoader.load(getClass().getResource("/sample/view/main.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle("Main");
-            stage.show();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        stageClose.close();
-    }
-
 }

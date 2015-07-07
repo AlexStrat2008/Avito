@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sample.App;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,15 +23,21 @@ import java.io.IOException;
  * Created by MrTreb on 03.07.2015.
  */
 public class MyTrayIcon extends JDialog {
+
     private TrayIcon trayIcon;
+    private App app;
 
-    public void newAdd(){
-
+    public MyTrayIcon(App app) {
+        this.app = app;
+        createTrayIcon();
     }
-    public void createTrayIcon(final Stage stage) {
-        if (SystemTray.isSupported()) {
-            SystemTray tray = SystemTray.getSystemTray(); //подгрузили систем трей для работы
 
+    private void createTrayIcon() {
+        if (SystemTray.isSupported()) {
+
+            Stage stage = app.getPrimaryStage();
+
+            SystemTray tray = SystemTray.getSystemTray(); //подгрузили систем трей для работы
             java.awt.Image image = null; //мутим изображение иконки
             try {
                 image = ImageIO.read(new File("src/sexy_girl.png"));
@@ -55,10 +62,15 @@ public class MyTrayIcon extends JDialog {
             ActionListener showListener = new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    System.out.println("ASFSASFFSAFAF");
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            stage.show();
+                            try {
+                                app.openMainWindow();
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
                         }
                     });
                 }
