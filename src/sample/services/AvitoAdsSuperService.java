@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class AvitoAdsSuperService extends ScheduledService {
 
     private Filter filter;
-    private final static AvitoApi avitoApi = new AvitoApi();
+    private AvitoApi avitoApi = new AvitoApi();
     private ObservableList<AvitoAd> newDataList = FXCollections.observableArrayList();
     private JDBCClient jdbcClient;
 
@@ -46,7 +46,7 @@ public class AvitoAdsSuperService extends ScheduledService {
 
                 for (AvitoAd ad : avitoApi.getAdsYield(filter)) {
                     if (isNew(ad)) {
-                        System.out.println(ad);
+
                         newDataList.add(ad);
                         jdbcClient.adAdd(
                                 ad.getURI() == null ? "" : ad.getURI().toString(),

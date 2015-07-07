@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.sqlite.JDBC;
 import sample.*;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class FilterController {
 
@@ -51,8 +54,54 @@ public class FilterController {
     private HashMap<String, String> categorMap;
     private HashMap<String, String> subcategorMap = new HashMap<String, String>();
 
+    private App app;
+
+    public void setApp(App app) {
+        this.app = app;
+        setView();
+    }
+
+    private void setView() {
+        Filter filter = app.getFilter();
+
+        urlAd.setText(filter.toRawQuery());
+            //need parsing
+        finishPrice.setText(filter.getMaxPrice() > 0 ? filter.getMaxPrice() + "" : "");
+        startPrice.setText(filter.getMinPrice() > 0 ? filter.getMinPrice() + "" : "");
+        photocheck.setSelected(filter.isOnlyWithPhoto());
+
+        String city_value = filter.getCity() != null? filter.getCity() : "";
+
+        for (Map.Entry<String, String> c : cityMap.entrySet()) {
+            if (c.getValue().equals(city_value)) {
+                citiescategory.setValue(c.getKey());
+            }
+        }
+//Я не смог исправить все это говно, поэтому добавил еще больше говна
+        String category_value = filter.getCategory() != null? filter.getCategory() : "";
+
+        try {
+            JDBCClient client = new JDBCClient();
+            ArrayList<Category> allCategories = client.getCategoryAll();
+            Category c = allCategories.stream().filter(x -> x.getUrl().equals(category_value)).findFirst().get();
+            System.out.println(c);
+            if (c.getParent().equals("1")) {
+                category.setValue(c.getName());
+            } else {
+                Category p = allCategories.stream().filter(x -> x.getUrl().equals(c.getParent())).findFirst().get();
+                category.setValue(p.getName());
+                subcategory.setValue(c.getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void initialize() {
+
+        //VANYA I LESHA,  BLYAT, CHE ZA GOVNO?! KAK TAKOE MOZHNO BYLO NAPISAT?!!
+
         JDBCClient jdbcClient;
         categorMap = new HashMap<String, String>();
         try {
@@ -60,35 +109,33 @@ public class FilterController {
 
             loadCategories(jdbcClient);
             loadCities(jdbcClient);
-            sample.dbclasses.Filter editFilter;
+            //sample.dbclasses.Filter editFilter;
             if (!jdbcClient.getFilter().isEmpty()) {
-                System.out.println("filter is not empty" + jdbcClient.getFilter().size());
-                editFilter = new sample.dbclasses.Filter(jdbcClient.getFilterByID(1));
-                System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
+                //System.out.println("filter is not empty" + jdbcClient.getFilter().size());
+                //editFilter = new sample.dbclasses.Filter(jdbcClient.getFilterByID(1));
+                //System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
 
                 //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
-                citiescategory.setValue(editFilter.getCity());
 
-                category.setValue(editFilter.getCategory());
+                //citiescategory.setValue(editFilter.getCity());
+
+                //category.setValue(editFilter.getCategory());
                 category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
 
-                subcategory.setValue(editFilter.getSubcategory());
+                //subcategory.setValue(editFilter.getSubcategory());
 
                 subcategorMap = new HashMap<String, String>();
-                System.out.println(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl());
-                for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
+                //System.out.println(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl());
+                /*for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
                     subcategorMap.put(item.getName(), item.getUrl());
                     System.out.println("subcategory = " + item.getName());
 
-                }
+                }*/
                 System.out.println("subcategory = " + subcategorMap.size());
 
                 subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
 
-                startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
-                photocheck.setSelected(editFilter.getIsPhoto());
-                urlAd.setText(String.valueOf(editFilter.getFilterURL()));
+
 
 
             } else {
@@ -163,9 +210,9 @@ public class FilterController {
 
                     boolean onlyWithPhoto = photocheck.isSelected();
                     Filter filter = new Filter(cityValue, maxPrice, minPrice, onlyWithPhoto, categoryValue);
-                    App.filter = filter;
-                    App.adsObservableList.clear();
-                    App.restartAdsService();
+                    //App.filter = filter;
+                    //App.adsObservableList.clear();
+                    //App.restartAdsService();
                     openMainWindow(stageClose);
 /*Добавление фильтра в бд*/
                     /*JDBCClient jdbcClient = new JDBCClient();
@@ -193,10 +240,10 @@ public class FilterController {
         }
         else{
             Filter filter = new Filter(urlAd.getText());
-            App.filter = filter;
-            App.adsObservableList.clear();
+            //App.filter = filter;
+            //App.adsObservableList.clear();
             //App.restartAdsService();
-            openMainWindow(stageClose);
+            //openMainWindow(stageClose);
         }
     }
 

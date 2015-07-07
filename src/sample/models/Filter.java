@@ -15,6 +15,26 @@ public class Filter {
     private String category;
     private String rawQuery;
 
+    public String getCity() {
+        return city;
+    }
+
+    public long getMaxPrice() {
+        return maxPrice;
+    }
+
+    public long getMinPrice() {
+        return minPrice;
+    }
+
+    public boolean isOnlyWithPhoto() {
+        return onlyWithPhoto;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
     public Filter(String city, long maxPrice, long minPrice, boolean onlyWithPhoto, String category) {
         this.city = city;
         this.maxPrice = maxPrice;
