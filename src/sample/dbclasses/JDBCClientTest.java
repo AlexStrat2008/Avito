@@ -3,9 +3,6 @@ package sample.dbclasses;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import sample.dbclasses.JDBCClient;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
