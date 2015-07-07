@@ -20,7 +20,7 @@ public class ListViewCell extends ListCell<AvitoAd> {
                     item.getPrice(),
                     item.getPhoto() != null ? item.getPhoto().toString() : "",
                     item.getURI().toString(),
-                    "", false, "");
+                    "", "", false);
             try {
                 setGraphic(cardController.getItem());
             } catch (Exception e) {

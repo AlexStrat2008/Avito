@@ -1,8 +1,12 @@
 package sample.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,11 +26,13 @@ public class CardController {
     public Label description;
     public Label name;
     public TextField phoneAd;
-    public CheckBox saveAd;
     public TextField urlAd;
     public TextField urlPhoto;
     public TextArea comment;
     public Button adMore;
+    public Button favoritBottom;
+    private Image star2;
+    private Image star;
 
     public CardController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sample/view/card.fxml"));
@@ -38,7 +44,14 @@ public class CardController {
         }
     }
 
-    public void setInfo(String name, String description, Long price, String foto, String url, String comment, boolean saveAd, String phone) {
+    @FXML
+    private void initialize() {
+        star2 = new Image(getClass().getResourceAsStream("/sample/image/star2.png"));
+        star = new Image(getClass().getResourceAsStream("/sample/image/star.png"));
+        favoritBottom.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/sample/image/star2.png"))));
+    }
+
+    public void setInfo(String name, String description, Long price, String foto, String url, String comment, String phone, boolean saveAd) {
         this.description.setText(description);
         this.price.setText(price != null ? price.toString() : "--");
         this.foto.setImage(new Image(foto == null || foto.isEmpty() ? "/sample/image/nophoto.jpg" : foto));
@@ -46,7 +59,7 @@ public class CardController {
         this.urlAd.setText(url);
         this.urlPhoto.setText(foto == null ? "" : foto.toString());
         this.phoneAd.setText(phone);
-        this.saveAd.setSelected(saveAd);
+//        this.saveAd.setSelected(saveAd);
         this.comment.setText(comment);
     }
 
@@ -54,13 +67,22 @@ public class CardController {
         return itemPane;
     }
 
-    public void onAcionSaveAd(ActionEvent actionEvent) {
+    public void actionAdMore(ActionEvent actionEvent){
+        App.hostServices.showDocument("http://www.example.com/");
+    }
+
+    public void actionFavoritBottom(ActionEvent actionEvent) {
         try {
+            System.out.println(urlAd.getText());
             JDBCClient jdbcClient = new JDBCClient();
-            if (saveAd.isSelected() && jdbcClient.isAdExistsByUrl(urlAd.getText()))
-                jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText(),false);
-            else
-                jdbcClient.adDeleteByURL(urlAd.getText());
+            if (!jdbcClient.isAdExistsByUrlFavorit("aaa")) {
+                favoritBottom.setGraphic(new ImageView(star));
+                jdbcClient.changeAdFavorit("aaa",true);
+            }
+            else {
+                favoritBottom.setGraphic(new ImageView(star2));
+                jdbcClient.changeAdFavorit("aaa", false);
+            }
             jdbcClient.closeStatement();
             jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {
@@ -68,10 +90,5 @@ public class CardController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(saveAd.isSelected());
-    }
-
-    public void actionAdMore(ActionEvent actionEvent){
-        App.hostServices.showDocument("http://www.example.com/");
     }
 }

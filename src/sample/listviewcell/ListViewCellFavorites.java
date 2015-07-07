@@ -13,7 +13,7 @@ public class ListViewCellFavorites extends ListCell<Ad> {
         super.updateItem(item, empty);
         if (item != null) {
             CardController cardController = new CardController();
-            cardController.setInfo(item.getName(), item.getDescription(), item.getPrice().longValue(), item.getUrl_photo(), item.getUrl(), item.getComment(), true, item.getPhone());
+            cardController.setInfo(item.getName(), item.getDescription(), item.getPrice().longValue(), item.getUrl_photo(), item.getUrl(), item.getComment(), item.getPhone(), true);
             try {
                 setGraphic(cardController.getItem());
             } catch (Exception e) {
