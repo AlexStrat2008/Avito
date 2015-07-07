@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="yielder-0.3.0">
+  <library name="activation-1.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/yielder-0.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/activation-1.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
