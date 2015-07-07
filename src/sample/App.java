@@ -18,6 +18,7 @@ import sample.models.Filter;
 import sample.parse.Parse;
 import sample.services.AvitoAdsSuperService;
 import sample.trey.MyTrayIcon;
+import sun.util.logging.PlatformLogger;
 
 import java.sql.SQLException;
 
@@ -67,6 +68,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        com.sun.javafx.Logging.getCSSLogger().setLevel(PlatformLogger.Level.OFF);
         try {
             JDBCClient jdbcClient = new JDBCClient();
             System.out.println(jdbcClient.isAdExistsByUrl("qwe"));
