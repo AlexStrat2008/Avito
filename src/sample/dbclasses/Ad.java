@@ -9,6 +9,7 @@ public class Ad {
     private String description;
     private String phone;
     private String comment;
+    private Boolean isFavorit;
 
     public Ad() {
     }
@@ -18,7 +19,7 @@ public class Ad {
     }
 
     public Ad(int _id, String _url, String _name, String _url_photo, Integer _price,
-              String _description, String _phone, String _comment) {
+              String _description, String _phone, String _comment, boolean isFavorit) {
         this.id = _id;
         this.url = _url;
         this.name = _name;
@@ -27,6 +28,7 @@ public class Ad {
         this.description = _description;
         this.phone = _phone;
         this.comment = _comment;
+        this.isFavorit = isFavorit;
     }
 
     public int getId() {
@@ -91,5 +93,13 @@ public class Ad {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Boolean isFavorit() {
+        return isFavorit;
+    }
+
+    public void setIsFavorit(Boolean isFavorit) {
+        this.isFavorit = isFavorit;
     }
 }

@@ -2,13 +2,11 @@ package sample.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import sample.App;
 import sample.dbclasses.JDBCClient;
 
 import java.io.IOException;
@@ -28,6 +26,7 @@ public class CardController {
     public TextField urlAd;
     public TextField urlPhoto;
     public TextArea comment;
+    public Button adMore;
 
     public CardController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sample/view/card.fxml"));
@@ -59,7 +58,7 @@ public class CardController {
         try {
             JDBCClient jdbcClient = new JDBCClient();
             if (saveAd.isSelected() && jdbcClient.isAdExistsByUrl(urlAd.getText()))
-                jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText());
+                jdbcClient.adAdd(urlAd.getText(), name.getText(), urlPhoto.getText(), Integer.parseInt(price.getText()), description.getText(), (phoneAd.getText().isEmpty() ? "" : phoneAd.getText()), comment.getText().isEmpty() ? "" : comment.getText(),false);
             else
                 jdbcClient.adDeleteByURL(urlAd.getText());
             jdbcClient.closeStatement();
@@ -70,5 +69,9 @@ public class CardController {
             e.printStackTrace();
         }
         System.out.println(saveAd.isSelected());
+    }
+
+    public void actionAdMore(ActionEvent actionEvent){
+        App.hostServices.showDocument("http://www.example.com/");
     }
 }

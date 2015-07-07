@@ -1,27 +1,26 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.api.AvitoAd;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 import sample.parse.Parse;
-
-import sample.trey.MyTrayIcon;
 import sample.services.AvitoAdsSuperService;
+import sample.trey.MyTrayIcon;
+import sun.util.logging.PlatformLogger;
 
 import java.sql.SQLException;
-import java.util.Comparator;
 
 public class App extends Application {
 
@@ -30,6 +29,7 @@ public class App extends Application {
     private static MyTrayIcon myTrayIcon;
     private  static AvitoAdsSuperService avitoAdsService;
     public final static Duration ServiceRequestPeriod = Duration.minutes(1);
+    public static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,6 +38,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root));
         myTrayIcon = new MyTrayIcon();
         myTrayIcon.createTrayIcon(primaryStage);
+        hostServices = this.getHostServices();
         primaryStage.show();
     }
 
@@ -67,8 +68,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        com.sun.javafx.Logging.getCSSLogger().setLevel(PlatformLogger.Level.OFF);
         try {
             JDBCClient jdbcClient = new JDBCClient();
+            System.out.println(jdbcClient.isAdExistsByUrl("qwe"));
             if(jdbcClient.isCatgoryEmpty())
                 Parse.parseCategories(jdbcClient);
             if(jdbcClient.isCityEmpty()){

@@ -16,11 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sample.*;
+import sample.App;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Category;
 import sample.dbclasses.City;
@@ -66,7 +63,10 @@ public class FilterController {
             sample.dbclasses.Filter editFilter;
             if (!jdbcClient.getFilter().isEmpty()) {
                 System.out.println("filter is not empty" + jdbcClient.getFilter().size());
-                editFilter = new sample.dbclasses.Filter(jdbcClient.GetFilterByID(1));
+//                jdbcClient.getFilter();
+                editFilter = new sample.dbclasses.Filter(jdbcClient.getFilter().get(0));
+//                editFilter = jdbcClient.getFilterByID(MainController.idFileter).get(0);
+
                 System.out.println("filter = " + editFilter.getCity() + editFilter.getCategory() + editFilter.getSubcategory());
 
                 //citiescategory.setItems(FXCollections.observableArrayList(editFilter.getCity()));
@@ -81,21 +81,20 @@ public class FilterController {
                 for (Category item : jdbcClient.categorySelectChild(jdbcClient.getCategoryByName(editFilter.getCategory()).get(0).getUrl())) {
                     subcategorMap.put(item.getName(), item.getUrl());
                     System.out.println("subcategory = " + item.getName());
-
                 }
                 System.out.println("subcategory = " + subcategorMap.size());
 
                 subcategory.setItems(FXCollections.observableArrayList(subcategorMap.keySet()));
 
                 startPrice.setText(String.valueOf(editFilter.getStartPrice()));
-                finishPrice.setText(String.valueOf(editFilter.getFilterURL()));
+                finishPrice.setText(String.valueOf(editFilter.getFinishPrice()));
                 photocheck.setSelected(editFilter.getIsPhoto());
                 urlAd.setText(String.valueOf(editFilter.getFilterURL()));
 
 
             } else {
                 citiescategory.setItems(FXCollections.observableArrayList(""));
-                category.setItems(FXCollections.observableArrayList(""));
+                category.setItems(FXCollections.observableArrayList(categorMap.keySet()));
                 subcategory.setItems(FXCollections.observableArrayList(""));
                 startPrice.setText(String.valueOf(""));
                 finishPrice.setText(String.valueOf(""));
@@ -138,6 +137,16 @@ public class FilterController {
     }
 
     public void actionSearch(ActionEvent actionEvent) {
+        try {
+            JDBCClient jdbcClient = new JDBCClient();
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         Stage stageClose = (Stage) toSearch.getScene().getWindow();
         if(urlAd.getText().isEmpty()) {
             try {
@@ -167,7 +176,7 @@ public class FilterController {
                     openMainWindow(stageClose);
 /*Добавление фильтра в бд*/
                     JDBCClient jdbcClient = new JDBCClient();
-
+                    jdbcClient.filterDelete();
                     sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(citiescategory.getValue().toString(),category.getValue().toString(),subcategory.getValue().toString(),
                             Integer.parseInt(startPrice.getText()),Integer.parseInt(finishPrice.getText()),photocheck.isSelected(),urlAd.getText());
                     jdbcClient.filterAdd(filterBD);
@@ -175,14 +184,14 @@ public class FilterController {
                     jdbcClient.closeConnection();
 /*-----------------------*/
                 } else {
-                    final Stage dialog = new Stage();
-                    dialog.initModality(Modality.APPLICATION_MODAL);
-                    dialog.initOwner(stageClose);
-                    VBox dialogVbox = new VBox(20);
-                    dialogVbox.getChildren().add(new Text("Выберите город"));
-                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
-                    dialog.setScene(dialogScene);
-                    dialog.show();
+//                    final Stage dialog = new Stage();
+//                    dialog.initModality(Modality.APPLICATION_MODAL);
+//                    dialog.initOwner(stageClose);
+//                    VBox dialogVbox = new VBox(20);
+//                    dialogVbox.getChildren().add(new Text("Выберите город"));
+//                    Scene dialogScene = new Scene(dialogVbox, 150, 50);
+//                    dialog.setScene(dialogScene);
+//                    dialog.show();
                 }
             } catch (Exception e) {
                 System.out.println("Сылка немного не правильная, но я всеравно все покажу :))");

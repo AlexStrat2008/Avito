@@ -1,7 +1,6 @@
 package sample.controllers;
 
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import sample.*;
+import sample.App;
 import sample.api.AvitoAd;
 import sample.listviewcell.ListViewCell;
 
@@ -20,6 +19,7 @@ public class MainController {
 
     protected static Stage stageMain;
     protected static String httpQuery;
+    protected  static int idFileter;
     public Button favorites;
     @FXML
     private Button changeFilter;
