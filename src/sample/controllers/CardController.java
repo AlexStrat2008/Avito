@@ -31,7 +31,6 @@ public class CardController {
     public TextArea comment;
     public Button adMore;
     public Button favoritBottom;
-    private Image star2;
     private Image star;
 
     public CardController() {
@@ -46,9 +45,8 @@ public class CardController {
 
     @FXML
     private void initialize() {
-        star2 = new Image(getClass().getResourceAsStream("/sample/image/star2.png"));
         star = new Image(getClass().getResourceAsStream("/sample/image/star.png"));
-        favoritBottom.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/sample/image/star2.png"))));
+        favoritBottom.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/sample/image/star.png"))));
     }
 
     public void setInfo(String name, String description, Long price, String foto, String url, String comment, String phone, boolean saveAd) {
@@ -76,10 +74,8 @@ public class CardController {
         try {
             JDBCClient jdbcClient = new JDBCClient();
             if (!jdbcClient.isAdExistsByUrlFavorit(urlAd.getText())) {
-                favoritBottom.setGraphic(new ImageView(star));
                 jdbcClient.changeAdFavorit(urlAd.getText(), true, comment.getText(), phoneAd.getText());
             } else {
-                favoritBottom.setGraphic(new ImageView(star2));
                 jdbcClient.changeAdFavorit(urlAd.getText(), false, comment.getText(), phoneAd.getText());
             }
             jdbcClient.closeStatement();

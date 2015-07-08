@@ -71,7 +71,7 @@ public class FilterController {
         }
 
         if (filter != null) {
-            urlAd.setText(filter.toRawQuery());
+//            urlAd.setText(filter.toRawQuery());
             finishPrice.setText(filter.getMaxPrice() > 0 ? filter.getMaxPrice() + "" : "");
             startPrice.setText(filter.getMinPrice() > 0 ? filter.getMinPrice() + "" : "");
             photocheck.setSelected(filter.isOnlyWithPhoto());

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<?import sample.custom.NumberTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import sample.custom.PhoneTextField?>
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="521.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.FavoritesController">
   <children>
     <Pane layoutX="0.0" layoutY="61.0" prefHeight="555.0" prefWidth="521.0">
@@ -18,6 +18,6 @@
         <Font size="18.0" />
       </font>
     </Label>
-      <NumberTextField fx:id="phoneFilter" layoutX="332.0" layoutY="17.0" prefHeight="25.0" prefWidth="175.0" />
+      <PhoneTextField fx:id="phoneFilter" layoutX="332.0" layoutY="17.0" prefHeight="25.0" prefWidth="175.0" promptText="Поиск по телефону:"/>
   </children>
 </AnchorPane>
