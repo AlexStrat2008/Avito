@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import sample.custom.PhoneTextField?>
 <AnchorPane fx:id="itemPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <Pane prefHeight="250.0" prefWidth="485.0">
@@ -35,7 +35,7 @@
         </Label>
         <Label fx:id="description" alignment="TOP_LEFT" layoutX="171.0" layoutY="42.0" prefHeight="131.0" prefWidth="300.0" text="Нет описания." wrapText="true" />
         <TextArea fx:id="comment" layoutX="14.0" layoutY="183.0" prefHeight="52.0" prefWidth="237.0" promptText="коментарии..." />
-            <TextField fx:id="phoneAd" layoutX="14.0" layoutY="148.0" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
+            <PhoneTextField fx:id="phoneAd" layoutX="14.0" layoutY="148.0" prefHeight="25.0" prefWidth="146.0" promptText="Телефон" />
             <TextField fx:id="urlPhoto" layoutX="63.0" layoutY="2.0" prefHeight="25.0" prefWidth="65.0" visible="false" />
             <Button fx:id="favoritBottom" layoutX="345.0" layoutY="197.0" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#actionFavoritBottom" prefHeight="25.0" prefWidth="25.0">
                <font>

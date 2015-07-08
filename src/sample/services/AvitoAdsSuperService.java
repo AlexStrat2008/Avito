@@ -1,7 +1,5 @@
 package sample.services;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import sample.api.AvitoAd;
@@ -10,6 +8,7 @@ import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Alexandr on 05.07.2015.
@@ -18,12 +17,7 @@ public class AvitoAdsSuperService extends ScheduledService {
 
     private Filter filter;
     private AvitoApi avitoApi = new AvitoApi();
-    private ObservableList<AvitoAd> newDataList = FXCollections.observableArrayList();
     private JDBCClient jdbcClient;
-
-    public ObservableList<AvitoAd> getNewDataList() {
-        return newDataList;
-    }
 
     public AvitoAdsSuperService(Filter filter) throws ClassNotFoundException, SQLException{
         this.filter = filter;
@@ -38,13 +32,10 @@ public class AvitoAdsSuperService extends ScheduledService {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-
-                newDataList.clear();
                 jdbcClient = new JDBCClient();
-                for (AvitoAd ad : avitoApi.getAdsYield(filter)) {
-                    if (isNew(ad)) {
-
-                        newDataList.add(ad);
+                List<AvitoAd> ads = avitoApi.getAds(filter, (ad) -> isNew(ad));
+                ads.forEach(ad -> {
+                    try {
                         jdbcClient.adAdd(
                                 ad.getURI() == null ? "" : ad.getURI().toString(),
                                 ad.getName(),
@@ -54,11 +45,14 @@ public class AvitoAdsSuperService extends ScheduledService {
                                 "",
                                 "",false
                         );
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                }
+
+                });
                 jdbcClient.closeStatement();
                 jdbcClient.closeConnection();
-                return getNewDataList();
+                return ads;
             }
         };
     }

@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -17,19 +16,26 @@ import javafx.util.Duration;
 import sample.api.AvitoAd;
 import sample.controllers.FilterController;
 import sample.controllers.MainController;
+import sample.dbclasses.Ad;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
+import sample.models.ListAd;
 import sample.parse.Parse;
 import sample.services.AvitoAdsSuperService;
 import sample.trey.MyTrayIcon;
 import sun.util.logging.PlatformLogger;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App extends Application {
     private Filter filter;
-    private ObservableList<AvitoAd> adsObservableList = FXCollections.observableArrayList();
+    private ObservableList<ListAd> adsObservableList = FXCollections.observableArrayList();
     private MyTrayIcon myTrayIcon;
     private AvitoAdsSuperService avitoAdsService;
     public static HostServices hostServices;
@@ -49,7 +55,7 @@ public class App extends Application {
         refreshApp();
     }
 
-    public ObservableList<AvitoAd> getAdsObservableList() {
+    public ObservableList<ListAd> getAdsObservableList() {
         return adsObservableList;
     }
 
@@ -62,6 +68,7 @@ public class App extends Application {
             primaryStage.close();
             adsObservableList.clear();
             if (loadFilter()) {
+                downloadFromBD();
                 restartAdsService();
                 openMainWindow();
             } else {
@@ -112,32 +119,37 @@ public class App extends Application {
         }
     }
 
+    private void downloadFromBD(){
+        try {
+            JDBCClient jdbcClient = new JDBCClient();
+            if(!jdbcClient.isAdEmpty()){
+                adsObservableList.addAll(listAdFormAd(jdbcClient.getAdAll().subList(0,25)));
+            }
+            jdbcClient.closeStatement();
+            jdbcClient.closeConnection();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void restartAdsService() throws ClassNotFoundException, SQLException {
         if (avitoAdsService != null) avitoAdsService.cancel();
+
         avitoAdsService = new AvitoAdsSuperService(filter);
         avitoAdsService.setPeriod(ServiceRequestPeriod);
-        avitoAdsService.setDelay(Duration.seconds(20));
-        avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
-            @Override
-            public void onChanged(Change<? extends AvitoAd> c) {
-                while (c.next()) {
-                    if (c.wasAdded()) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                adsObservableList.addAll(c.getAddedSubList());
-                            }
-                        });
-                    }
-                }
-            }
-        });
+        avitoAdsService.setDelay(Duration.seconds(1));
+
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                int size = ((ObservableList) event.getSource().getValue()).size();
+                List<AvitoAd> ads = (List<AvitoAd>) event.getSource().getValue();
+                adsObservableList.addAll(listAdFormAvitoAd(ads));
+                int size = ads.size();
                 if (size > 0) {
-                    myTrayIcon.newAd(((ObservableList) event.getSource().getValue()).size());
+                    myTrayIcon.newAd(ads.size());
                 }
             }
         });
@@ -159,7 +171,6 @@ public class App extends Application {
                 this.filter = new Filter(rawQuery);
             } else {
                 String subcategory = dbFilter.getSubcategory();
-                System.out.println(dbFilter.getFinishPrice());
                 Filter filter = new Filter(dbFilter.getCity(),
                         dbFilter.getFinishPrice().longValue(),
                         dbFilter.getStartPrice().longValue(),
@@ -190,4 +201,29 @@ public class App extends Application {
         }
         launch(args);
     }
+
+    private List<ListAd> listAdFormAd(List<Ad> ads) {
+        List<ListAd> listAds = new ArrayList<ListAd>();
+        ListAd listAd = null;
+        for (Ad ad : ads) {
+            try {
+                listAd = new ListAd(ad.getName(), ad.getPrice().longValue(), new URI(ad.getUrl_photo()), ad.getDescription(), new URI(ad.getUrl()), LocalDateTime.parse("2007-12-03T10:15:30"), ad.getComment(), ad.getPhone(), ad.isFavorit());
+                listAds.add(listAd);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return listAds;
+    }
+
+    private List<ListAd> listAdFormAvitoAd(List<AvitoAd> ads) {
+        List<ListAd> listAds = new ArrayList<ListAd>();
+        ListAd listAd = null;
+        for (AvitoAd ad : ads) {
+                listAd = new ListAd(ad.getName(), ad.getPrice(), ad.getPhoto(), ad.getDescription(), ad.getURI(), ad.getDateTime(), "", "", false);
+                listAds.add(listAd);
+        }
+        return listAds;
+    }
+
 }
