@@ -155,6 +155,7 @@ public class FilterController {
                 if (category.getValue() != null) {
                     categoryValue = categorMap.get(category.getValue().toString());
                 }
+
                 int minPrice = 0;
                 try {
                     minPrice = Integer.parseInt(startPrice.getText().isEmpty() ? "0" : startPrice.getText());

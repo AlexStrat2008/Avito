@@ -5,14 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import sample.api.AvitoAd;
 import sample.custom.NumberTextField;
 import sample.dbclasses.Ad;
 import sample.dbclasses.JDBCClient;
 import sample.listviewcell.ListViewCellFavorites;
 
 import java.sql.SQLException;
-import java.util.stream.IntStream;
 
 /**
  * Created by strat on 06.07.15.
@@ -51,7 +49,6 @@ public class FavoritesController {
                     return ad.getPhone().contains(filter);
                 }
             });
-
         });
         listViewFavorites.setItems(filteredData);
         listViewFavorites.setCellFactory(param -> new ListViewCellFavorites());
