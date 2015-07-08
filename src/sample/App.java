@@ -116,7 +116,7 @@ public class App extends Application {
         if (avitoAdsService != null) avitoAdsService.cancel();
         avitoAdsService = new AvitoAdsSuperService(filter);
         avitoAdsService.setPeriod(ServiceRequestPeriod);
-        avitoAdsService.setDelay(Duration.seconds(1));
+        avitoAdsService.setDelay(Duration.seconds(20));
         avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
             @Override
             public void onChanged(Change<? extends AvitoAd> c) {

@@ -85,7 +85,7 @@ public class FilterController {
             }
             String category_value = filter.getCategory() != null ? filter.getCategory() : "";
             Category c = allCategories.stream().filter(x -> x.getUrl().equals(category_value)).findFirst().orElse(null);
-            System.out.println(c);
+
             if (c != null) {
                 if (c.getParent().equals("1")) {
                     category.setValue(c.getName());

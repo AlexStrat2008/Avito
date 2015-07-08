@@ -10,7 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="JUnit4">
         <CLASSES>
           <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.11.jar!/" />
@@ -21,6 +21,26 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="activation-1.11" level="project" />
+    <orderEntry type="library" exported="" name="jaxb-api-2.1" level="project" />
+    <orderEntry type="library" exported="" name="asm-all-repackaged-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="cglib-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="guava-14.0" level="project" />
+    <orderEntry type="library" exported="" name="hk2-api-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="hk2-locator-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="hk2-utils-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="javax.annotation-api-1.2-b02" level="project" />
+    <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="javax.inject-2.1.78" level="project" />
+    <orderEntry type="library" exported="" name="javax.servlet-3.0" level="project" />
+    <orderEntry type="library" exported="" name="javax.ws.rs-api-2.0.1" level="project" />
+    <orderEntry type="library" exported="" name="jax-rs-ri-2.0-rc1" level="project" />
+    <orderEntry type="library" exported="" name="jsoup-1.8.2" level="project" />
+    <orderEntry type="library" exported="" name="org.osgi.core-4.2.0" level="project" />
+    <orderEntry type="library" exported="" name="osgi-resource-locator-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="persistence-api-1.0" level="project" />
+    <orderEntry type="library" exported="" name="sqlite-jdbc-3.8.10.1" level="project" />
+    <orderEntry type="library" exported="" name="stax-api-1.0-2" level="project" />
+    <orderEntry type="library" exported="" name="validation-api-1.1.0.CR3" level="project" />
+    <orderEntry type="library" exported="" name="yielder-0.3.0" level="project" />
   </component>
 </module>
