@@ -1,6 +1,7 @@
 package sample.api;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 
 /**
  * Created by Alexandr on 30.06.2015.
@@ -12,19 +13,21 @@ public class AvitoAd {
     private URI photo;
     private String description;
     private URI uri;
+    private LocalDateTime dateTime;
 
-    public AvitoAd(String name, Long price, URI photo, String description, URI uri) {
+    public AvitoAd(String name, Long price, URI photo, String description, URI uri, LocalDateTime dateTime) {
 
         this.name = name;
         this.price = price;
         this.photo = photo;
         this.description = description;
         this.uri = uri;
+        this.dateTime = dateTime;
     }
 
     @Override
     public  String toString() {
-        return String.format("Name: %s Price: %s Photo: %s Uri: %s Description: %s", getName(), getPrice(), getPhoto(), getURI(), getDescription());
+        return String.format("Name: %s Price: %s Photo: %s Uri: %s Description: %s DateTime: %s", getName(), getPrice(), getPhoto(), getURI(), getDescription(), getDateTime());
     }
 
     public String getName() {
@@ -47,6 +50,10 @@ public class AvitoAd {
         return uri;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -64,7 +71,11 @@ public class AvitoAd {
     }
 
     public void setUri(URI uri) {
-        this.uri = uri;
+        this.uri = uri;;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
 

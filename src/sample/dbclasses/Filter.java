@@ -2,44 +2,53 @@ package sample.dbclasses;
 
 public class Filter {
     private int id;
-    private String name;
-    private Double priceFirst;
-    private Double priceSecond;
     private String city;
     private String category;
     private String subcategory;
-    private boolean picture;
+    private Integer startPrice;
+    private Integer finishPrice;
+    private boolean isPhoto;
+    private String filterURL;
 
     public Filter() {}
 
-    public Filter(String _name) {
-        this.name = _name;
+    public Filter(String _filterURL) {
+        this.filterURL = _filterURL;
     }
 
-    public Filter(int _id, String _name, Double _priceFirst, Double _priceSecond, String _city,
-                  String _category, String _subcategory, boolean _picture) {
+    public Filter(int _id, String _city, String _category, String _subcategory , Integer _startPrice,
+                  Integer _finishPrice, boolean _isPhoto, String _filterURL) {
         this.id = _id;
-        this.name = _name;
-        this.priceFirst = _priceFirst;
-        this.priceSecond = _priceSecond;
         this.city = _city;
         this.category = _category;
         this.subcategory = _subcategory;
-        this.picture = _picture;
+        this.startPrice = _startPrice;
+        this.finishPrice = _finishPrice;
+        this.isPhoto = _isPhoto;
+        this.filterURL = _filterURL;
     }
-
-
+    public Filter(String _city, String _category, String _subcategory , Integer _startPrice,
+                  Integer _finishPrice, boolean _isPhoto, String _filterURL) {
+        this.city = _city;
+        this.category = _category;
+        this.subcategory = _subcategory;
+        this.startPrice = _startPrice;
+        this.finishPrice = _finishPrice;
+        this.isPhoto = _isPhoto;
+        this.filterURL = _filterURL;
+    }
+    public Filter(Filter filter) {
+        this.id = filter.getId();
+        this.city = filter.getCity(); System.out.println(city);
+        this.category = filter.getCategory();
+        this.subcategory = filter.getSubcategory();
+        this.startPrice = filter.getStartPrice();
+        this.finishPrice = filter.getFinishPrice();
+        this.isPhoto = filter.getIsPhoto();
+        this.filterURL = filter.getFilterURL();
+    }
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public Double getPriceFirst() { return priceFirst; }
-    public void setPriceFirst(Double priceFirst) { this.priceFirst = priceFirst; }
-
-    public Double getPriceSecond() { return priceSecond; }
-    public void setPriceSecond(Double priceSecond) { this.priceSecond = priceSecond; }
 
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
@@ -50,7 +59,16 @@ public class Filter {
     public String getSubcategory() { return subcategory; }
     public void setSubcategory(String subcategory) { this.subcategory = subcategory; }
 
-    public Boolean getPicture() { return picture; }
-    public void setPicture(Boolean picture) { this.picture = picture; }
+    public Integer getStartPrice() { return startPrice; }
+    public void setStartPrice(Integer startPrice) { this.startPrice = startPrice; }
+
+    public Integer getFinishPrice() { return finishPrice; }
+    public void setFinishPrice(Integer finishPrice) { this.finishPrice = finishPrice; }
+
+    public Boolean getIsPhoto() { return isPhoto; }
+    public void setIsPhoto(Boolean isPhoto) { this.isPhoto = isPhoto; }
+
+    public String getFilterURL() { return filterURL; }
+    public void setFilterURL(String filterURL) { this.filterURL = filterURL; }
 }
 
