@@ -171,6 +171,11 @@ public class FilterController {
                     alert.showAndWait();
                     return;
                 }
+                if (!startPrice.getText().isEmpty() && !finishPrice.getText().isEmpty() && minPrice > maxPrice) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Минимальная цена не может быть больше максимальной");
+                    alert.showAndWait();
+                    return;
+                }
 
 /*Добавление фильтра в бд*/
                 sample.dbclasses.Filter filterBD = new sample.dbclasses.Filter(cityValue, categoryValue.toString(), subcategoryValue.toString(),

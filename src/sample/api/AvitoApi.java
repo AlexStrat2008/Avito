@@ -15,6 +15,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 //import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -68,29 +69,30 @@ public class AvitoApi {
         return getAdsFromRawQueryYield(filter.toRawQuery());
     }
 
-    public List<AvitoAd> getAdsFromRawQuery(String query) throws IOException {
+    public List<AvitoAd> getAdsFromRawQuery(String query, Predicate<AvitoAd> isMatch) throws IOException {
         Document doc = Jsoup.connect(hostURL.resolve(query).toString()).get();
 
         Elements items = doc.select("div.catalog-list div.item");
 
         ArrayList<AvitoAd> ads = new ArrayList<AvitoAd>();
 
-        for (Element item : items) {
+        items.parallelStream().forEach(item -> {
             URI uri = getURIFromElement(item);
-            ads.add(new AvitoAd(
+            AvitoAd ad = new AvitoAd(
                     getNameFromElement(item),
                     getPriceFromElement(item),
                     getPhotoFromElement(item),
                     getAdDescription(uri),
                     uri,
-                    getDateTimeFromElement(item)));
+                    getDateTimeFromElement(item));
+            if(isMatch.test(ad)) ads.add(ad);
+        });
 
-        }
         return  ads;
     }
 
-    public List<AvitoAd> getAds(Filter filter) throws IOException {
-        return getAdsFromRawQuery(filter.toRawQuery());
+    public List<AvitoAd> getAds(Filter filter, Predicate<AvitoAd> isMatch) throws IOException {
+        return getAdsFromRawQuery(filter.toRawQuery(), isMatch);
     }
 
     private String getNameFromElement(Element element) {

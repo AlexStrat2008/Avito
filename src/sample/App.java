@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.api.AvitoAd;
+import sample.api.AvitoApi;
 import sample.controllers.FilterController;
 import sample.controllers.MainController;
 import sample.dbclasses.JDBCClient;
@@ -26,6 +27,8 @@ import sun.util.logging.PlatformLogger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App extends Application {
     private Filter filter;
@@ -117,7 +120,7 @@ public class App extends Application {
         avitoAdsService = new AvitoAdsSuperService(filter);
         avitoAdsService.setPeriod(ServiceRequestPeriod);
         avitoAdsService.setDelay(Duration.seconds(20));
-        avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
+        /*avitoAdsService.getNewDataList().addListener(new ListChangeListener<AvitoAd>() {
             @Override
             public void onChanged(Change<? extends AvitoAd> c) {
                 while (c.next()) {
@@ -131,13 +134,15 @@ public class App extends Application {
                     }
                 }
             }
-        });
+        });*/
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                int size = ((ObservableList) event.getSource().getValue()).size();
+                List<AvitoAd> ads = (List<AvitoAd>) event.getSource().getValue();
+                adsObservableList.addAll(ads);
+                int size = ads.size();
                 if (size > 0) {
-                    myTrayIcon.newAd(((ObservableList) event.getSource().getValue()).size());
+                    myTrayIcon.newAd(ads.size());
                 }
             }
         });
@@ -159,7 +164,6 @@ public class App extends Application {
                 this.filter = new Filter(rawQuery);
             } else {
                 String subcategory = dbFilter.getSubcategory();
-                System.out.println(dbFilter.getFinishPrice());
                 Filter filter = new Filter(dbFilter.getCity(),
                         dbFilter.getFinishPrice().longValue(),
                         dbFilter.getStartPrice().longValue(),
