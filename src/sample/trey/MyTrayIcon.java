@@ -40,12 +40,12 @@ public class MyTrayIcon extends JDialog {
             SystemTray tray = SystemTray.getSystemTray(); //подгрузили систем трей для работы
             java.awt.Image image = null; //мутим изображение иконки
             try {
-                image = ImageIO.read(new File("src/sexy_girl.png"));
+                image = ImageIO.read(new File("src/sample/avito.png"));
             } catch (IOException ex) {
                 System.out.println(ex);
             }
             //ловим момент закрытия окна
-            stage.setOnCloseRequest(new EventHandler<WindowEvent >() {
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent t) {
                     hide(stage);
@@ -57,7 +57,7 @@ public class MyTrayIcon extends JDialog {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     System.exit(0);
                 }
-                };
+            };
             //листнер на событие открытия из трея
             ActionListener showListener = new ActionListener() {
                 @Override
@@ -93,21 +93,21 @@ public class MyTrayIcon extends JDialog {
             } catch (AWTException e) {
                 System.err.println(e);
             }
-           // MouseAdapter mouseAdapter = new MouseAdapter() {
+            // MouseAdapter mouseAdapter = new MouseAdapter() {
 
-              // @Override
-             //   public void mouseClicked(MouseEvent e) {
-                    //systemTray.remove(trayIcon);
+            // @Override
+            //   public void mouseClicked(MouseEvent e) {
+            //systemTray.remove(trayIcon);
 
-                 //   trayIcon.displayMessage("System Tray App","Simple Demo", java.awt.TrayIcon.MessageType.INFO);
-               // }
-           // };
+            //   trayIcon.displayMessage("System Tray App","Simple Demo", java.awt.TrayIcon.MessageType.INFO);
+            // }
+            // };
 
-           // trayIcon.addMouseListener(mouseAdapter);
+            // trayIcon.addMouseListener(mouseAdapter);
         }
     }
 
-   public void newAd(int count){
+    public void newAd(int count) {
         trayIcon.displayMessage("Уведомление", "Новых объявлений: " + count, java.awt.TrayIcon.MessageType.INFO);
     }
 
@@ -116,9 +116,10 @@ public class MyTrayIcon extends JDialog {
             trayIcon.displayMessage("Вы свернули приложение",
                     "Здесь вы можете увидеть уведомления о новых объявлениях.",
                     TrayIcon.MessageType.INFO);
-           // firstTime = false;
+            // firstTime = false;
         }
     }
+
     private void hide(final Stage stage) {
         Platform.runLater(new Runnable() {
             @Override

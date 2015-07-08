@@ -59,30 +59,28 @@ public class CardController {
         this.urlAd.setText(url);
         this.urlPhoto.setText(foto == null ? "" : foto.toString());
         this.phoneAd.setText(phone);
-//        this.favoritBottom.setGraphic();
-//        this.saveAd.setSelected(saveAd);
         this.comment.setText(comment);
+        if(saveAd)
+            favoritBottom.setGraphic(new ImageView(star));
     }
 
     public AnchorPane getItem() {
         return itemPane;
     }
 
-    public void actionAdMore(ActionEvent actionEvent){
-        App.hostServices.showDocument("http://www.example.com/");
+    public void actionAdMore(ActionEvent actionEvent) {
+        App.hostServices.showDocument("https://www.avito.ru" + urlAd.getText());
     }
 
     public void actionFavoritBottom(ActionEvent actionEvent) {
         try {
-            System.out.println(urlAd.getText());
             JDBCClient jdbcClient = new JDBCClient();
-            if (!jdbcClient.isAdExistsByUrlFavorit("aaa")) {
+            if (!jdbcClient.isAdExistsByUrlFavorit(urlAd.getText())) {
                 favoritBottom.setGraphic(new ImageView(star));
-                jdbcClient.changeAdFavorit("aaa",true);
-            }
-            else {
+                jdbcClient.changeAdFavorit(urlAd.getText(), true, comment.getText(), phoneAd.getText());
+            } else {
                 favoritBottom.setGraphic(new ImageView(star2));
-                jdbcClient.changeAdFavorit("aaa", false);
+                jdbcClient.changeAdFavorit(urlAd.getText(), false, comment.getText(), phoneAd.getText());
             }
             jdbcClient.closeStatement();
             jdbcClient.closeConnection();

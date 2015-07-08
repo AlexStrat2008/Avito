@@ -9,9 +9,7 @@ import sample.api.AvitoApi;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 
-import java.net.URI;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
 /**
  * Created by Alexandr on 05.07.2015.
@@ -51,11 +49,10 @@ public class AvitoAdsSuperService extends ScheduledService {
                                 ad.getURI() == null ? "" : ad.getURI().toString(),
                                 ad.getName(),
                                 ad.getPhoto() == null ? "" : ad.getPhoto().toString(),
-                                //блять не могли long в базе сделать
                                 ad.getPrice() == null ? 0 : ad.getPrice().intValue(),
                                 ad.getDescription(),
                                 "",
-                                ""
+                                "",false
                         );
                     }
                 }

@@ -47,7 +47,6 @@ public class MainController {
     }
 
     public void actionChangeFilter(ActionEvent actionEvent) {
-
         app.openFilterWindow();
     }
 

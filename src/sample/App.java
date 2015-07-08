@@ -3,11 +3,6 @@ package sample;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -16,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.api.AvitoAd;
@@ -151,19 +147,20 @@ public class App extends Application {
     private boolean loadFilter() throws SQLException, ClassNotFoundException {
         JDBCClient jdbcClient = new JDBCClient();
         if (jdbcClient.isFilterEmpty()) {
+            jdbcClient.closeStatement();
             jdbcClient.closeConnection();
             return false;
         } else {
             sample.dbclasses.Filter dbFilter = jdbcClient.getFilterByID(1);
+            jdbcClient.closeStatement();
             jdbcClient.closeConnection();
-            Filter filter;
             String rawQuery = dbFilter.getFilterURL();
             if (rawQuery != null && !rawQuery.isEmpty()) {
                 this.filter = new Filter(rawQuery);
             } else {
                 String subcategory = dbFilter.getSubcategory();
                 System.out.println(dbFilter.getFinishPrice());
-                filter = new Filter(dbFilter.getCity(),
+                Filter filter = new Filter(dbFilter.getCity(),
                         dbFilter.getFinishPrice().longValue(),
                         dbFilter.getStartPrice().longValue(),
                         dbFilter.getIsPhoto(),

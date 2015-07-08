@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="565.0" prefWidth="521.0" style="" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.controllers.FavoritesController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="521.0" style="" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.FavoritesController">
   <children>
-    <Pane layoutX="0.0" layoutY="61.0" prefHeight="560.0" prefWidth="521.0">
+    <Pane layoutX="0.0" layoutY="61.0" prefHeight="555.0" prefWidth="521.0">
       <children>
-        <ListView fx:id="listViewFavorites" layoutX="0.0" layoutY="-5.0" prefHeight="620.0" prefWidth="521.0" />
+        <ListView fx:id="listViewFavorites" layoutX="0.0" layoutY="-5.0" prefHeight="560.0" prefWidth="521.0" />
       </children>
     </Pane>
     <Label layoutX="29.0" layoutY="16.0" text="Избранное">

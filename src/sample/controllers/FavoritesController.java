@@ -22,7 +22,7 @@ public class FavoritesController {
     private void initialize() {
         try {
             JDBCClient jdbcClient = new JDBCClient();
-            observableList.addAll(jdbcClient.getAdAll());
+            observableList.addAll(jdbcClient.getAdFavoritAll());
             jdbcClient.closeStatement();
             jdbcClient.closeConnection();
         } catch (ClassNotFoundException e) {

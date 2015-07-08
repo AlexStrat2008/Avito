@@ -4,15 +4,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import sample.com.benjiweber.yield.*;
-import sample.com.benjiweber.yield.Yielderable.*;
-
+import sample.com.benjiweber.yield.Yielderable;
 import sample.models.Filter;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,7 +53,6 @@ public class AvitoApi {
                             getPhotoFromElement(item),
                             getAdDescription(uri),
                             uri,
-
                             getDateTimeFromElement(item));
 
                     yield.returning(ad);
@@ -89,6 +84,7 @@ public class AvitoApi {
                     getAdDescription(uri),
                     uri,
                     getDateTimeFromElement(item)));
+
         }
         return  ads;
     }

@@ -23,7 +23,10 @@ public class AvitoAd {
         this.description = description;
         this.uri = uri;
         this.dateTime = dateTime;
+//        this.isFavorit = isFavorit;
     }
+
+
 
     @Override
     public  String toString() {
@@ -77,5 +80,13 @@ public class AvitoAd {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
+
+//    public Boolean isFavorit() {
+//        return isFavorit;
+//    }
+//
+//    public void setIsFavorit(Boolean isFavorit) {
+//        this.isFavorit = isFavorit;
+//    }
 }
 

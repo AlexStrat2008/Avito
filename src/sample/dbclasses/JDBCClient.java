@@ -101,8 +101,8 @@ public class JDBCClient {
 
     public void filterAdd(Filter filter) throws SQLException {
         String query = "INSERT INTO 'filter' ('city', 'category', 'subcategory', 'startPrice', 'finishPrice', "
-                + "'isPhoto', 'filterURL') VALUES ('" + filter.getCity() + "', '" + filter.getCategory() + "','" + filter.getSubcategory() + "','"
-                + filter.getStartPrice() + "','" + filter.getFinishPrice() + "','" + filter.getIsPhoto() + "','" + filter.getFilterURL() + "'); ";
+                + "'isPhoto', 'filterURL') VALUES ('" + filter.getCity() + "', '" + filter.getCategory() + "', '" + filter.getSubcategory() + "', '"
+                + filter.getStartPrice() + "', '" + filter.getFinishPrice() + "', '" + filter.getIsPhoto() + "', '" + filter.getFilterURL() + "');";
         statement.execute(query);
     }
 
@@ -531,8 +531,32 @@ public class JDBCClient {
         return true;
     }
 
-    public void changeAdFavorit(String url, boolean favorit) throws SQLException {
-        statement.execute("UPDATE ad SET favorit = '" + favorit + "' WHERE url = '" + url + "';");
+    public void changeAdFavorit(String url, boolean favorit, String comment, String phone) throws SQLException {
+        statement.execute("UPDATE ad SET favorit = '" + favorit + "', comment = '" + comment + "', phone = '" + phone + "' WHERE url = '" + url + "';");
+    }
+
+    public ArrayList<Ad> getAdFavoritAll() throws SQLException {
+        ArrayList<Ad> ads;
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM 'ad' WHERE favorit = 'true'");
+        if (resultSet != null) {
+            ads = new ArrayList<>();
+            Ad ad;
+            while (resultSet.next()) {
+                ad = new Ad();
+                ad.setId(resultSet.getInt("id"));
+                ad.setName(resultSet.getString("name"));
+                ad.setUrl_photo(resultSet.getString("url_photo"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setDescription(resultSet.getString("description"));
+                ad.setPhone(resultSet.getString("phone"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setUrl(resultSet.getString("url"));
+                ad.setIsFavorit(resultSet.getBoolean("favorit"));
+                ads.add(ad);
+            }
+            return ads;
+        } else
+            return null;
     }
 
     public ArrayList<Ad> getAdAll() throws SQLException {
