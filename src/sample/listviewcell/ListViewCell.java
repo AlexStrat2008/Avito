@@ -12,6 +12,11 @@ public class ListViewCell extends ListCell<AvitoAd> {
     @Override
     protected void updateItem(AvitoAd item, boolean empty) {
         super.updateItem(item, empty);
+        if(empty)
+        {
+            setGraphic(null);
+            return;
+        }
         if (item != null) {
             CardController cardController = new CardController();
             cardController.setInfo(

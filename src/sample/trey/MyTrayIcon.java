@@ -62,7 +62,6 @@ public class MyTrayIcon extends JDialog {
             ActionListener showListener = new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.out.println("ASFSASFFSAFAF");
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {

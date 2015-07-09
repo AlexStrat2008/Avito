@@ -65,6 +65,7 @@ public class App extends Application {
             primaryStage.close();
             adsObservableList.clear();
             if (loadFilter()) {
+
                 restartAdsService();
                 openMainWindow();
             } else {
