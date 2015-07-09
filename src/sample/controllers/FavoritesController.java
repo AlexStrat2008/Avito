@@ -17,8 +17,9 @@ import java.sql.SQLException;
  */
 public class FavoritesController {
 
-    public ListView listViewFavorites;
+    public ListView<Ad> listViewFavorites = new ListView<Ad>();
     private ObservableList<Ad> observableList = FXCollections.observableArrayList();
+    FilteredList<Ad> filteredData;
 
     @FXML
     public NumberTextField phoneFilter;
@@ -39,7 +40,7 @@ public class FavoritesController {
     }
 
     public void setListView(){
-        FilteredList<Ad> filteredData = new FilteredList<Ad>(observableList, x -> true);
+        filteredData = new FilteredList<Ad>(observableList, x -> true);
         phoneFilter.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(ad -> {
                 String filter = newValue;
@@ -49,6 +50,8 @@ public class FavoritesController {
                     return ad.getPhone().contains(filter);
                 }
             });
+            listViewFavorites.setItems(filteredData);
+            listViewFavorites.setCellFactory(param -> new ListViewCellFavorites());
         });
         listViewFavorites.setItems(filteredData);
         listViewFavorites.setCellFactory(param -> new ListViewCellFavorites());

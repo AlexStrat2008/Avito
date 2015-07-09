@@ -172,6 +172,16 @@ public class FilterController {
                     alert.showAndWait();
                     return;
                 }
+                if (minPrice <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Минимальная цена должна быть положительной");
+                    alert.showAndWait();
+                    return;
+                }
+                if (maxPrice <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Максимальная цена должна быть положительной");
+                    alert.showAndWait();
+                    return;
+                }
                 if (!startPrice.getText().isEmpty() && !finishPrice.getText().isEmpty() && minPrice > maxPrice) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Минимальная цена не может быть больше максимальной");
                     alert.showAndWait();

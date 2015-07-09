@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.api.AvitoAd;
+import sample.api.AvitoApi;
 import sample.controllers.FilterController;
 import sample.controllers.MainController;
 import sample.dbclasses.Ad;
@@ -140,8 +141,7 @@ public class App extends Application {
 
         avitoAdsService = new AvitoAdsSuperService(filter);
         avitoAdsService.setPeriod(ServiceRequestPeriod);
-        avitoAdsService.setDelay(Duration.seconds(1));
-
+        avitoAdsService.setDelay(Duration.seconds(10));
         avitoAdsService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {

@@ -7,7 +7,9 @@ import sample.api.AvitoApi;
 import sample.dbclasses.JDBCClient;
 import sample.models.Filter;
 
+import java.lang.reflect.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**

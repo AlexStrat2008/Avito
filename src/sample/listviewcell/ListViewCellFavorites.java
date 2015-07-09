@@ -11,6 +11,11 @@ public class ListViewCellFavorites extends ListCell<Ad> {
     @Override
     protected void updateItem(Ad item, boolean empty) {
         super.updateItem(item, empty);
+        if(empty)
+        {
+            setGraphic(null);
+            return;
+        }
         if (item != null) {
             CardController cardController = new CardController();
             cardController.setInfo(item.getName(), item.getDescription(), item.getPrice().longValue(), item.getUrl_photo(), item.getUrl(), item.getComment(), item.getPhone(), true);
